@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { logger } from './logger';
 
 type Role = 'USER' | 'ADMIN';
 
@@ -16,33 +17,41 @@ interface IAuthState {
   accessToken: string | null;
   refreshToken: string | null;
   actions: {
+    setIsAuthenticated: (isAuthenticated: boolean) => void;
     setAccessToken: (accessToken: string | null) => void;
     setRefreshToken: (refreshToken: string | null) => void;
     logout: () => void;
   };
 }
 
-const useAuthStore = create<IAuthState>()((set) => ({
-  isAuthenticated: false,
-  user: null,
-  accessToken: null,
-  refreshToken: null,
-  role: 'USER',
-  actions: {
-    setAccessToken(accessToken) {
-      set((state) => ({
-        accessToken,
-      }));
+const useAuthStore = create<IAuthState>()(
+  logger<IAuthState>((set) => ({
+    isAuthenticated: false,
+    user: null,
+    accessToken: null,
+    refreshToken: null,
+    role: 'USER',
+    actions: {
+      setIsAuthenticated(isAuthenticated) {
+        set((state) => ({
+          isAuthenticated,
+        }));
+      },
+      setAccessToken(accessToken) {
+        set((state) => ({
+          accessToken,
+        }));
+      },
+      setRefreshToken(refreshToken) {
+        set((state) => ({
+          refreshToken,
+        }));
+      },
+      logout: () => {
+        set(() => ({ refreshToken: null, accessToken: null }));
+      },
     },
-    setRefreshToken(refreshToken) {
-      set((state) => ({
-        refreshToken,
-      }));
-    },
-    logout: () => {
-      set(() => ({ refreshToken: null, accessToken: null }));
-    },
-  },
-}));
+  }))
+);
 
 export default useAuthStore;
