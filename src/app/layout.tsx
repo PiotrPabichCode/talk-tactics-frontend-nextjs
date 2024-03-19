@@ -4,7 +4,8 @@ import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ReactQueryClientProvider } from '@/lib/react-query-client-provider';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Navbar } from '@/components/navbar';
+import { Footer } from '@/components/footer';
+import Header from '@/components/header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,15 +23,17 @@ export default function RootLayout({
     <ReactQueryClientProvider>
       <html lang='en' suppressHydrationWarning>
         <body
-          className={`${inter.className} h-full bg-gradient-to-b from-slate-900 via-violet-300 to-slate-900`}>
-          {/* <Navbar /> */}
+          className={`${inter.className} flex flex-col min-h-screen overflow-hidden`}>
+          {/* className={`${inter.className} flex flex-col min-h-screen bg-gradient-to-b from-slate-900 via-violet-300 to-slate-900`}> */}
+          <Header />
           <ThemeProvider
             attribute='class'
             defaultTheme='dark'
             enableSystem
             disableTransitionOnChange>
-            {children}
+            <div className='pt-16 h-full'>{children}</div>
           </ThemeProvider>
+          <Footer />
           <ReactQueryDevtools />
         </body>
       </html>

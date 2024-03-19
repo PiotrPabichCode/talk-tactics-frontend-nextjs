@@ -81,7 +81,7 @@ export function AuthForm() {
 
   const form = useForm<FieldValues>({
     defaultValues,
-    resolver: zodResolver(registerSchema),
+    // resolver: zodResolver(registerSchema),
   });
 
   console.log(form.formState.errors);

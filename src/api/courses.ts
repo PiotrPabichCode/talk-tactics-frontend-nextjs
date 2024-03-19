@@ -1,6 +1,6 @@
-import { axios } from './axios';
 import type { Course } from './courses.types';
 import type { Page } from '@/typings/page.types';
+import { axios } from '@/lib/axios';
 
 type CourseFilters = {};
 
@@ -11,6 +11,11 @@ export async function getCourses(
   filters: CourseFilters = {},
   options?: { signal?: AbortSignal }
 ) {
+  // const { data } = await request({
+  //   method: 'GET',
+  //   url: ENDPOINT,
+
+  // })
   const { data } = await axios.get<Page<Course>>(ENDPOINT, {
     params: { page, ...filters },
     signal: options?.signal,

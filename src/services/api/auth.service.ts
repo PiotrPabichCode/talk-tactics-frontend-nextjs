@@ -4,17 +4,13 @@ import { axios } from '@/lib/axios';
 const ENDPOINT = 'auth';
 
 export const signIn = async (credentials: SignInBody) => {
-  try {
-    const response = await axios({
-      method: 'POST',
-      url: ENDPOINT + '/authenticate',
-      data: credentials,
-    });
-    console.log('User signed in', response);
-    return response;
-  } catch (e) {
-    console.error(e);
-  }
+  const response = await axios({
+    method: 'POST',
+    url: ENDPOINT + '/authenticate',
+    data: credentials,
+  });
+  console.log('User signed in', response);
+  return response;
 };
 
 const toSignUpDtoMapper = ({
