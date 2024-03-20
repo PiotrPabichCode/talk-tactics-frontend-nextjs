@@ -11,15 +11,19 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import useAuthStore from '@/store/useAuthStore';
+import useAuthStore, { IAuthStore } from '@/store/useAuthStore';
+import useStore from '@/store/useStore';
 import Link from 'next/link';
-import { useEffect } from 'react';
 
 export function UserNav() {
-  const {
-    user,
-    actions: { logout },
-  } = useAuthStore((state) => state);
+  const authStore = useStore<IAuthStore, IAuthStore>(
+    useAuthStore,
+    (state: any) => state
+  );
+  if (!authStore) {
+    return <div></div>;
+  }
+  const { user, logout } = authStore;
 
   if (!user) {
     return (

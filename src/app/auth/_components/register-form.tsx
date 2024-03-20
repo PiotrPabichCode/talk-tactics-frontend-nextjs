@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import useAuthStore from '@/store/useAuthStore';
+import useAuthStore, { IAuthStore } from '@/store/useAuthStore';
 import { useSignUpQuery } from '@/services/queries/auth.query';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import useStore from '@/store/useStore';
 
 const registerSchema = z
   .object({
@@ -57,15 +58,19 @@ const defaultValues = {
 };
 
 export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
-  const {
-    actions: { setUser },
-  } = useAuthStore((state) => state);
   const { isPending, mutateAsync: signUp } = useSignUpQuery();
-
   const form = useForm<FieldValues>({
     defaultValues,
     resolver: zodResolver(registerSchema),
   });
+  const authStore = useStore<IAuthStore, IAuthStore>(
+    useAuthStore,
+    (state: any) => state
+  );
+  if (!authStore) {
+    return <div></div>;
+  }
+  const { setUser } = authStore;
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {

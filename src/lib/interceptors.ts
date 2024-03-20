@@ -3,13 +3,8 @@ import {
   type AxiosResponse,
   type InternalAxiosRequestConfig,
 } from 'axios';
-import { axios, clearUserData } from '@/lib/axios';
-import {
-  getAuthRefreshToken,
-  getAuthToken,
-  getUsername,
-  setUserData,
-} from './axios';
+import { axios } from '@/lib/axios';
+import useAuthStore from '@/store/useAuthStore';
 
 interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -23,7 +18,7 @@ export interface ConsoleError {
 export const requestInterceptor = (
   config: InternalAxiosRequestConfig
 ): InternalAxiosRequestConfig => {
-  const token = getAuthToken();
+  const token = useAuthStore.getState().user?.token;
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
   }
@@ -36,6 +31,7 @@ export const successInterceptor = (response: AxiosResponse): AxiosResponse => {
 
 export const errorInterceptor = async (err: AxiosError): Promise<void> => {
   const originalConfig: CustomInternalAxiosRequestConfig = err.config!;
+  const { user, logout, setUser } = useAuthStore.getState();
 
   if (err.response) {
     if (err.response.status === 401 && !originalConfig?._retry) {
@@ -49,19 +45,19 @@ export const errorInterceptor = async (err: AxiosError): Promise<void> => {
           url: '/auth/refresh-token',
           headers: originalConfig.headers,
           data: {
-            login: getUsername(),
-            refreshToken: getAuthRefreshToken(),
+            login: user?.username,
+            refreshToken: user?.refreshToken,
           },
         });
-        setUserData(newToken.data);
-        const accessToken = getAuthToken();
+        setUser(newToken.data);
+        const accessToken = user?.token;
         if (accessToken) {
           originalConfig.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
         return axios(originalConfig);
       } catch (_error: any) {
-        clearUserData();
+        logout();
         console.log('Refresh token has expired. Login required');
 
         if (_error.response && _error.response.data) {

@@ -17,23 +17,19 @@ import { shuffle } from 'lodash';
 
 const generateWordOptions: {
   title: string;
-  href: string;
   description: string;
 }[] = [
   {
     title: 'BEGINNER',
     description: 'Most frequently used english words - Top <80%',
-    href: '',
   },
   {
     title: 'INTERMEDIATE',
     description: 'Most frequently used english words - Top 80-90%',
-    href: '',
   },
   {
     title: 'ADVANCED',
     description: 'Most frequently used english words - Top 90-99%',
-    href: '',
   },
 ];
 
@@ -71,7 +67,7 @@ export function LinksNav({
   header?: boolean;
   courses: CourseDto[];
 }) {
-  if (!courses) {
+  if (courses.length === 0) {
     return null;
   }
   const shuffledCourses = shuffle(courses);
@@ -133,7 +129,7 @@ export function LinksNav({
                 <ListItem
                   key={option.title}
                   title={option.title}
-                  href={option.href}>
+                  href={'/courses'}>
                   {option.description}
                 </ListItem>
               ))}

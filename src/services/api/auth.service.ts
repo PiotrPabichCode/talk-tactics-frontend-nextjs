@@ -1,5 +1,5 @@
 import { type SignInBody, type SignUpBody } from '@/types/auth';
-import { axios, setUserData } from '@/lib/axios';
+import { axios } from '@/lib/axios';
 import { IAuthUser } from '@/typings/user';
 
 const ENDPOINT = 'auth';
@@ -10,7 +10,6 @@ export const signIn = async (credentials: SignInBody): Promise<IAuthUser> => {
     url: ENDPOINT + '/authenticate',
     data: credentials,
   });
-  setUserData(data);
   return data;
 };
 
@@ -38,6 +37,5 @@ export const signUp = async (credentials: SignUpBody): Promise<IAuthUser> => {
     url: ENDPOINT + '/register',
     data: toSignUpDtoMapper(credentials),
   });
-  setUserData(data);
   return data;
 };

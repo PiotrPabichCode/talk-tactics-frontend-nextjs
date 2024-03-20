@@ -1,29 +1,29 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { logger } from './logger';
 import { IAuthUser } from '@/typings/user';
-import { clearUserData, getUserData } from '@/lib/axios';
 
-interface IAuthState {
+export interface IAuthStore {
   user: IAuthUser | null;
-  actions: {
-    setUser: (user: IAuthUser) => void;
-    logout: () => void;
-  };
+  setUser: (user: IAuthUser) => void;
+  logout: () => void;
 }
 
-const useAuthStore = create<IAuthState>()(
-  logger<IAuthState>((set) => ({
-    user: getUserData(),
-    actions: {
-      setUser(user) {
-        set(() => ({ user: user }));
-      },
-      logout: () => {
-        clearUserData();
-        set(() => ({ user: null }));
-      },
-    },
-  }))
+export const useAuthStore = create<IAuthStore>()(
+  logger(
+    persist(
+      (set) => ({
+        user: null,
+        setUser(user) {
+          set(() => ({ user: user }));
+        },
+        logout() {
+          set(() => ({ user: null }));
+        },
+      }),
+      { name: 'auth' }
+    )
+  )
 );
 
 export default useAuthStore;
