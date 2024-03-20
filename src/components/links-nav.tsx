@@ -14,22 +14,23 @@ import { cn } from '@/lib/utils';
 import { CourseDto } from '@/typings/course';
 import uniqBy from 'lodash/uniqBy';
 import { shuffle } from 'lodash';
+import Image from 'next/image';
 
 const generateWordOptions: {
   title: string;
   description: string;
 }[] = [
   {
-    title: 'BEGINNER',
-    description: 'Most frequently used english words - Top <80%',
+    title: 'ADVANCED',
+    description: 'Most frequently used english words - Top <85%',
   },
   {
     title: 'INTERMEDIATE',
-    description: 'Most frequently used english words - Top 80-90%',
+    description: 'Most frequently used english words - Top 85-94%',
   },
   {
-    title: 'ADVANCED',
-    description: 'Most frequently used english words - Top 90-99%',
+    title: 'BEGINNER',
+    description: 'Most frequently used english words - Top 95-99%',
   },
 ];
 
@@ -67,7 +68,7 @@ export function LinksNav({
   header?: boolean;
   courses: CourseDto[];
 }) {
-  if (courses.length === 0) {
+  if (courses.length < 3) {
     return null;
   }
   const shuffledCourses = shuffle(courses);
@@ -88,10 +89,11 @@ export function LinksNav({
                     className='flex h-full w-full select-none flex-col rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md'
                     href='/courses'>
                     <div className='flex flex-row items-center justify-center md:block space-x-3 md:space-x-0'>
-                      <img
+                      <Image
                         src={'/english.svg'}
                         alt='English flag'
-                        className='h-8 w-8 mt-2 md:mt-0'
+                        width={32}
+                        height={32}
                       />
                       <div className='mb-2 mt-4 text-lg font-medium'>
                         English courses
@@ -106,17 +108,17 @@ export function LinksNav({
               <ListItem
                 href={`/courses/${uniqueCourses[0].id}`}
                 title={uniqueCourses[0].level}>
-                {uniqueCourses[0].name}
+                {uniqueCourses[0].title}
               </ListItem>
               <ListItem
                 href={`/courses/${uniqueCourses[1].id}`}
                 title={uniqueCourses[1].level}>
-                {uniqueCourses[1].name}
+                {uniqueCourses[1].title}
               </ListItem>
               <ListItem
                 href={`/courses/${uniqueCourses[2].id}`}
                 title={uniqueCourses[2].level}>
-                {uniqueCourses[2].name}
+                {uniqueCourses[2].title}
               </ListItem>
             </ul>
           </NavigationMenuContent>

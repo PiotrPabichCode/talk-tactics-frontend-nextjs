@@ -9,9 +9,9 @@ import { LinksNav } from './links-nav';
 import { useGetCourses } from '@/services/queries/course.query';
 
 export default function Header() {
-  const { data: courses, isFetchedAfterMount } = useGetCourses();
+  const { data: courses, isPending } = useGetCourses();
 
-  if (!isFetchedAfterMount) {
+  if (isPending) {
     return null;
   }
   return (

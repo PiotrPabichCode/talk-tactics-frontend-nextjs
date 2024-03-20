@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCourses } from '../api/course.service';
 import { CourseDto } from '@/typings/course';
 
@@ -12,11 +12,14 @@ export function getQueryKey(page?: number) {
 }
 
 export function useGetCourses(page?: number) {
+  const queryClient = useQueryClient();
   const query = useQuery<CourseDto[], Error>({
     queryKey: getQueryKey(page),
-    queryFn: async () => await getCourses(),
-    initialData: [],
-    refetchOnMount: 'always',
+    queryFn: () => getCourses(),
+    initialData: () => {
+      return queryClient.getQueryData(getQueryKey()) as CourseDto[];
+    },
+    staleTime: Infinity,
   });
   return query;
 }
