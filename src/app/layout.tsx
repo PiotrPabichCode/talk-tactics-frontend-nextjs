@@ -22,8 +22,7 @@ export default function RootLayout({
   return (
     <ReactQueryClientProvider>
       <html lang='en' suppressHydrationWarning>
-        <body
-          className={`${inter.className} flex flex-col min-h-screen overflow-hidden`}>
+        <body className={`${inter.className} flex flex-col min-h-screen`}>
           {/* className={`${inter.className} flex flex-col min-h-screen bg-gradient-to-b from-slate-900 via-violet-300 to-slate-900`}> */}
           <Header />
           <ThemeProvider
@@ -31,10 +30,10 @@ export default function RootLayout({
             defaultTheme='dark'
             enableSystem
             disableTransitionOnChange>
-            <div className='pt-16 h-full'>{children}</div>
+            <div className='flex-grow pt-[70px]'>{children}</div>
           </ThemeProvider>
           <Footer />
-          <ReactQueryDevtools />
+          {/* <ReactQueryDevtools /> */}
         </body>
       </html>
     </ReactQueryClientProvider>

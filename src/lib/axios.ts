@@ -6,26 +6,19 @@ import {
   successInterceptor,
 } from './interceptors';
 import { getItem, removeItem, setItem } from './localStorage';
+import { IAuthUser } from '@/typings/user';
 
 assert(
   process.env.NEXT_PUBLIC_API_BASE_URL,
   'env variable not set: NEXT_PUBLIC_API_BASE_URL'
 );
 
-interface ILocalUser {
-  id: string;
-  token: string;
-  refreshToken: string;
-  role: 'USER' | 'ADMIN';
-  username: string;
-}
-
-export const setUserData = (user: ILocalUser) => {
+export const setUserData = (user: IAuthUser) => {
   return setItem('user_data', user);
 };
 
 export const getUserData = () => {
-  return getItem<ILocalUser>('user_data');
+  return getItem<IAuthUser>('user_data');
 };
 
 export const clearUserData = () => {

@@ -1,16 +1,17 @@
 import { type SignInBody, type SignUpBody } from '@/types/auth';
-import { axios } from '@/lib/axios';
+import { axios, setUserData } from '@/lib/axios';
+import { IAuthUser } from '@/typings/user';
 
 const ENDPOINT = 'auth';
 
-export const signIn = async (credentials: SignInBody) => {
-  const response = await axios({
+export const signIn = async (credentials: SignInBody): Promise<IAuthUser> => {
+  const { data } = await axios({
     method: 'POST',
     url: ENDPOINT + '/authenticate',
     data: credentials,
   });
-  console.log('User signed in', response);
-  return response;
+  setUserData(data);
+  return data;
 };
 
 const toSignUpDtoMapper = ({
@@ -31,12 +32,12 @@ const toSignUpDtoMapper = ({
   };
 };
 
-export const signUp = async (credentials: SignUpBody) => {
-  const response = await axios({
+export const signUp = async (credentials: SignUpBody): Promise<IAuthUser> => {
+  const { data } = await axios({
     method: 'POST',
     url: ENDPOINT + '/register',
     data: toSignUpDtoMapper(credentials),
   });
-  console.log('User signed up', response);
-  return response;
+  setUserData(data);
+  return data;
 };

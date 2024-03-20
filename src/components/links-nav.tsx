@@ -91,13 +91,15 @@ export function LinksNav({
                   <Link
                     className='flex h-full w-full select-none flex-col rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md'
                     href='/courses'>
-                    <img
-                      src={'/english.svg'}
-                      alt='English flag'
-                      className='h-8 w-8'
-                    />
-                    <div className='mb-2 mt-4 text-lg font-medium'>
-                      English courses
+                    <div className='flex flex-row items-center justify-center md:block space-x-3 md:space-x-0'>
+                      <img
+                        src={'/english.svg'}
+                        alt='English flag'
+                        className='h-8 w-8 mt-2 md:mt-0'
+                      />
+                      <div className='mb-2 mt-4 text-lg font-medium'>
+                        English courses
+                      </div>
                     </div>
                     <p className='text-sm leading-tight text-muted-foreground'>
                       {uniqueCourses[0].description}
