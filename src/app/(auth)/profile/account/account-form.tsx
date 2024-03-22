@@ -31,7 +31,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { toast } from '@/components/ui/use-toast';
-import useAuthStore from '@/store/useAuthStore';
+import useUserStore from '@/store/useUserStore';
 
 const languages = [
   { label: 'English', value: 'en' },
@@ -72,12 +72,12 @@ const accountFormSchema = z.object({
 type AccountFormValues = z.infer<typeof accountFormSchema>;
 
 export function AccountForm() {
-  const user = useAuthStore().user;
+  const { firstName, lastName } = useUserStore();
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues: {
-      name: user?.firstName,
-      surname: user?.lastName,
+      name: firstName,
+      surname: lastName,
       language: 'en',
     },
   });

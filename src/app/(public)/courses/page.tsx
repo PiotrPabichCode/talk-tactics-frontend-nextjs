@@ -2,7 +2,7 @@
 
 import { useGetCourses } from '@/services/queries/course.query';
 import { columns } from './_components/columns';
-import { Table } from '../../components/table/table';
+import { Table } from '@/components/table/table';
 import { Spinner } from '@/components/ui/spinner';
 import { filters } from './_components/filters';
 

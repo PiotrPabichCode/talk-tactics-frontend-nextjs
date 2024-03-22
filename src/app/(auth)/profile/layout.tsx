@@ -2,7 +2,7 @@
 
 import { Separator } from '@/components/ui/separator';
 import { SidebarNav } from './_components/sidebar-nav';
-import useAuthStore from '@/store/useAuthStore';
+import useUserStore from '@/store/useUserStore';
 
 const sidebarNavItems = [
   {
@@ -28,12 +28,12 @@ interface ProfileLayoutSettings {
 }
 
 export default function ProfileLayout({ children }: ProfileLayoutSettings) {
-  const user = useAuthStore().user;
+  const { firstName } = useUserStore();
   return (
     <>
       <div className='space-y-6 p-10 pb-16 md:block'>
         <div className='space-y-0.5'>
-          <h2 className='text-2xl font-bold tracking-tight'>{`👋 Hello ${user?.firstName}`}</h2>
+          <h2 className='text-2xl font-bold tracking-tight'>{`👋 Hello ${firstName}`}</h2>
           <p className='text-muted-foreground'>
             Manage your account settings in here
           </p>

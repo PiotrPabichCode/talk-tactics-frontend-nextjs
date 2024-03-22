@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { DataTableViewOptions } from './data-table-view-options';
 
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
-import { useState } from 'react';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -37,6 +36,7 @@ export function DataTableToolbar<TData>({
             (filter) =>
               table.getColumn(filter.name) && (
                 <DataTableFacetedFilter
+                  key={'filter' + filter.name}
                   column={table.getColumn(filter.name)}
                   title={filter.title}
                   options={filter.options}

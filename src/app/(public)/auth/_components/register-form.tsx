@@ -23,10 +23,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import useStore from '@/store/useStore';
+import { useRouter } from 'next/navigation';
 
 const registerSchema = z
   .object({
-    login: z.string().min(1, { message: 'Login is required' }),
+    username: z.string().min(1, { message: 'Username is required' }),
     password: z
       .string()
       .min(4, { message: 'Password must be at least 4 characters' }),
@@ -49,7 +50,7 @@ const registerSchema = z
 type FieldValues = z.infer<typeof registerSchema>;
 
 const defaultValues = {
-  login: '',
+  username: '',
   password: '',
   repeatPassword: '',
   firstName: '',
@@ -58,6 +59,7 @@ const defaultValues = {
 };
 
 export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
+  const router = useRouter();
   const { isPending, mutateAsync: signUp } = useSignUpQuery();
   const form = useForm<FieldValues>({
     defaultValues,
@@ -70,12 +72,11 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
   if (!authStore) {
     return <div></div>;
   }
-  const { setUser } = authStore;
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const response = await signUp(data);
-      setUser(response);
+      await signUp(data);
+      router.replace('/courses');
     } catch (e) {
       console.log(e);
     }
@@ -114,13 +115,13 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
             </div>
             <div className={'grid gap-4 md:grid-cols-2'}>
               <FormField
-                name='login'
+                name='username'
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Login</FormLabel>
+                    <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input placeholder='Your login' {...field} />
+                      <Input placeholder='Your username' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

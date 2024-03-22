@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import useAuthStore, { IAuthStore } from '@/store/useAuthStore';
 import useStore from '@/store/useStore';
+import useUserStore from '@/store/useUserStore';
 import Link from 'next/link';
 
 export function UserNav() {
@@ -20,12 +21,13 @@ export function UserNav() {
     useAuthStore,
     (state: any) => state
   );
+  const { firstName, lastName, email } = useUserStore();
   if (!authStore) {
     return <div></div>;
   }
-  const { user, logout } = authStore;
+  const { credentials, logout } = authStore;
 
-  if (!user) {
+  if (!credentials) {
     return (
       <Link href={'/auth'}>
         <Button variant='outline'>Sign in</Button>
@@ -43,7 +45,7 @@ export function UserNav() {
               alt={'User account placeholder'}
             />
             <AvatarFallback>
-              {`${user.firstName[0]}${user.lastName[0]}`.toUpperCase()}
+              {`${firstName}${lastName}`.toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -53,16 +55,18 @@ export function UserNav() {
           <div className='flex flex-col space-y-1'>
             <p className='text-sm font-medium leading-none'>{'Piotr Pabich'}</p>
             <p className='text-xs leading-none text-muted-foreground'>
-              {user.email}
+              {email}
             </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Profile
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
+          <Link href={'/profile'}>
+            <DropdownMenuItem>
+              Profile
+              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem>
             Settings
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>

@@ -5,8 +5,8 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/components/ui/checkbox';
 
 import { levels } from './data';
-import { DataTableColumnHeader } from '../../../components/table/data-table-column-header';
-import { DataTableRowActions } from '../../../components/table/data-table-row-actions';
+import { DataTableColumnHeader } from '@/components/table/data-table-column-header';
+import { DataTableRowActions } from '@/components/table/data-table-row-actions';
 import { Course } from '@/typings/course';
 
 export const columns: ColumnDef<Course>[] = [

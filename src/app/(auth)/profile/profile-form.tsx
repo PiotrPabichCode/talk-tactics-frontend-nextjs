@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/use-toast';
 import useAuthStore from '@/store/useAuthStore';
+import useUserStore from '@/store/useUserStore';
 
 const profileFormSchema = z.object({
   username: z
@@ -42,13 +43,14 @@ const profileFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 export function ProfileForm() {
-  const user = useAuthStore().user;
+  const credentials = useAuthStore().credentials;
+  const { email, bio } = useUserStore();
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      bio: user?.bio,
-      email: user?.email,
-      username: user?.username,
+      bio: bio,
+      email: email,
+      username: credentials?.username,
     },
     mode: 'onChange',
   });

@@ -18,7 +18,7 @@ export interface ConsoleError {
 export const requestInterceptor = (
   config: InternalAxiosRequestConfig
 ): InternalAxiosRequestConfig => {
-  const token = useAuthStore.getState().user?.token;
+  const token = useAuthStore.getState().credentials?.token;
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
   }
@@ -31,7 +31,7 @@ export const successInterceptor = (response: AxiosResponse): AxiosResponse => {
 
 export const errorInterceptor = async (err: AxiosError): Promise<void> => {
   const originalConfig: CustomInternalAxiosRequestConfig = err.config!;
-  const { user, logout, setUser } = useAuthStore.getState();
+  const { credentials, logout, setCredentials } = useAuthStore.getState();
 
   if (err.response) {
     if (err.response.status === 401 && !originalConfig?._retry) {
@@ -45,12 +45,12 @@ export const errorInterceptor = async (err: AxiosError): Promise<void> => {
           url: '/auth/refresh-token',
           headers: originalConfig.headers,
           data: {
-            login: user?.username,
-            refreshToken: user?.refreshToken,
+            username: credentials?.username,
+            refreshToken: credentials?.refreshToken,
           },
         });
-        setUser(newToken.data);
-        const accessToken = user?.token;
+        setCredentials(newToken.data);
+        const accessToken = credentials?.token;
         if (accessToken) {
           originalConfig.headers['Authorization'] = `Bearer ${accessToken}`;
         }

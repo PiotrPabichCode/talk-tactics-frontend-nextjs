@@ -1,10 +1,10 @@
 export interface SignInBody {
-  login: string;
+  username: string;
   password: string;
 }
 
 export interface SignUpBody {
-  login: string;
+  username: string;
   password: string;
   repeatPassword: string;
   firstName: string;

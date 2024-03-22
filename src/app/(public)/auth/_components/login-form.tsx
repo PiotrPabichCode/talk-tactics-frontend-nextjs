@@ -23,22 +23,24 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import useStore from '@/store/useStore';
+import { useRouter } from 'next/navigation';
 
 const loginSchema = z.object({
-  login: z.string().min(1, { message: 'Login is required' }),
+  username: z.string().min(1, { message: 'Username is required' }),
   password: z
     .string()
     .min(4, { message: 'Password must be at least 4 characters' }),
 });
 
 const defaultValues = {
-  login: '',
+  username: '',
   password: '',
 };
 
 type FieldValues = z.infer<typeof loginSchema>;
 
 export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
+  const router = useRouter();
   const { isPending, mutateAsync: signIn } = useSignInQuery();
   const form = useForm<FieldValues>({
     defaultValues,
@@ -51,14 +53,10 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
   if (!authStore) {
     return <div></div>;
   }
-  const { setUser } = authStore;
-
-  console.log(authStore);
-
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const response = await signIn(data);
-      setUser(response);
+      await signIn(data);
+      router.replace('/courses');
     } catch (e) {
       console.error(e);
     }
@@ -97,13 +95,13 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
             </div>
             <div className={'grid gap-4'}>
               <FormField
-                name='login'
+                name='username'
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Login</FormLabel>
+                    <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input placeholder='Your login' {...field} />
+                      <Input placeholder='Your username' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
