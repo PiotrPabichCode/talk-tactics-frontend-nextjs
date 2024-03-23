@@ -31,7 +31,7 @@ export const successInterceptor = (response: AxiosResponse): AxiosResponse => {
 
 export const errorInterceptor = async (err: AxiosError): Promise<void> => {
   const originalConfig: CustomInternalAxiosRequestConfig = err.config!;
-  const { credentials, logout, setCredentials } = useAuthStore.getState();
+  const { credentials, logout, login } = useAuthStore.getState();
 
   if (err.response) {
     if (err.response.status === 401 && !originalConfig?._retry) {
@@ -49,7 +49,7 @@ export const errorInterceptor = async (err: AxiosError): Promise<void> => {
             refreshToken: credentials?.refreshToken,
           },
         });
-        setCredentials(newToken.data);
+        login(newToken.data);
         const accessToken = credentials?.token;
         if (accessToken) {
           originalConfig.headers['Authorization'] = `Bearer ${accessToken}`;

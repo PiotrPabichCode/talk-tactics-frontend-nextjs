@@ -76,7 +76,6 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       await signUp(data);
-      router.replace('/courses');
     } catch (e) {
       console.log(e);
     }

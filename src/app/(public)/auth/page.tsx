@@ -1,21 +1,15 @@
 'use client';
 
-import { useLayoutEffect, useState } from 'react';
+import { useState } from 'react';
 import { LoginForm } from './_components/login-form';
 import { RegisterForm } from './_components/register-form';
-import useAuthStore from '@/store/useAuthStore';
-import { redirect } from 'next/navigation';
+import withAuthRoles from '@/router/withAuthRoles';
 
 type Variant = 'LOGIN' | 'REGISTER';
 
 function AuthPage() {
   const [variant, setVariant] = useState<Variant>('LOGIN');
-  useLayoutEffect(() => {
-    const credentials = !!useAuthStore.getState().credentials;
-    if (credentials) {
-      redirect('/');
-    }
-  }, []);
+
   return (
     <div className='h-full flex items-center justify-center'>
       {variant === 'LOGIN' ? (
@@ -27,4 +21,4 @@ function AuthPage() {
   );
 }
 
-export default AuthPage;
+export default withAuthRoles(AuthPage, 'skip', 'auth');

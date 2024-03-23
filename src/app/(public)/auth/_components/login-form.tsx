@@ -56,7 +56,6 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       await signIn(data);
-      router.replace('/courses');
     } catch (e) {
       console.error(e);
     }

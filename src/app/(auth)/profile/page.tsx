@@ -1,7 +1,9 @@
+'use client';
 import { Separator } from '@/components/ui/separator';
 import { ProfileForm } from './profile-form';
+import withAuthRoles from '@/router/withAuthRoles';
 
-export default function SettingsProfilePage() {
+function SettingsProfilePage() {
   return (
     <div className='space-y-6'>
       <div>
@@ -15,3 +17,5 @@ export default function SettingsProfilePage() {
     </div>
   );
 }
+
+export default withAuthRoles(SettingsProfilePage, ['ADMIN', 'USER'], 'all');

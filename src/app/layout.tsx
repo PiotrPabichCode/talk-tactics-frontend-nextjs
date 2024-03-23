@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from '@/components/theme-provider';
-import { ReactQueryClientProvider } from '@/lib/react-query-client-provider';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import NextTopLoader from 'nextjs-toploader';
 import { Footer } from '@/components/footer';
 import Header from '@/components/header';
 import { Toaster } from '@/components/ui/toaster';
+import { Providers } from './provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,22 +20,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ReactQueryClientProvider>
-      <html lang='en' suppressHydrationWarning>
-        <body className={`${inter.className} flex flex-col min-h-screen`}>
-          <Header />
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='dark'
-            enableSystem
-            disableTransitionOnChange>
-            <div className='flex-grow pt-[70px]'>{children}</div>
-          </ThemeProvider>
-          <Footer />
+    <html lang='en' suppressHydrationWarning>
+      <body className={`${inter.className} flex flex-col min-h-screen`}>
+        <Providers>
           <Toaster />
-          {/* <ReactQueryDevtools /> */}
-        </body>
-      </html>
-    </ReactQueryClientProvider>
+          <NextTopLoader showSpinner={false} />
+          <Header />
+          <div className='flex-grow pt-[70px]'>{children}</div>
+          <Footer />
+        </Providers>
+      </body>
+    </html>
   );
 }

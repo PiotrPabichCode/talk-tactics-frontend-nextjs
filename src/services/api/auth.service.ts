@@ -14,7 +14,7 @@ export const signIn = async (credentials: SignInBody): Promise<void> => {
   });
 
   // save auth details in local storage
-  useAuthStore.getState().setCredentials(data);
+  useAuthStore.getState().login(data);
 
   // fetch user details
   await getUserDetails({ username: data.username });
@@ -45,7 +45,7 @@ export const signUp = async (credentials: SignUpBody): Promise<void> => {
     data: toSignUpDtoMapper(credentials),
   });
   // save auth details in local storage
-  useAuthStore.getState().setCredentials(data);
+  useAuthStore.getState().login(data);
 
   // fetch user details
   await getUserDetails({ username: data.username });

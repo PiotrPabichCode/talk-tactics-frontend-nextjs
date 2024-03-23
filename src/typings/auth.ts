@@ -1,6 +1,6 @@
 export type IAuthRole = 'USER' | 'ADMIN';
 
-export interface IAuthDetails {
+export interface IAuthCredentials {
   id: string;
   username: string;
   role: IAuthRole;

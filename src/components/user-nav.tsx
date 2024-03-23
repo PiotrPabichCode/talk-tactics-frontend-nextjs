@@ -11,21 +11,15 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import useAuthStore, { IAuthStore } from '@/store/useAuthStore';
-import useStore from '@/store/useStore';
+import withAuthRoles from '@/router/withAuthRoles';
+import useAuthStore from '@/store/useAuthStore';
 import useUserStore from '@/store/useUserStore';
 import Link from 'next/link';
 
-export function UserNav() {
-  const authStore = useStore<IAuthStore, IAuthStore>(
-    useAuthStore,
-    (state: any) => state
-  );
+export default withAuthRoles(UserNav, 'skip', 'optional', true);
+function UserNav() {
+  const { credentials, logout } = useAuthStore();
   const { firstName, lastName, email } = useUserStore();
-  if (!authStore) {
-    return <div></div>;
-  }
-  const { credentials, logout } = authStore;
 
   if (!credentials) {
     return (

@@ -3,6 +3,7 @@
 import { Separator } from '@/components/ui/separator';
 import { SidebarNav } from './_components/sidebar-nav';
 import useUserStore from '@/store/useUserStore';
+import withAuthRoles from '@/router/withAuthRoles';
 
 const sidebarNavItems = [
   {
@@ -27,7 +28,7 @@ interface ProfileLayoutSettings {
   children: React.ReactNode;
 }
 
-export default function ProfileLayout({ children }: ProfileLayoutSettings) {
+function ProfileLayout({ children }: ProfileLayoutSettings) {
   const { firstName } = useUserStore();
   return (
     <>
@@ -49,3 +50,5 @@ export default function ProfileLayout({ children }: ProfileLayoutSettings) {
     </>
   );
 }
+
+export default withAuthRoles(ProfileLayout, ['ADMIN', 'USER'], 'all');
