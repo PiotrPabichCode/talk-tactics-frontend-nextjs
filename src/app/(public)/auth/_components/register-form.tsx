@@ -77,7 +77,7 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
     try {
       await signUp(data);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 

@@ -77,6 +77,5 @@ export const getUserDetails = async ({ username }: { username: string }) => {
     method: 'GET',
     url: USERS_ENDPOINT + '/username/' + username,
   });
-  console.log('User details', data);
   useUserStore.getState().setUserDetails(fromUserDetailsResponseMapper(data));
 };

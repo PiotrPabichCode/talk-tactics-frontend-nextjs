@@ -11,13 +11,11 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import withAuthRoles from '@/router/withAuthRoles';
 import useAuthStore from '@/store/useAuthStore';
 import useUserStore from '@/store/useUserStore';
 import Link from 'next/link';
 
-export default withAuthRoles(UserNav, 'skip', 'optional', true);
-function UserNav() {
+export default function UserNav() {
   const { credentials, logout } = useAuthStore();
   const { firstName, lastName, email } = useUserStore();
 
@@ -31,15 +29,16 @@ function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
+        <Button
+          variant='link'
+          className='relative h-10 w-10 rounded-full border-solid border-2 bg-slate-100'>
           <Avatar className='h-8 w-8'>
             <AvatarImage
-              className='bg-white'
               src={'/account-man.svg'}
               alt={'User account placeholder'}
             />
             <AvatarFallback>
-              {`${firstName}${lastName}`.toUpperCase()}
+              {`${firstName[0]}${lastName[0]}`.toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -47,7 +46,7 @@ function UserNav() {
       <DropdownMenuContent className='w-56' align='end' forceMount>
         <DropdownMenuLabel className='font-normal'>
           <div className='flex flex-col space-y-1'>
-            <p className='text-sm font-medium leading-none'>{'Piotr Pabich'}</p>
+            <p className='text-sm font-medium leading-none'>{`${firstName} ${lastName}`}</p>
             <p className='text-xs leading-none text-muted-foreground'>
               {email}
             </p>

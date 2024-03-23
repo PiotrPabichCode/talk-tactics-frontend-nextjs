@@ -1,10 +1,6 @@
 'use client';
 import { Spinner } from '@/components/ui/spinner';
-import { getUserDetails } from '@/services/api/auth.service';
-import { getCourses } from '@/services/api/course.service';
-import useAuthStore, { IAuthStore } from '@/store/useAuthStore';
-import useCourseStore from '@/store/useCourseStore';
-import useStore from '@/store/useStore';
+import useAuthStore from '@/store/useAuthStore';
 import useUserStore from '@/store/useUserStore';
 import { IAuthRole } from '@/typings/auth';
 import { redirect } from 'next/navigation';
@@ -44,72 +40,35 @@ export default function withAuthRoles(
   skipLoader?: boolean
 ) {
   return function isAuth(props: any) {
-    const authStore = useStore<IAuthStore, IAuthStore>(
-      useAuthStore,
-      (state) => state
-    );
+    const authStore = useAuthStore();
+    const initialLoading = useUserStore().loading;
     const [loading, setLoading] = useState(true);
     const [redirectPath, setRedirectPath] = useState<undefined | string>(
       undefined
     );
-    const [rehydrate, setRehydrate] = useState(false);
 
     useEffect(() => {
-      const loadData = async () => {
-        if (!authStore) {
-          return;
-        }
+      if (initialLoading) {
+        return;
+      }
 
-        /**
-         * Manual rehydrate store when available
-         * @example https://docs.pmnd.rs/zustand/integrations/persisting-store-data#usage-in-next.js
-         */
-        if (!rehydrate) {
-          await useAuthStore.persist.rehydrate();
-          setRehydrate(true);
-          return;
-        }
+      const { credentials } = authStore;
+      const hasPermission = hasRequiredPermissions(
+        requiredRoles,
+        credentials?.role
+      );
 
-        const { credentials } = authStore;
+      if (defaultFallback === 'all' && !hasPermission) {
+        console.log('Redirect to auth page');
+        setRedirectPath('/auth');
+      }
 
-        /**
-         * START LOADING
-         * Local storage loaded => load:
-         * - courses,
-         * - userDetails
-         */
-        const courses = useCourseStore.getState().courses;
-        if (courses) {
-          await getCourses();
-        }
-
-        const user = useUserStore.getState();
-        if (credentials?.username && user.loading) {
-          await getUserDetails({ username: credentials.username });
-        }
-        /**
-         * END LOADING
-         */
-
-        const hasPermission = hasRequiredPermissions(
-          requiredRoles,
-          credentials?.role
-        );
-
-        if (defaultFallback === 'all' && !hasPermission) {
-          console.log('Redirect to auth page');
-          setRedirectPath('/auth');
-        }
-
-        if (defaultFallback === 'auth' && credentials?.role) {
-          console.log('Redirects to profile page');
-          setRedirectPath('/profile');
-        }
-        setLoading(false);
-      };
-
-      loadData();
-    }, [authStore]);
+      if (defaultFallback === 'auth' && credentials?.role) {
+        console.log('Redirects to profile page');
+        setRedirectPath('/profile');
+      }
+      setLoading(false);
+    }, [authStore, initialLoading]);
 
     if (loading) {
       if (skipLoader) {

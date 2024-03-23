@@ -36,7 +36,7 @@ export const errorInterceptor = async (err: AxiosError): Promise<void> => {
   if (err.response) {
     if (err.response.status === 401 && !originalConfig?._retry) {
       try {
-        console.log('Token expired - try refresh token');
+        console.error('Token expired - try refresh token');
         originalConfig._retry = true;
 
         // Request new token by passing refresh token
@@ -58,7 +58,7 @@ export const errorInterceptor = async (err: AxiosError): Promise<void> => {
         return axios(originalConfig);
       } catch (_error: any) {
         logout();
-        console.log('Refresh token has expired. Login required');
+        console.error('Refresh token has expired. Login required');
 
         if (_error.response && _error.response.data) {
           return Promise.reject(_error.response.data);

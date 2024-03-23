@@ -1,14 +1,14 @@
 'use client';
 
-import { useGetCourses } from '@/services/queries/course.query';
 import { columns } from './_components/columns';
 import { Table } from '@/components/table/table';
 import { Spinner } from '@/components/ui/spinner';
 import { filters } from './_components/filters';
+import useCourseStore from '@/store/useCourseStore';
 
 export default function CoursesPage() {
-  const { isPending, data: courses } = useGetCourses();
-  if (isPending) {
+  const courses = useCourseStore().courses;
+  if (courses.length === 0) {
     return <Spinner />;
   }
 
