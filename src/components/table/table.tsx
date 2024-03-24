@@ -33,12 +33,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   filters?: TFilters;
+  viewOptions?: boolean;
 }
 
 export function Table<TData, TValue>({
   columns,
   data,
   filters,
+  viewOptions = true,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -75,6 +77,7 @@ export function Table<TData, TValue>({
       <DataTableToolbar
         table={table}
         filters={filters}
+        viewOptions={viewOptions}
       />
       <div className='rounded-md border'>
         <UITable>

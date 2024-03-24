@@ -8,6 +8,10 @@ import { levels } from './data';
 import { DataTableColumnHeader } from '@/components/table/data-table-column-header';
 import { DataTableRowActions } from '@/components/table/data-table-row-actions';
 import { Course } from '@/typings/course';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { BookOpenText } from 'lucide-react';
 
 export const columns: ColumnDef<Course>[] = [
   {
@@ -35,9 +39,9 @@ export const columns: ColumnDef<Course>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Id' />
+      <DataTableColumnHeader className='w-[10px]' column={column} title='No.' />
     ),
-    cell: ({ row }) => <div className='w-[10px]'>{row.getValue('id')}</div>,
+    cell: ({ row }) => <div className='w-[10px]'>{Number(row.id) + 1}</div>,
     enableSorting: false,
     enableHiding: false,
   },
@@ -48,7 +52,7 @@ export const columns: ColumnDef<Course>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <p className='max-w-[500px] truncate font-medium'>
+        <p className='max-w-[500px]  text-zinc-800 dark:text-blue-400 truncate font-serif font-semibold'>
           {row.getValue('title')}
         </p>
       );
@@ -57,11 +61,15 @@ export const columns: ColumnDef<Course>[] = [
   {
     accessorKey: 'description',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Description' />
+      <DataTableColumnHeader
+        className='hidden md:block'
+        column={column}
+        title='Description'
+      />
     ),
     cell: ({ row }) => {
       return (
-        <p className='font-medium truncate xl:whitespace-normal'>
+        <p className='hidden md:block font-medium truncate xl:whitespace-normal'>
           {row.getValue('description')}
         </p>
       );
@@ -103,12 +111,16 @@ export const columns: ColumnDef<Course>[] = [
       customName: 'Words',
     },
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Words' />
+      <DataTableColumnHeader
+        className='w-[50px]'
+        column={column}
+        title='Words'
+      />
     ),
     cell: ({ row }) => {
       return (
-        <div className='flex space-x-2'>
-          <span className='max-w-[500px] truncate font-medium'>
+        <div className='flex justify-center items-center'>
+          <span className='truncate font-medium'>
             {row.getValue('courseItemsCount')}
           </span>
         </div>
@@ -116,7 +128,22 @@ export const columns: ColumnDef<Course>[] = [
     },
   },
   {
-    id: 'actions',
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    accessorKey: 'openCourse',
+    header: ({ column }) => null,
+    cell: ({ row }) => {
+      const pathname = usePathname();
+      return (
+        <Link href={`${pathname}/${row.getValue('id')}`}>
+          <Button variant={'action'}>
+            Open course
+            <BookOpenText className='h-4 w-4 ml-2' />
+          </Button>
+        </Link>
+      );
+    },
   },
+  // {
+  //   id: 'actions',
+  //   cell: ({ row }) => <DataTableRowActions row={row} />,
+  // },
 ];

@@ -13,7 +13,7 @@ export default function CoursesPage() {
   }
 
   return (
-    <div className='w-screen h-full overflow-scroll p-1 md:p-4'>
+    <div className='w-screen h-full overflow-scroll p-2 md:p-4'>
       <Table data={courses} columns={columns} filters={filters} />
     </div>
   );

@@ -8,20 +8,31 @@ import { Input } from '@/components/ui/input';
 import { DataTableViewOptions } from './data-table-view-options';
 
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
+import { Undo2 } from 'lucide-react';
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
+import Link from 'next/link';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   filters?: TFilters;
+  viewOptions: boolean;
 }
 
 export function DataTableToolbar<TData>({
   table,
   filters: settings,
+  viewOptions,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
+  const params = useParams();
 
   return (
-    <div className='flex items-center justify-between'>
+    <div className='flex items-center justify-between overflow-scroll'>
       {settings && (
         <div className='flex flex-1 items-center space-x-2'>
           <Input
@@ -54,8 +65,14 @@ export function DataTableToolbar<TData>({
           )}
         </div>
       )}
-
-      <DataTableViewOptions table={table} />
+      {viewOptions && <DataTableViewOptions table={table} />}
+      {params.courseId && (
+        <Link href={'/courses'}>
+          <Button variant={'action'}>
+            <Undo2 className='h-4 w-4' />
+          </Button>
+        </Link>
+      )}
     </div>
   );
 }

@@ -8,6 +8,26 @@ const CourseLevelSchema = z.union([
   z.literal('ADVANCED'),
 ]);
 
+export interface WordMeaning {
+  id: number;
+  definition: string;
+  example: string;
+}
+
+export interface CourseItem {
+  id: number;
+  word: string;
+  phonetic: string;
+  partOfSpeech: string;
+  meanings: WordMeaning[];
+}
+
+export interface CourseItemDto {
+  id: number;
+  word: string;
+  courseName: string;
+}
+
 export interface CourseDto {
   id: number;
   title: string;
