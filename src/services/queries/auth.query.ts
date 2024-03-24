@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { type SignInBody, type SignUpBody } from '@/types/auth';
+import { type SignInBody, type SignUpBody } from '@/typings/auth';
 import { signIn, signUp, updateUser } from '../api/auth.service';
 import { UpdateUserDto } from '@/typings/user';
 

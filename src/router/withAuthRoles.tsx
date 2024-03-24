@@ -39,7 +39,7 @@ export default function withAuthRoles(
   defaultFallback: keyof typeof DefaultFallback,
   skipLoader?: boolean
 ) {
-  return function isAuth(props: any) {
+  return function IsAuth(props: any) {
     const authStore = useAuthStore();
     const initialLoading = useUserStore().loading;
     const [loading, setLoading] = useState(true);

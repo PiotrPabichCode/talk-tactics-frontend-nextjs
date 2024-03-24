@@ -1,4 +1,8 @@
-import { type SignInBody, type SignUpBody } from '@/types/auth';
+import {
+  toSignUpDtoMapper,
+  type SignInBody,
+  type SignUpBody,
+} from '@/typings/auth';
 import { axios } from '@/lib/axios';
 import useAuthStore from '@/store/useAuthStore';
 import useUserStore from '@/store/useUserStore';
@@ -19,24 +23,6 @@ export const signIn = async (credentials: SignInBody): Promise<void> => {
 
   // fetch user details
   await getUserDetails({ username: data.username });
-};
-
-const toSignUpDtoMapper = ({
-  username,
-  password,
-  repeatPassword,
-  firstName,
-  lastName,
-  email,
-}: SignUpBody) => {
-  return {
-    username: username,
-    password: password,
-    repeat_password: repeatPassword,
-    first_name: firstName,
-    last_name: lastName,
-    email: email,
-  };
 };
 
 export const signUp = async (credentials: SignUpBody): Promise<void> => {

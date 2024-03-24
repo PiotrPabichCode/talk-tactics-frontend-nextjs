@@ -6,12 +6,21 @@ import { Checkbox } from '@/components/ui/checkbox';
 
 import { levels } from './data';
 import { DataTableColumnHeader } from '@/components/table/data-table-column-header';
-import { DataTableRowActions } from '@/components/table/data-table-row-actions';
 import { Course } from '@/typings/course';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
 import { BookOpenText } from 'lucide-react';
+
+const OpenCourseCell = ({ row }: { row: any }) => {
+  return (
+    <Link href={`/courses/${row.getValue('id')}`}>
+      <Button variant={'action'}>
+        Open course
+        <BookOpenText className='h-4 w-4 ml-2' />
+      </Button>
+    </Link>
+  );
+};
 
 export const columns: ColumnDef<Course>[] = [
   {
@@ -47,6 +56,7 @@ export const columns: ColumnDef<Course>[] = [
   },
   {
     accessorKey: 'title',
+    enableHiding: false,
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Title' />
     ),
@@ -129,18 +139,9 @@ export const columns: ColumnDef<Course>[] = [
   },
   {
     accessorKey: 'openCourse',
+    enableHiding: false,
     header: ({ column }) => null,
-    cell: ({ row }) => {
-      const pathname = usePathname();
-      return (
-        <Link href={`${pathname}/${row.getValue('id')}`}>
-          <Button variant={'action'}>
-            Open course
-            <BookOpenText className='h-4 w-4 ml-2' />
-          </Button>
-        </Link>
-      );
-    },
+    cell: OpenCourseCell,
   },
   // {
   //   id: 'actions',

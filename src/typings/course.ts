@@ -25,8 +25,26 @@ export interface CourseItem {
 export interface CourseItemDto {
   id: number;
   word: string;
+  partOfSpeech: string;
+  phonetic: string;
   courseName: string;
 }
+
+export const toCourseItemDtoMapper = ({
+  id,
+  word,
+  partOfSpeech,
+  phonetic,
+  courseName,
+}: CourseItemDto) => {
+  return {
+    id: id,
+    word: word,
+    part_of_speech: partOfSpeech,
+    phonetic: phonetic,
+    course_name: courseName,
+  };
+};
 
 export interface CourseDto {
   id: number;

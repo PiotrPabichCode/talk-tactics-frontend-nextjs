@@ -126,8 +126,8 @@ export function AccountForm() {
               <FormLabel>Name</FormLabel>
               <Input {...field} />
               <FormDescription>
-                Type in your given name. This is how you'll be addressed across
-                our platform.
+                Type in your given name. This is how you&apos;ll be addressed
+                across our platform.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -141,7 +141,8 @@ export function AccountForm() {
               <FormLabel>Surname</FormLabel>
               <Input {...field} />
               <FormDescription>
-                Enter your surname as you'd like it to appear on your profile.
+                Enter your surname as you&apos;d like it to appear on your
+                profile.
               </FormDescription>
               <FormMessage />
             </FormItem>
