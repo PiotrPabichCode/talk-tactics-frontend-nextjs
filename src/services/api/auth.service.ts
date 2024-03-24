@@ -2,6 +2,7 @@ import { type SignInBody, type SignUpBody } from '@/types/auth';
 import { axios } from '@/lib/axios';
 import useAuthStore from '@/store/useAuthStore';
 import useUserStore from '@/store/useUserStore';
+import { UpdateUserDto } from '@/typings/user';
 
 const AUTH_ENDPOINT = 'auth';
 const USERS_ENDPOINT = 'users';
@@ -76,6 +77,21 @@ export const getUserDetails = async ({ username }: { username: string }) => {
   const { data } = await axios({
     method: 'GET',
     url: USERS_ENDPOINT + '/username/' + username,
+  });
+  useUserStore.getState().setUserDetails(fromUserDetailsResponseMapper(data));
+};
+
+export const updateUser = async ({
+  id,
+  updateUserDto,
+}: {
+  id: number;
+  updateUserDto: Partial<UpdateUserDto>;
+}) => {
+  const { data } = await axios({
+    method: 'PATCH',
+    url: USERS_ENDPOINT + '/' + id,
+    data: updateUserDto,
   });
   useUserStore.getState().setUserDetails(fromUserDetailsResponseMapper(data));
 };

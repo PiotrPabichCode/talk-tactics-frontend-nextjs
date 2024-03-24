@@ -32,6 +32,10 @@ import {
 } from '@/components/ui/popover';
 import { toast } from '@/components/ui/use-toast';
 import useUserStore from '@/store/useUserStore';
+import { useUpdateUserDetailsQuery } from '@/services/queries/auth.query';
+import { omitBy } from 'lodash';
+import { UpdateUserDto } from '@/typings/user';
+import useAuthStore from '@/store/useAuthStore';
 
 const languages = [
   { label: 'English', value: 'en' },
@@ -47,7 +51,7 @@ const languages = [
 ] as const;
 
 const accountFormSchema = z.object({
-  name: z
+  first_name: z
     .string()
     .min(2, {
       message: 'Name must be at least 2 characters.',
@@ -55,7 +59,7 @@ const accountFormSchema = z.object({
     .max(30, {
       message: 'Name must not be longer than 30 characters.',
     }),
-  surname: z
+  last_name: z
     .string()
     .min(2, {
       message: 'Surname must be at least 2 characters.',
@@ -72,25 +76,43 @@ const accountFormSchema = z.object({
 type AccountFormValues = z.infer<typeof accountFormSchema>;
 
 export function AccountForm() {
+  const credentials = useAuthStore().credentials;
   const { firstName, lastName } = useUserStore();
+  const { isPending, mutateAsync: updateUser } = useUpdateUserDetailsQuery();
+
+  const defaultValues = {
+    first_name: firstName,
+    last_name: lastName,
+    language: 'en',
+  };
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
-    defaultValues: {
-      name: firstName,
-      surname: lastName,
-      language: 'en',
-    },
+    defaultValues,
   });
 
-  function onSubmit(data: AccountFormValues) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function onSubmit(data: AccountFormValues) {
+    const changedValues = omitBy(
+      data,
+      (value, key) => defaultValues[key as keyof AccountFormValues] === value
+    ) as Partial<UpdateUserDto>;
+    try {
+      if (!credentials) {
+        throw new Error('Bad credentials');
+      }
+      await updateUser({ id: credentials.id, updateUserDto: changedValues });
+      toast({
+        title: 'User updated successfully',
+        description: (
+          <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+            <code className='text-white'>
+              {JSON.stringify(changedValues, null, 2)}
+            </code>
+          </pre>
+        ),
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (
@@ -98,7 +120,7 @@ export function AccountForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <FormField
           control={form.control}
-          name='name'
+          name='first_name'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Name</FormLabel>
@@ -113,7 +135,7 @@ export function AccountForm() {
         />
         <FormField
           control={form.control}
-          name='surname'
+          name='last_name'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Surname</FormLabel>
@@ -186,7 +208,9 @@ export function AccountForm() {
             </FormItem>
           )}
         />
-        <Button type='submit'>Update account</Button>
+        <Button type='submit' disabled={isPending}>
+          Update account
+        </Button>
       </form>
     </Form>
   );

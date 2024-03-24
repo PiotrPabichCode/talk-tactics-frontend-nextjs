@@ -19,6 +19,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/use-toast';
 import useAuthStore from '@/store/useAuthStore';
 import useUserStore from '@/store/useUserStore';
+import { isEqual, omitBy } from 'lodash';
+import { useUpdateUserDetailsQuery } from '@/services/queries/auth.query';
+import { UpdateUserDto } from '@/typings/user';
 
 const profileFormSchema = z.object({
   username: z
@@ -29,14 +32,7 @@ const profileFormSchema = z.object({
     .max(30, {
       message: 'Username must not be longer than 30 characters.',
     }),
-  email: z
-    .string({
-      required_error: 'Please select an email to display.',
-    })
-    .email(),
-  password: z
-    .string()
-    .min(4, { message: 'Password must be at least 4 characters' }),
+  email: z.string().email('Invalid email'),
   bio: z.string().max(160).min(4),
 });
 
@@ -44,26 +40,44 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 export function ProfileForm() {
   const credentials = useAuthStore().credentials;
+  const { isPending, mutateAsync: updateUser } = useUpdateUserDetailsQuery();
   const { email, bio } = useUserStore();
+
+  const defaultValues = {
+    bio: bio,
+    email: email,
+    username: credentials?.username,
+  };
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues: {
-      bio: bio,
-      email: email,
-      username: credentials?.username,
-    },
+    defaultValues,
     mode: 'onChange',
   });
 
-  function onSubmit(data: ProfileFormValues) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function onSubmit(data: ProfileFormValues) {
+    const changedValues = omitBy(
+      data,
+      (value, key) => defaultValues[key as keyof ProfileFormValues] === value
+    ) as Partial<UpdateUserDto>;
+    try {
+      if (!credentials) {
+        throw new Error('Bad credentials');
+      }
+      await updateUser({ id: credentials.id, updateUserDto: changedValues });
+      toast({
+        title: 'User updated successfully',
+        description: (
+          <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+            <code className='text-white'>
+              {JSON.stringify(changedValues, null, 2)}
+            </code>
+          </pre>
+        ),
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (
@@ -123,7 +137,9 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <Button type='submit'>Update profile</Button>
+        <Button type='submit' disabled={isPending}>
+          Update profile
+        </Button>
       </form>
     </Form>
   );

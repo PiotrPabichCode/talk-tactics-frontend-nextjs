@@ -40,7 +40,6 @@ const defaultValues = {
 type FieldValues = z.infer<typeof loginSchema>;
 
 export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
-  const router = useRouter();
   const { isPending, mutateAsync: signIn } = useSignInQuery();
   const form = useForm<FieldValues>({
     defaultValues,

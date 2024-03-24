@@ -1,7 +1,7 @@
 export type IAuthRole = 'USER' | 'ADMIN';
 
 export interface IAuthCredentials {
-  id: string;
+  id: number;
   username: string;
   role: IAuthRole;
   token: string;

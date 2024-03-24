@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { type SignInBody, type SignUpBody } from '@/types/auth';
-import { signIn, signUp } from '../api/auth.service';
+import { signIn, signUp, updateUser } from '../api/auth.service';
+import { UpdateUserDto } from '@/typings/user';
 
 export const useSignInQuery = () => {
   return useMutation({
@@ -19,5 +20,21 @@ export const useSignUpQuery = () => {
       return res;
     },
     mutationKey: ['signUp'],
+  });
+};
+
+export const useUpdateUserDetailsQuery = () => {
+  return useMutation({
+    mutationFn: async ({
+      id,
+      updateUserDto,
+    }: {
+      id: number;
+      updateUserDto: Partial<UpdateUserDto>;
+    }) => {
+      const res = await updateUser({ id, updateUserDto });
+      return res;
+    },
+    mutationKey: ['updateUserDetails'],
   });
 };
