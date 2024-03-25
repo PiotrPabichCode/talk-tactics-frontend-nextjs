@@ -15,24 +15,31 @@ import { CourseDto } from '@/typings/course';
 import uniqBy from 'lodash/uniqBy';
 import { shuffle } from 'lodash';
 import Image from 'next/image';
+import { CourseLevel } from '@/api/courses.types';
 
-const generateWordOptions: {
-  title: string;
+interface WordOption {
+  title: CourseLevel;
   description: string;
-}[] = [
-  {
-    title: 'ADVANCED',
-    description: 'Most frequently used english words - Top <85%',
-  },
-  {
-    title: 'INTERMEDIATE',
-    description: 'Most frequently used english words - Top 85-94%',
-  },
-  {
-    title: 'BEGINNER',
-    description: 'Most frequently used english words - Top 95-99%',
-  },
-];
+  href: string;
+}
+
+const WordOptions = ({ courses }: { courses: CourseDto[] }) => {
+  const BASE_DESCRIPTION = 'Most frequently used english words - Top';
+  return courses.map((course) => (
+    <ListItem
+      key={course.level + '_word'}
+      title={course.level}
+      href={`/courses/${course.id}/words/${Math.floor(
+        Math.random() * course.courseItemsCount
+      )}`}>{`${BASE_DESCRIPTION} ${
+      course.level === 'ADVANCED'
+        ? '<85%'
+        : course.level === 'INTERMEDIATE'
+        ? '85-94%'
+        : '95-99%'
+    }`}</ListItem>
+  ));
+};
 
 const ListItem = React.forwardRef<
   React.ElementRef<'a'>,
@@ -105,21 +112,11 @@ export function LinksNav({
                   </Link>
                 </NavigationMenuLink>
               </li>
-              <ListItem
-                href={`/courses/${uniqueCourses[0].id}`}
-                title={uniqueCourses[0].level}>
-                {uniqueCourses[0].title}
-              </ListItem>
-              <ListItem
-                href={`/courses/${uniqueCourses[1].id}`}
-                title={uniqueCourses[1].level}>
-                {uniqueCourses[1].title}
-              </ListItem>
-              <ListItem
-                href={`/courses/${uniqueCourses[2].id}`}
-                title={uniqueCourses[2].level}>
-                {uniqueCourses[2].title}
-              </ListItem>
+              {uniqueCourses.map((course) => (
+                <ListItem href={`/courses/${course.id}`} title={course.level}>
+                  {course.title}
+                </ListItem>
+              ))}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -127,14 +124,7 @@ export function LinksNav({
           <NavigationMenuTrigger>Generate random word</NavigationMenuTrigger>
           <NavigationMenuContent className='overflow-x-hidden'>
             <ul className='grid grid-cols-1 gap-3 p-4 w-full'>
-              {generateWordOptions.map((option) => (
-                <ListItem
-                  key={option.title}
-                  title={option.title}
-                  href={'/courses'}>
-                  {option.description}
-                </ListItem>
-              ))}
+              <WordOptions courses={uniqueCourses} />
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>

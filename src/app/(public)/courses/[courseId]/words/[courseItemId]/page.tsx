@@ -19,7 +19,7 @@ import Link from 'next/link';
 export default function SingleCourseItemPage({
   params,
 }: {
-  params: { courseItemId: string };
+  params: { courseId: string; courseItemId: string };
 }) {
   const {
     data: courseItem,
@@ -37,7 +37,7 @@ export default function SingleCourseItemPage({
   return (
     <div className='p-4 text-center'>
       <Card className='relative'>
-        <Link href={`/courses/${courseItem.course.id}`}>
+        <Link href={`/courses/${params.courseId}`}>
           <Button variant='action' className='absolute top-5 right-5'>
             <p className='hidden md:block md:mr-2'>Back</p>
             <Undo2 className=' h-4 w-4' />
