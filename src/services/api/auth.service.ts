@@ -1,83 +1,73 @@
-import {
-  toSignUpDtoMapper,
-  type SignInBody,
-  type SignUpBody,
-} from '@/typings/auth';
 import { axios } from '@/lib/axios';
 import useAuthStore from '@/store/useAuthStore';
 import useUserStore from '@/store/useUserStore';
-import { UpdateUserDto } from '@/typings/user';
+import {
+  ApiRequestSignIn,
+  ApiRequestSignUp,
+  ApiResponseAuthCredentials,
+  toAuthResponseMapper,
+  toSignUpRequestMapper,
+} from '@/typings/auth';
+import {
+  ApiRequestGetUserDetails,
+  ApiRequestUpdateUser,
+  ApiResponseGetUserDetails,
+  ApiResponseUpdateUser,
+  toGetUserDetailsResponseMapper,
+  toUpdateUserRequestMapper,
+  toUpdateUserResponseMapper,
+} from '@/typings/user';
 
 const AUTH_ENDPOINT = 'auth';
 const USERS_ENDPOINT = 'users';
 
-export const signIn = async (credentials: SignInBody): Promise<void> => {
-  const { data } = await axios({
+export const signIn = async (req: ApiRequestSignIn): Promise<void> => {
+  const { data } = await axios<ApiResponseAuthCredentials>({
     method: 'POST',
     url: AUTH_ENDPOINT + '/authenticate',
-    data: credentials,
+    data: req,
   });
+  const res = toAuthResponseMapper(data);
 
   // save auth details in local storage
-  useAuthStore.getState().login(data);
+  useAuthStore.getState().login(res);
 
   // fetch user details
-  await getUserDetails({ username: data.username });
+  await getUserDetails({ username: res.username });
 };
 
-export const signUp = async (credentials: SignUpBody): Promise<void> => {
-  const { data } = await axios({
+export const signUp = async (req: ApiRequestSignUp): Promise<void> => {
+  const { data } = await axios<ApiResponseAuthCredentials>({
     method: 'POST',
     url: AUTH_ENDPOINT + '/register',
-    data: toSignUpDtoMapper(credentials),
+    data: toSignUpRequestMapper(req),
   });
+  const res = toAuthResponseMapper(data);
   // save auth details in local storage
-  useAuthStore.getState().login(data);
+  useAuthStore.getState().login(res);
 
   // fetch user details
-  await getUserDetails({ username: data.username });
+  await getUserDetails({ username: res.username });
 };
 
-const fromUserDetailsResponseMapper = ({
-  first_name,
-  last_name,
-  bio,
-  email,
-}: UserDetailsResponse) => {
-  return {
-    firstName: first_name,
-    lastName: last_name,
-    bio: bio,
-    email: email,
-  };
-};
-
-interface UserDetailsResponse {
-  first_name: string;
-  last_name: string;
-  email: string;
-  bio: string;
-}
-
-export const getUserDetails = async ({ username }: { username: string }) => {
-  const { data } = await axios({
+export const getUserDetails = async ({
+  username,
+}: ApiRequestGetUserDetails) => {
+  const { data } = await axios<ApiResponseGetUserDetails>({
     method: 'GET',
     url: USERS_ENDPOINT + '/username/' + username,
   });
-  useUserStore.getState().setUserDetails(fromUserDetailsResponseMapper(data));
+  useUserStore.getState().setUserDetails(toGetUserDetailsResponseMapper(data));
 };
 
 export const updateUser = async ({
   id,
-  updateUserDto,
-}: {
-  id: number;
-  updateUserDto: Partial<UpdateUserDto>;
-}) => {
-  const { data } = await axios({
+  updatedFields,
+}: ApiRequestUpdateUser) => {
+  const { data } = await axios<ApiResponseUpdateUser>({
     method: 'PATCH',
     url: USERS_ENDPOINT + '/' + id,
-    data: updateUserDto,
+    data: toUpdateUserRequestMapper(updatedFields),
   });
-  useUserStore.getState().setUserDetails(fromUserDetailsResponseMapper(data));
+  useUserStore.getState().setUserDetails(toUpdateUserResponseMapper(data));
 };

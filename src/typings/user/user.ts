@@ -5,9 +5,9 @@ export interface IAuthUser {
   bio: string;
 }
 
-export interface UpdateUserDto {
-  firstName: string;
-  lastName: string;
+export interface IApiAuthUser {
+  first_name: string;
+  last_name: string;
   email: string;
   bio: string;
 }

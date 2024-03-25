@@ -1,12 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
-import { type SignInBody, type SignUpBody } from '@/typings/auth';
 import { signIn, signUp, updateUser } from '../api/auth.service';
-import { UpdateUserDto } from '@/typings/user';
+import { ApiRequestSignIn, ApiRequestSignUp } from '@/typings/auth';
+import { ApiRequestUpdateUser } from '@/typings/user';
 
 export const useSignInQuery = () => {
   return useMutation({
-    mutationFn: async (body: SignInBody) => {
-      const res = await signIn(body);
+    mutationFn: async (req: ApiRequestSignIn) => {
+      const res = await signIn(req);
       return res;
     },
     mutationKey: ['signIn'],
@@ -15,8 +15,8 @@ export const useSignInQuery = () => {
 
 export const useSignUpQuery = () => {
   return useMutation({
-    mutationFn: async (body: SignUpBody) => {
-      const res = await signUp(body);
+    mutationFn: async (req: ApiRequestSignUp) => {
+      const res = await signUp(req);
       return res;
     },
     mutationKey: ['signUp'],
@@ -25,14 +25,8 @@ export const useSignUpQuery = () => {
 
 export const useUpdateUserDetailsQuery = () => {
   return useMutation({
-    mutationFn: async ({
-      id,
-      updateUserDto,
-    }: {
-      id: number;
-      updateUserDto: Partial<UpdateUserDto>;
-    }) => {
-      const res = await updateUser({ id, updateUserDto });
+    mutationFn: async ({ id, updatedFields }: ApiRequestUpdateUser) => {
+      const res = await updateUser({ id, updatedFields });
       return res;
     },
     mutationKey: ['updateUserDetails'],

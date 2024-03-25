@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,66 +15,52 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { toast } from '@/components/ui/use-toast';
 import useAuthStore from '@/store/useAuthStore';
 import useUserStore from '@/store/useUserStore';
-import { isEqual, omitBy } from 'lodash';
+import { omitBy } from 'lodash';
 import { useUpdateUserDetailsQuery } from '@/services/queries/auth.query';
-import { UpdateUserDto } from '@/typings/user';
-
-const profileFormSchema = z.object({
-  username: z
-    .string()
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
-    })
-    .max(30, {
-      message: 'Username must not be longer than 30 characters.',
-    }),
-  email: z.string().email('Invalid email'),
-  bio: z.string().max(160).min(4),
-});
-
-type ProfileFormValues = z.infer<typeof profileFormSchema>;
+import {
+  ApiRequestUpdateUser,
+  ApiRequestUpdateUserSchema,
+  UpdateUserFormValues,
+} from '@/typings/user';
+import { toast } from 'sonner';
 
 export function ProfileForm() {
   const credentials = useAuthStore().credentials;
   const { isPending, mutateAsync: updateUser } = useUpdateUserDetailsQuery();
-  const { email, bio } = useUserStore();
+  const { firstName, lastName, email, bio } = useUserStore();
 
   const defaultValues = {
-    bio: bio,
-    email: email,
     username: credentials?.username,
+    email: email,
+    firstName: firstName,
+    lastName: lastName,
+    bio: bio,
   };
 
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
+  const form = useForm<UpdateUserFormValues>({
+    resolver: zodResolver(ApiRequestUpdateUserSchema),
     defaultValues,
     mode: 'onChange',
   });
 
-  async function onSubmit(data: ProfileFormValues) {
+  async function onSubmit(data: UpdateUserFormValues) {
     const changedValues = omitBy(
       data,
-      (value, key) => defaultValues[key as keyof ProfileFormValues] === value
-    ) as Partial<UpdateUserDto>;
+      (value, key) => defaultValues[key as keyof UpdateUserFormValues] === value
+    ) as ApiRequestUpdateUser['updatedFields'];
+    console.log(changedValues);
     try {
       if (!credentials) {
         throw new Error('Bad credentials');
       }
-      await updateUser({ id: credentials.id, updateUserDto: changedValues });
-      toast({
-        title: 'User updated successfully',
-        description: (
-          <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-            <code className='text-white'>
-              {JSON.stringify(changedValues, null, 2)}
-            </code>
-          </pre>
-        ),
-      });
+      await updateUser({ id: credentials.id, updatedFields: changedValues });
+      toast.success('You have successfully updated your profile!');
     } catch (e) {
+      toast.error('Oh no! Something went wrong.', {
+        description: 'There was a problem with your request',
+      });
       console.error(e);
     }
   }
@@ -111,6 +96,36 @@ export function ProfileForm() {
                 This email address will be your primary contact. We will use it
                 to send notifications, confirmation emails and password change
                 requests.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='firstName'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <Input {...field} />
+              <FormDescription>
+                Type in your given name. This is how you&apos;ll be addressed
+                across our platform.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='lastName'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Surname</FormLabel>
+              <Input {...field} />
+              <FormDescription>
+                Enter your surname as you&apos;d like it to appear on your
+                profile.
               </FormDescription>
               <FormMessage />
             </FormItem>

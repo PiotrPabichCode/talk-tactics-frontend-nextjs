@@ -1,7 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import useAuthStore, { IAuthStore } from '@/store/useAuthStore';
 import { useSignInQuery } from '@/services/queries/auth.query';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
@@ -22,40 +20,28 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import useStore from '@/store/useStore';
-import { useRouter } from 'next/navigation';
+import { ApiRequestSignInSchema, SignInFormValues } from '@/typings/auth';
+import { toast } from 'sonner';
 
-const loginSchema = z.object({
-  username: z.string().min(1, { message: 'Username is required' }),
-  password: z
-    .string()
-    .min(4, { message: 'Password must be at least 4 characters' }),
-});
-
-const defaultValues = {
+const defaultValues: SignInFormValues = {
   username: '',
   password: '',
 };
 
-type FieldValues = z.infer<typeof loginSchema>;
-
 export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
   const { isPending, mutateAsync: signIn } = useSignInQuery();
-  const form = useForm<FieldValues>({
+  const form = useForm<SignInFormValues>({
     defaultValues,
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(ApiRequestSignInSchema),
   });
-  const authStore = useStore<IAuthStore, IAuthStore>(
-    useAuthStore,
-    (state: any) => state
-  );
-  if (!authStore) {
-    return <div></div>;
-  }
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<SignInFormValues> = async (data) => {
     try {
       await signIn(data);
+      toast.success('You have successfully logged in!');
     } catch (e) {
+      toast.error('Oh no! Something went wrong.', {
+        description: 'There was a problem with your request',
+      });
       console.error(e);
     }
   };

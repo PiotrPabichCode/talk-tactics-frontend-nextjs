@@ -48,6 +48,5 @@ export const getCourseItemById = async ({
     url: `${COURSE_ITEM_ENDPOINT}/${id}`,
   });
   const res = toCourseItemResMapper(data);
-  console.log('CourseItem response', res);
   return res;
 };

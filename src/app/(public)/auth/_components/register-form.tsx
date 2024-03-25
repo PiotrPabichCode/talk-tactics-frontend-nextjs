@@ -1,7 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import useAuthStore, { IAuthStore } from '@/store/useAuthStore';
 import { useSignUpQuery } from '@/services/queries/auth.query';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
@@ -22,34 +20,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import useStore from '@/store/useStore';
-import { useRouter } from 'next/navigation';
+import { ApiRequestSignUpSchema, SignUpFormValues } from '@/typings/auth';
+import { toast } from 'sonner';
 
-const registerSchema = z
-  .object({
-    username: z.string().min(1, { message: 'Username is required' }),
-    password: z
-      .string()
-      .min(4, { message: 'Password must be at least 4 characters' }),
-    repeatPassword: z
-      .string()
-      .min(4, { message: 'Password must be at least 4 characters' }),
-    firstName: z.string().min(1, { message: 'First name is required' }),
-    lastName: z.string().min(1, { message: 'Last name is required' }),
-    email: z.string().min(1, { message: 'Email is required' }).email(),
-  })
-  .superRefine(({ repeatPassword, password }, ctx) => {
-    if (repeatPassword && repeatPassword !== password) {
-      ctx.addIssue({
-        code: 'custom',
-        message: 'The passwords did not match',
-      });
-    }
-  });
-
-type FieldValues = z.infer<typeof registerSchema>;
-
-const defaultValues = {
+const defaultValues: SignUpFormValues = {
   username: '',
   password: '',
   repeatPassword: '',
@@ -59,24 +33,20 @@ const defaultValues = {
 };
 
 export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
-  const router = useRouter();
   const { isPending, mutateAsync: signUp } = useSignUpQuery();
-  const form = useForm<FieldValues>({
+  const form = useForm<SignUpFormValues>({
     defaultValues,
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(ApiRequestSignUpSchema),
   });
-  const authStore = useStore<IAuthStore, IAuthStore>(
-    useAuthStore,
-    (state: any) => state
-  );
-  if (!authStore) {
-    return <div></div>;
-  }
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<SignUpFormValues> = async (data) => {
     try {
       await signUp(data);
+      toast.success('You have successfully registered!');
     } catch (e) {
+      toast.error('Oh no! Something went wrong.', {
+        description: 'There was a problem with your request',
+      });
       console.error(e);
     }
   };

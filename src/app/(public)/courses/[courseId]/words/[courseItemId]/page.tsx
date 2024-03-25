@@ -12,6 +12,9 @@ import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import { useGetCourseItemById } from '@/services/queries/course.query';
 import { columns } from './_components/columns';
+import { Button } from '@/components/ui/button';
+import { Undo2 } from 'lucide-react';
+import Link from 'next/link';
 
 export default function SingleCourseItemPage({
   params,
@@ -33,7 +36,13 @@ export default function SingleCourseItemPage({
 
   return (
     <div className='p-4 text-center'>
-      <Card>
+      <Card className='relative'>
+        <Link href={`/courses/${courseItem.course.id}`}>
+          <Button variant='action' className='absolute top-5 right-5'>
+            <p className='hidden md:block md:mr-2'>Back</p>
+            <Undo2 className=' h-4 w-4' />
+          </Button>
+        </Link>
         <CardHeader>
           <CardTitle>{courseItem.word}</CardTitle>
           <CardDescription>{courseItem.phonetic}</CardDescription>

@@ -4,8 +4,8 @@ import './globals.css';
 import NextTopLoader from 'nextjs-toploader';
 import { Footer } from '@/components/footer';
 import Header from '@/components/header';
-import { Toaster } from '@/components/ui/toaster';
 import { Providers } from './provider';
+import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 const manrope = Manrope({ subsets: ['latin'], display: 'swap' });
@@ -25,7 +25,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} ${manrope.className} flex flex-col min-h-screen`}>
         <Providers>
-          <Toaster />
+          <Toaster duration={3000} position='top-center' visibleToasts={3} />
           <NextTopLoader showSpinner={false} />
           <Header />
           <div className='flex-grow pt-[70px]'>{children}</div>

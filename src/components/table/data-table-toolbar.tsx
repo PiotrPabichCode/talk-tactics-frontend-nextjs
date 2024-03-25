@@ -67,9 +67,10 @@ export function DataTableToolbar<TData>({
         </div>
       )}
       {viewOptions && <DataTableViewOptions table={table} />}
-      {params.courseId && (
+      {params.courseId && !params.courseItemId && (
         <Link href={backUrl} className='ml-auto'>
           <Button variant={'action'}>
+            <p className='hidden md:block md:mr-2'>Back</p>
             <Undo2 className='h-4 w-4' />
           </Button>
         </Link>
