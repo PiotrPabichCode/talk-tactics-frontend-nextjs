@@ -30,6 +30,7 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const params = useParams();
+  const backUrl = `/courses/${params.courseItemId ? params.courseId : ''}`;
 
   return (
     <div className='flex items-center justify-between overflow-scroll'>
@@ -67,7 +68,7 @@ export function DataTableToolbar<TData>({
       )}
       {viewOptions && <DataTableViewOptions table={table} />}
       {params.courseId && (
-        <Link href={'/courses'}>
+        <Link href={backUrl} className='ml-auto'>
           <Button variant={'action'}>
             <Undo2 className='h-4 w-4' />
           </Button>

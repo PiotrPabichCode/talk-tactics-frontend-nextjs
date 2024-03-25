@@ -14,7 +14,7 @@ import { usePathname } from 'next/navigation';
 const LearnMoreCell = ({ row }: { row: any }) => {
   const pathname = usePathname();
   return (
-    <Link href={`${pathname}/${row.getValue('id')}`}>
+    <Link href={`${pathname}/words/${row.getValue('id')}`}>
       <Button variant={'action'}>
         Learn more
         <GraduationCap className='h-5 w-5 ml-2' />
@@ -83,7 +83,7 @@ export const columns: ColumnDef<CourseItemDto>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <p className='w-full max-w-[100px] text-center text-zinc-800 dark:text-blue-400 truncate font-serif font-semibold'>
+        <p className='w-full max-w-[100px] text-center font-medium truncate xl:whitespace-normal'>
           {row.getValue('partOfSpeech')}
         </p>
       );
@@ -97,7 +97,7 @@ export const columns: ColumnDef<CourseItemDto>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <p className='w-full max-w-[200px] text-zinc-800 dark:text-blue-400 truncate font-serif font-semibold'>
+        <p className='w-full max-w-[200px] font-medium truncate xl:whitespace-normal'>
           {row.getValue('phonetic')
             ? row.getValue('phonetic')
             : 'Not available'}

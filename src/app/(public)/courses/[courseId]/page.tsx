@@ -11,13 +11,17 @@ export default function SingleCoursePage({
 }: {
   params: { courseId: string };
 }) {
-  const { data: courseItems, isPending } = useGetCourseItemsPreviewByCourseId(
-    params.courseId
-  );
-  if (isPending) {
+  const {
+    data: courseItems,
+    isFetching,
+    isError,
+  } = useGetCourseItemsPreviewByCourseId(params.courseId);
+  if (isFetching) {
     return <Spinner />;
   }
-  console.log(courseItems);
+  if (isError || courseItems.length === 0) {
+    return null;
+  }
 
   return (
     <div className='block lg:flex justify-center h-full'>

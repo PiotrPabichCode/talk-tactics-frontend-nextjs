@@ -20,27 +20,28 @@ interface DataTableViewOptionsProps<TData> {
 export function DataTableViewOptions<TData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
+  const toggleColumns = table
+    .getAllColumns()
+    .filter(
+      (column) =>
+        typeof column.accessorFn !== 'undefined' && column.getCanHide()
+    );
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant='outline'
-          size='sm'
-          className='ml-auto hidden h-8 xl:flex'>
-          <MixerHorizontalIcon className='mr-2 h-4 w-4' />
-          View
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className='w-[150px]'>
-        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {table
-          .getAllColumns()
-          .filter(
-            (column) =>
-              typeof column.accessorFn !== 'undefined' && column.getCanHide()
-          )
-          .map((column) => {
+    toggleColumns.length > 0 && (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant='outline'
+            size='sm'
+            className='ml-auto hidden h-8 xl:flex'>
+            <MixerHorizontalIcon className='mr-2 h-4 w-4' />
+            View
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align='end' className='w-[150px]'>
+          <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {toggleColumns.map((column) => {
             const tag = column.columnDef.meta?.customName ?? column.id;
             return (
               <DropdownMenuCheckboxItem
@@ -52,7 +53,8 @@ export function DataTableViewOptions<TData>({
               </DropdownMenuCheckboxItem>
             );
           })}
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    )
   );
 }
