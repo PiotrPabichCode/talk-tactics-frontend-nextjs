@@ -25,7 +25,7 @@ export default function SingleCoursePage({
 
   return (
     <div className='block lg:flex justify-center h-full'>
-      <div className='w-full lg:w-[80%] xl:w-[60%] 2xl:w-[50%] overflow-scroll p-2 md:p-4'>
+      <div className='w-full lg:w-[80%] xl:w-[60%] 2xl:w-[50%] overflow-scroll md:overflow-auto p-2 md:p-4'>
         <p className='text-xl font-bold text-center mb-4'>
           {courseItems[0].courseName}
         </p>

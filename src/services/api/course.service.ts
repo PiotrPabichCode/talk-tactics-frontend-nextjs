@@ -1,26 +1,33 @@
 import { axios } from '@/lib/axios';
 import useCourseStore from '@/store/useCourseStore';
 import {
-  ApiResponseCourseDto,
-  ApiResponseCourseItem,
-  ApiResponseCourseItemDto,
   CourseDto,
+  ApiResponseGetCourses,
+  toGetCourseResponseMapper,
+  ApiResponseGetCourseItemById,
+  toGetCourseItemByIdResponseMapper,
   CourseItem,
   CourseItemDto,
-  toCourseDtoResMapper,
-  toCourseItemDtoResMapper,
-  toCourseItemResMapper,
+  ApiResponseGetCourseItemsPreviewByCourseId,
+  toGetCourseItemsPreviewByCourseIdResponseMapper,
+  ApiRequestAddUserCourse,
+  toAddUserCourseRequestMapper,
+  ApiResponseGetUserCoursesPreviewByUserId,
+  toGetUserCoursesPreviewByUserIdResponseMapper,
+  ApiRequestDeleteUserCourse,
+  toDeleteUserCourseRequestMapper,
 } from '@/typings/course';
 
 const ENDPOINT = 'courses';
 const COURSE_ITEM_ENDPOINT = 'course-items';
+const USER_COURSE_ENDPOINT = 'user-courses';
 
 export const getCourses = async (): Promise<CourseDto[]> => {
-  const { data } = await axios<ApiResponseCourseDto[]>({
+  const { data } = await axios<ApiResponseGetCourses>({
     method: 'GET',
     url: ENDPOINT,
   });
-  const res = toCourseDtoResMapper(data);
+  const res = toGetCourseResponseMapper(data);
   useCourseStore.getState().setCourses(res);
   return res;
 };
@@ -30,11 +37,11 @@ export const getCourseItemsPreviewByCourseId = async ({
 }: {
   courseId: string;
 }): Promise<CourseItemDto[]> => {
-  const { data } = await axios<ApiResponseCourseItemDto[]>({
+  const { data } = await axios<ApiResponseGetCourseItemsPreviewByCourseId>({
     method: 'GET',
     url: `${COURSE_ITEM_ENDPOINT}/courses/${courseId}/course-items`,
   });
-  const res = toCourseItemDtoResMapper(data);
+  const res = toGetCourseItemsPreviewByCourseIdResponseMapper(data);
   return res;
 };
 
@@ -43,10 +50,35 @@ export const getCourseItemById = async ({
 }: {
   id: string;
 }): Promise<CourseItem> => {
-  const { data } = await axios<ApiResponseCourseItem>({
+  const { data } = await axios<ApiResponseGetCourseItemById>({
     method: 'GET',
     url: `${COURSE_ITEM_ENDPOINT}/${id}`,
   });
-  const res = toCourseItemResMapper(data);
+  const res = toGetCourseItemByIdResponseMapper(data);
+  return res;
+};
+
+export const addUserCourse = async (req: ApiRequestAddUserCourse) => {
+  await axios({
+    method: 'PUT',
+    url: USER_COURSE_ENDPOINT,
+    data: toAddUserCourseRequestMapper(req),
+  });
+};
+
+export const deleteUserCourse = async (req: ApiRequestDeleteUserCourse) => {
+  await axios({
+    method: 'DELETE',
+    url: `${USER_COURSE_ENDPOINT}`,
+    data: toDeleteUserCourseRequestMapper(req),
+  });
+};
+
+export const getUserCoursesPreviewByUserId = async ({ id }: { id: number }) => {
+  const { data } = await axios<ApiResponseGetUserCoursesPreviewByUserId>({
+    method: 'GET',
+    url: `${USER_COURSE_ENDPOINT}/preview/user-id/${id}`,
+  });
+  const res = toGetUserCoursesPreviewByUserIdResponseMapper(data);
   return res;
 };

@@ -30,7 +30,7 @@ const WordOptions = ({ courses }: { courses: CourseDto[] }) => {
       key={course.level + '_word'}
       title={course.level}
       href={`/courses/${course.id}/words/${Math.floor(
-        Math.random() * course.courseItemsCount
+        Math.random() * course.quantity
       )}`}>{`${BASE_DESCRIPTION} ${
       course.level === 'ADVANCED'
         ? '<85%'
@@ -113,7 +113,10 @@ export function LinksNav({
                 </NavigationMenuLink>
               </li>
               {uniqueCourses.map((course) => (
-                <ListItem href={`/courses/${course.id}`} title={course.level}>
+                <ListItem
+                  key={course.id}
+                  href={`/courses/${course.id}`}
+                  title={course.level}>
                   {course.title}
                 </ListItem>
               ))}

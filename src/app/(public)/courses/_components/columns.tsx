@@ -1,17 +1,23 @@
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Row } from '@tanstack/react-table';
 
 import { Checkbox } from '@/components/ui/checkbox';
 
 import { levels } from './data';
 import { DataTableColumnHeader } from '@/components/table/data-table-column-header';
-import { Course } from '@/typings/course';
+import { CourseDto } from '@/typings/course';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { BookOpenText } from 'lucide-react';
+import { BookOpenText, Plus, Trash2 } from 'lucide-react';
+import {
+  useAddUserCourse,
+  useDeleteUserCourse,
+} from '@/services/queries/course.query';
+import useAuthStore from '@/store/useAuthStore';
+import { toast } from 'sonner';
 
-const OpenCourseCell = ({ row }: { row: any }) => {
+const OpenCourseCell = ({ row }: { row: Row<CourseDto> }) => {
   return (
     <Link href={`/courses/${row.getValue('id')}`}>
       <Button variant={'action'}>
@@ -22,7 +28,70 @@ const OpenCourseCell = ({ row }: { row: any }) => {
   );
 };
 
-export const columns: ColumnDef<Course>[] = [
+const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
+  const { isPending: isPendingAdd, mutateAsync: addCourse } =
+    useAddUserCourse();
+  const { isPending: isPendingDelete, mutateAsync: deleteCourse } =
+    useDeleteUserCourse();
+  const userId = useAuthStore().credentials?.id;
+  if (!userId) {
+    return;
+  }
+
+  const courseId: number = row.getValue('id');
+  const progress: number = row.getValue('progress');
+
+  const onDeleteCourse = async () => {
+    try {
+      await deleteCourse({ userId, courseId });
+      toast.success('You have successfully deleted course.');
+    } catch (e) {
+      toast.error('Oh no! Something went wrong.', {
+        description: 'There was a problem with your request',
+      });
+      console.error(e);
+    }
+  };
+
+  const onAddCourse = async () => {
+    try {
+      await addCourse({ courseId: courseId, userId: userId });
+      toast.success('You have successfully added new course!');
+    } catch (e) {
+      toast.error('Oh no! Something went wrong.', {
+        description: 'There was a problem with your request',
+      });
+      console.error(e);
+    }
+  };
+
+  const DeleteButton = () => {
+    return (
+      <Button
+        disabled={isPendingDelete}
+        onClick={onDeleteCourse}
+        className='bg-red-500 hover:bg-red-600'
+        variant={'action'}>
+        Delete course <Trash2 className='h-4 w-4 ml-2' />
+      </Button>
+    );
+  };
+
+  const AddButton = () => {
+    return (
+      <Button
+        disabled={isPendingAdd}
+        onClick={onAddCourse}
+        className='bg-green-500 hover:bg-green-600'
+        variant={'action'}>
+        Add course <Plus className='h-4 w-4 ml-2' />
+      </Button>
+    );
+  };
+  return progress !== undefined ? <DeleteButton /> : <AddButton />;
+};
+
+export const columns: ColumnDef<CourseDto>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -116,7 +185,7 @@ export const columns: ColumnDef<Course>[] = [
     },
   },
   {
-    accessorKey: 'courseItemsCount',
+    accessorKey: 'quantity',
     meta: {
       customName: 'Words',
     },
@@ -131,11 +200,41 @@ export const columns: ColumnDef<Course>[] = [
       return (
         <div className='flex justify-center items-center'>
           <span className='truncate font-medium'>
-            {row.getValue('courseItemsCount')}
+            {row.getValue('quantity')}
           </span>
         </div>
       );
     },
+  },
+  {
+    accessorKey: 'progress',
+    meta: {
+      customName: 'Progress',
+    },
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        className='w-[50px]'
+        column={column}
+        title='Progress'
+      />
+    ),
+    cell: ({ row }) => {
+      const progress = row.getValue('progress');
+      if (progress === undefined) {
+        return null;
+      }
+      return (
+        <div className='flex justify-center items-center'>
+          <span className='truncate font-medium'>{`${progress}%`}</span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'addCourse',
+    enableHiding: false,
+    header: ({ column }) => null,
+    cell: AddCourseCell,
   },
   {
     accessorKey: 'openCourse',

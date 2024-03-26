@@ -15,8 +15,8 @@ const sidebarNavItems = [
     href: '/profile/preferences',
   },
   {
-    title: 'Courses',
-    href: '/courses',
+    title: 'My courses',
+    href: '/courses?filter=added',
   },
 ];
 
