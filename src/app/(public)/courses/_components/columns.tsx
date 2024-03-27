@@ -16,6 +16,46 @@ import {
 } from '@/services/queries/course.query';
 import useAuthStore from '@/store/useAuthStore';
 import { toast } from 'sonner';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { useState } from 'react';
+
+function DeleteCourseDialog({
+  isOpen,
+  onOpenChange,
+  onDelete,
+}: {
+  isOpen: boolean;
+  onOpenChange: (_: boolean) => void;
+  onDelete: () => void;
+}) {
+  return (
+    <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your
+            course and remove your course data from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={onDelete}>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
 
 const OpenCourseCell = ({ row }: { row: Row<CourseDto> }) => {
   return (
@@ -29,6 +69,7 @@ const OpenCourseCell = ({ row }: { row: Row<CourseDto> }) => {
 };
 
 const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const { isPending: isPendingAdd, mutateAsync: addCourse } =
     useAddUserCourse();
   const { isPending: isPendingDelete, mutateAsync: deleteCourse } =
@@ -69,7 +110,7 @@ const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
     return (
       <Button
         disabled={isPendingDelete}
-        onClick={onDeleteCourse}
+        onClick={() => setDeleteDialogOpen(true)}
         className='bg-red-500 hover:bg-red-600'
         variant={'action'}>
         Delete course <Trash2 className='h-4 w-4 ml-2' />
@@ -88,32 +129,43 @@ const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
       </Button>
     );
   };
-  return progress !== undefined ? <DeleteButton /> : <AddButton />;
+  return progress !== undefined ? (
+    <>
+      <DeleteCourseDialog
+        isOpen={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onDelete={onDeleteCourse}
+      />
+      <DeleteButton />
+    </>
+  ) : (
+    <AddButton />
+  );
 };
 
 export const columns: ColumnDef<CourseDto>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: 'select',
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && 'indeterminate')
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label='Select all'
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label='Select row'
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: 'id',
     header: ({ column }) => (
@@ -210,6 +262,7 @@ export const columns: ColumnDef<CourseDto>[] = [
     accessorKey: 'progress',
     meta: {
       customName: 'Progress',
+      auth: true,
     },
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -232,6 +285,9 @@ export const columns: ColumnDef<CourseDto>[] = [
   },
   {
     accessorKey: 'addCourse',
+    meta: {
+      auth: true,
+    },
     enableHiding: false,
     header: ({ column }) => null,
     cell: AddCourseCell,

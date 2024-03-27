@@ -3,6 +3,7 @@ import { LucideIcon } from 'lucide-react';
 declare module '@tanstack/table-core' {
   interface ColumnMeta<TData extends RowData, TValue> {
     customName?: string;
+    auth?: boolean;
   }
   interface TFilterOption {
     value: string;
