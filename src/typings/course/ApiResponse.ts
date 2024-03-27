@@ -2,10 +2,12 @@ import {
   ApiCourseDto,
   ApiCourseItem,
   ApiCourseItemDto,
+  ApiUserCourseItemPreviewDto,
   ApiUserCoursePreviewDto,
   CourseDto,
   CourseItem,
   ICourse,
+  UserCourseItemPreviewDto,
   WordMeaning,
 } from './course';
 
@@ -79,4 +81,31 @@ export const toGetUserCoursesPreviewByUserIdResponseMapper = (
     progress: userCourse.progress,
     completed: userCourse.completed,
   }));
+};
+
+export interface ApiResponseGetUserCourseItemsPreview {
+  course_name: string;
+  items: ApiUserCourseItemPreviewDto[];
+}
+
+export interface ResponseGetUserCourseItemsPreview {
+  courseName: string;
+  items: UserCourseItemPreviewDto[];
+}
+
+export const toGetUserCourseItemsPreviewResponseMapper = ({
+  course_name,
+  items,
+}: ApiResponseGetUserCourseItemsPreview): ResponseGetUserCourseItemsPreview => {
+  return {
+    courseName: course_name,
+    items: items.map((item) => ({
+      id: item.id,
+      courseItemId: item.course_item_id,
+      word: item.word,
+      phonetic: item.phonetic,
+      learned: item.learned,
+      partOfSpeech: item.part_of_speech,
+    })),
+  };
 };

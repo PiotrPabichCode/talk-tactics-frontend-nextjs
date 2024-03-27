@@ -1,6 +1,9 @@
 'use client';
 import { getUserDetails } from '@/services/api/auth.service';
-import { getCourses } from '@/services/api/course.service';
+import {
+  getCourses,
+  getUserCoursesPreviewByUserId,
+} from '@/services/api/course.service';
 import useAuthStore, { IAuthStore } from '@/store/useAuthStore';
 import useStore from '@/store/useStore';
 import useUserStore from '@/store/useUserStore';
@@ -25,6 +28,7 @@ const StoreHydration = () => {
           await getUserDetails({
             username: state.credentials?.username ?? 'none',
           });
+          await getUserCoursesPreviewByUserId({ id: state.credentials.id });
         }
       });
       /**

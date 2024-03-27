@@ -88,3 +88,21 @@ export interface ApiUserCoursePreviewDto {
   progress: number;
   completed: boolean;
 }
+
+export interface UserCourseItemPreviewDto {
+  id: number;
+  courseItemId: number;
+  word: string;
+  partOfSpeech: string;
+  phonetic: string;
+  learned: boolean;
+}
+
+export interface ApiUserCourseItemPreviewDto {
+  id: number;
+  course_item_id: number;
+  word: string;
+  part_of_speech: string;
+  phonetic: string;
+  learned: boolean;
+}

@@ -16,11 +16,18 @@ import {
   toGetUserCoursesPreviewByUserIdResponseMapper,
   ApiRequestDeleteUserCourse,
   toDeleteUserCourseRequestMapper,
+  toGetUserCourseRequestMapper,
+  ApiRequestGetUserCourse,
+  ApiRequestGetUserCourseItemsPreview,
+  toGetUserCourseItemsPreviewRequestMapper,
+  ApiResponseGetUserCourseItemsPreview,
+  toGetUserCourseItemsPreviewResponseMapper,
 } from '@/typings/course';
 
 const ENDPOINT = 'courses';
 const COURSE_ITEM_ENDPOINT = 'course-items';
 const USER_COURSE_ENDPOINT = 'user-courses';
+const USER_COURSE_ITEM_ENDPOINT = 'user-course-items';
 
 export const getCourses = async (): Promise<CourseDto[]> => {
   const { data } = await axios<ApiResponseGetCourses>({
@@ -29,6 +36,16 @@ export const getCourses = async (): Promise<CourseDto[]> => {
   });
   const res = toGetCourseResponseMapper(data);
   useCourseStore.getState().setCourses(res);
+  return res;
+};
+
+export const getUserCoursesPreviewByUserId = async ({ id }: { id: number }) => {
+  const { data } = await axios<ApiResponseGetUserCoursesPreviewByUserId>({
+    method: 'GET',
+    url: `${USER_COURSE_ENDPOINT}/preview/user-id/${id}`,
+  });
+  const res = toGetUserCoursesPreviewByUserIdResponseMapper(data);
+  useCourseStore.getState().setUserCourses(res);
   return res;
 };
 
@@ -74,11 +91,31 @@ export const deleteUserCourse = async (req: ApiRequestDeleteUserCourse) => {
   });
 };
 
-export const getUserCoursesPreviewByUserId = async ({ id }: { id: number }) => {
-  const { data } = await axios<ApiResponseGetUserCoursesPreviewByUserId>({
-    method: 'GET',
-    url: `${USER_COURSE_ENDPOINT}/preview/user-id/${id}`,
+export const learnUserCourseItem = async ({ id }: { id: number }) => {
+  await axios({
+    method: 'POST',
+    url: `${USER_COURSE_ITEM_ENDPOINT}/${id}/learn`,
   });
-  const res = toGetUserCoursesPreviewByUserIdResponseMapper(data);
+};
+
+export const getUserCourse = async (req: ApiRequestGetUserCourse) => {
+  return await axios<CourseItemDto[]>({
+    method: 'POST',
+    url: USER_COURSE_ENDPOINT,
+    data: toGetUserCourseRequestMapper(req),
+  });
+};
+
+export const getUserCourseItemsPreview = async (
+  req: ApiRequestGetUserCourseItemsPreview
+) => {
+  const { data } = await axios<ApiResponseGetUserCourseItemsPreview>({
+    method: 'POST',
+    url: `${USER_COURSE_ITEM_ENDPOINT}/preview`,
+    data: toGetUserCourseItemsPreviewRequestMapper(req),
+  });
+
+  const res = toGetUserCourseItemsPreviewResponseMapper(data);
+
   return res;
 };

@@ -10,6 +10,7 @@ import {
 } from '@/services/queries/course.query';
 import useAuthStore from '@/store/useAuthStore';
 import { CourseDto, UserCoursePreviewDto } from '@/typings/course';
+import useCourseStore from '@/store/useCourseStore';
 
 export function combineCourses(
   courses: CourseDto[] = [],
@@ -33,8 +34,9 @@ export function combineCourses(
 
 export default function CoursesPage() {
   const userId = useAuthStore().credentials?.id;
-  const { data: courses, isFetching, isError } = useGetCourses();
-  const { data: userCourses, isFetching: isFetchingUserCourses } =
+  const courses = useCourseStore().courses;
+  const { isFetching, isError } = useGetCourses();
+  const { isFetching: isFetchingUserCourses } =
     useGetUserCoursesPreviewByUserId(userId);
 
   if (isFetching || isFetchingUserCourses) {
@@ -43,11 +45,10 @@ export default function CoursesPage() {
   if (isError) {
     return <p>Something went wrong</p>;
   }
-  const combinedCourses = combineCourses(courses, userCourses);
 
   return (
     <div className='w-screen h-full overflow-scroll md:overflow-auto p-2 md:p-4'>
-      <Table data={combinedCourses} columns={columns} filters={filters} />
+      <Table data={courses} columns={columns} filters={filters} />
     </div>
   );
 }

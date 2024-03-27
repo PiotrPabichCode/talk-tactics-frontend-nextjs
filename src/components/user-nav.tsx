@@ -12,11 +12,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import useAuthStore from '@/store/useAuthStore';
+import useCourseStore from '@/store/useCourseStore';
 import useUserStore from '@/store/useUserStore';
 import Link from 'next/link';
 
 export default function UserNav() {
   const { credentials, logout } = useAuthStore();
+  const clearUserCourses = useCourseStore().clearUserCourses;
   const { firstName, lastName, email } = useUserStore();
 
   if (!credentials) {
@@ -66,7 +68,11 @@ export default function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={logout}>
+        <DropdownMenuItem
+          onClick={() => {
+            clearUserCourses();
+            logout();
+          }}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
