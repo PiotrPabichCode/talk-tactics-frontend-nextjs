@@ -12,26 +12,6 @@ import useAuthStore from '@/store/useAuthStore';
 import { CourseDto, UserCoursePreviewDto } from '@/typings/course';
 import useCourseStore from '@/store/useCourseStore';
 
-export function combineCourses(
-  courses: CourseDto[] = [],
-  userCourses: UserCoursePreviewDto[] = []
-): CourseDto[] {
-  return courses.map((course) => {
-    const userCourse = userCourses.find(
-      (userCourse) => userCourse.courseId === course.id
-    );
-    if (userCourse) {
-      return {
-        ...course,
-        progress: userCourse.progress,
-        completed: userCourse.completed,
-      };
-    } else {
-      return course;
-    }
-  });
-}
-
 export default function CoursesPage() {
   const userId = useAuthStore().credentials?.id;
   const courses = useCourseStore().courses;
