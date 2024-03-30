@@ -19,6 +19,7 @@ import Link from 'next/link';
 export default function UserNav() {
   const { credentials, logout } = useAuthStore();
   const clearUserCourses = useCourseStore().clearUserCourses;
+  const clearUser = useUserStore().clearUser;
   const { firstName, lastName, email } = useUserStore();
 
   if (!credentials) {
@@ -71,6 +72,7 @@ export default function UserNav() {
         <DropdownMenuItem
           onClick={() => {
             clearUserCourses();
+            clearUser();
             logout();
           }}>
           Log out

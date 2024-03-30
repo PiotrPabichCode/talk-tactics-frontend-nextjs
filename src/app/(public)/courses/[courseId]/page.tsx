@@ -16,15 +16,15 @@ export default function SingleCoursePage({
 }: {
   params: { courseId: string };
 }) {
+  const courseId = Number(params.courseId);
   const {
     data: courseItems,
     isPending,
     isError,
-  } = useGetCourseItemsPreviewByCourseId(params.courseId);
+  } = useGetCourseItemsPreviewByCourseId(courseId);
   const isUserCourse =
     useCourseStore().courses.findIndex(
-      (course) =>
-        course.id === Number(params.courseId) && course.progress !== undefined
+      (course) => course.id === courseId && course.progress !== undefined
     ) !== -1;
   const userId = useAuthStore().credentials?.id;
   const {
@@ -32,9 +32,10 @@ export default function SingleCoursePage({
     isPending: isUserCourseItemsPending,
     isError: isUserCourseItemsError,
   } = useGetUserCourseItemsPreview({
-    courseId: Number(params.courseId),
+    courseId: courseId,
     userId: userId!,
   });
+
   if (
     (isUserCourse && isUserCourseItemsPending) ||
     (!isUserCourse && isPending)

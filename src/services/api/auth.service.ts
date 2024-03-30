@@ -66,7 +66,7 @@ export const updateUser = async ({
 }: ApiRequestUpdateUser) => {
   const { data } = await axios<ApiResponseUpdateUser>({
     method: 'PATCH',
-    url: USERS_ENDPOINT + '/' + id,
+    url: USERS_ENDPOINT + '/id/' + id,
     data: toUpdateUserRequestMapper(updatedFields),
   });
   useUserStore.getState().setUserDetails(toUpdateUserResponseMapper(data));

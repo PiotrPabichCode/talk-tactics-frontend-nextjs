@@ -6,6 +6,7 @@ import {
 import { axios } from '@/lib/axios';
 import useAuthStore from '@/store/useAuthStore';
 import useCourseStore from '@/store/useCourseStore';
+import useUserStore from '@/store/useUserStore';
 
 interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -34,6 +35,7 @@ export const errorInterceptor = async (err: AxiosError): Promise<void> => {
   const originalConfig: CustomInternalAxiosRequestConfig = err.config!;
   const { credentials, logout, login } = useAuthStore.getState();
   const clearUserCourses = useCourseStore.getState().clearUserCourses;
+  const clearUser = useUserStore.getState().clearUser;
 
   if (err.response) {
     if (err.response.status === 401 && !originalConfig?._retry) {
@@ -59,8 +61,9 @@ export const errorInterceptor = async (err: AxiosError): Promise<void> => {
 
         return axios(originalConfig);
       } catch (_error: any) {
-        logout();
         clearUserCourses();
+        clearUser();
+        logout();
         console.error('Refresh token has expired. Login required');
 
         if (_error.response && _error.response.data) {

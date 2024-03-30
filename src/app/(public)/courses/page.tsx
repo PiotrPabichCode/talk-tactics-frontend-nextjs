@@ -9,7 +9,6 @@ import {
   useGetUserCoursesPreviewByUserId,
 } from '@/services/queries/course.query';
 import useAuthStore from '@/store/useAuthStore';
-import { CourseDto, UserCoursePreviewDto } from '@/typings/course';
 import useCourseStore from '@/store/useCourseStore';
 
 export default function CoursesPage() {

@@ -50,7 +50,7 @@ export function useGetCourses(page?: number) {
   return query;
 }
 
-export function useGetCourseItemById(id: string) {
+export function useGetCourseItemById(id: number) {
   const queryClient = useQueryClient();
   const query = useQuery<CourseItem, Error>({
     queryKey: [COURSE_ITEM_QUERY_KEY, id],
@@ -65,7 +65,7 @@ export function useGetCourseItemById(id: string) {
   return query;
 }
 
-export function useGetCourseItemsPreviewByCourseId(courseId: string) {
+export function useGetCourseItemsPreviewByCourseId(courseId: number) {
   const queryClient = useQueryClient();
   const enabled =
     useCourseStore().courses.findIndex(

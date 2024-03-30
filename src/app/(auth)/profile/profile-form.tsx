@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import useAuthStore from '@/store/useAuthStore';
 import useUserStore from '@/store/useUserStore';
-import { omitBy } from 'lodash';
+import { isEqual, omitBy } from 'lodash';
 import { useUpdateUserDetailsQuery } from '@/services/queries/auth.query';
 import {
   ApiRequestUpdateUser,
@@ -25,25 +25,33 @@ import {
   UpdateUserFormValues,
 } from '@/typings/user';
 import { toast } from 'sonner';
+import { useEffect } from 'react';
 
 export function ProfileForm() {
   const credentials = useAuthStore().credentials;
   const { isPending, mutateAsync: updateUser } = useUpdateUserDetailsQuery();
   const { firstName, lastName, email, bio } = useUserStore();
 
-  const defaultValues = {
+  let defaultValues = {
     username: credentials?.username,
     email: email,
     firstName: firstName,
     lastName: lastName,
-    bio: bio,
+    bio: bio ?? '',
   };
 
-  const form = useForm<UpdateUserFormValues>({
+  let form = useForm<UpdateUserFormValues>({
     resolver: zodResolver(ApiRequestUpdateUserSchema),
     defaultValues,
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    const isNew = !isEqual(defaultValues, form.getValues());
+    if (isNew) {
+      form.reset(defaultValues);
+    }
+  }, [defaultValues]);
 
   async function onSubmit(data: UpdateUserFormValues) {
     const changedValues = omitBy(

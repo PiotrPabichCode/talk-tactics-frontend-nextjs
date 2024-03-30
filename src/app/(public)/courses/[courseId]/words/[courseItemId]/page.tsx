@@ -19,7 +19,7 @@ import Link from 'next/link';
 export default function SingleCourseItemPage({
   params,
 }: {
-  params: { courseId: string; courseItemId: string };
+  params: { courseId: number; courseItemId: number };
 }) {
   const {
     data: courseItem,
@@ -30,7 +30,6 @@ export default function SingleCourseItemPage({
     return <Spinner />;
   }
   if (!courseItem || isError) {
-    console.log(courseItem, isError, 'Something went wrong');
     return null;
   }
 

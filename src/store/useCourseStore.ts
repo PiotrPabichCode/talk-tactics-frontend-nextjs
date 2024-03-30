@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { logger } from './logger';
 import { CourseDto, UserCoursePreviewDto } from '@/typings/course';
+import { isArray, mergeWith } from 'lodash';
 
 export interface CourseStore {
   courses: CourseDto[];
@@ -40,10 +41,31 @@ const useCourseStore = create<CourseStore>()(
   logger<CourseStore>((set) => ({
     courses: [],
     setCourses(courses) {
-      set(() => ({
-        courses: courses,
-      }));
+      set((state) => {
+        const updatedCourses = [...state.courses];
+
+        courses.forEach((newCourse) => {
+          const existingCourseIndex = updatedCourses.findIndex(
+            (course) => course.id === newCourse.id
+          );
+
+          if (existingCourseIndex > -1) {
+            const existingCourse = updatedCourses[existingCourseIndex];
+            if (!existingCourse.progress) {
+              updatedCourses[existingCourseIndex] = newCourse;
+            }
+          } else {
+            updatedCourses.push(newCourse);
+          }
+        });
+
+        return {
+          ...state,
+          courses: updatedCourses,
+        };
+      });
     },
+
     clearUserCourses() {
       set((state) => ({ courses: combineCourses(state.courses, []) }));
     },
