@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/form';
 import { ApiRequestSignInSchema, SignInFormValues } from '@/typings/auth';
 import { toast } from 'sonner';
+import { Spinner } from '@/components/ui/spinner';
 
 const defaultValues: SignInFormValues = {
   username: '',
@@ -112,7 +113,7 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
           </CardContent>
           <CardFooter>
             <Button type='submit' className='w-full' disabled={isPending}>
-              Login
+              {isPending ? <Spinner variant='button' /> : 'Login'}
             </Button>
           </CardFooter>
           <CardFooter

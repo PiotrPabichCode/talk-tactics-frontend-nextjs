@@ -33,7 +33,6 @@ function combineCourses(
     }
   });
 
-  console.log('Combined', combined);
   return combined;
 }
 

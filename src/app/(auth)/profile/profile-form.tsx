@@ -58,7 +58,6 @@ export function ProfileForm() {
       data,
       (value, key) => defaultValues[key as keyof UpdateUserFormValues] === value
     ) as ApiRequestUpdateUser['updatedFields'];
-    console.log(changedValues);
     try {
       if (!credentials) {
         throw new Error('Bad credentials');

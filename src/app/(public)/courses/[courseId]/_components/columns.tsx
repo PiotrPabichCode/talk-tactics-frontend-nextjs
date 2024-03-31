@@ -10,6 +10,7 @@ import { GraduationCap, Telescope } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useLearnUserCourseItem } from '@/services/queries/course.query';
 import { toast } from 'sonner';
+import { Spinner } from '@/components/ui/spinner';
 
 const LearnMoreCell = ({ row }: { row: any }) => {
   const pathname = usePathname();
@@ -24,8 +25,13 @@ const LearnMoreCell = ({ row }: { row: any }) => {
   );
 };
 
-const SetLearnCell = ({ row }: { row: any }) => {
-  const { isPending, mutateAsync: learnWord } = useLearnUserCourseItem();
+const SetLearnCell = ({ row }: { row: Row<UserCourseItemPreviewDto> }) => {
+  const {
+    isPending,
+    isSuccess,
+    mutateAsync: learnWord,
+  } = useLearnUserCourseItem();
+  const learned = row.original.learned;
 
   const onSubmit = async () => {
     try {
@@ -39,16 +45,20 @@ const SetLearnCell = ({ row }: { row: any }) => {
     }
   };
 
-  const learned = row.original.learned;
-
   return (
     <Button
       onClick={onSubmit}
-      disabled={isPending || learned}
+      disabled={isPending || learned || isSuccess}
       className='bg-green-700 hover:bg-green-800'
       variant={'action'}>
-      {learned ? 'I know it!' : 'Got this?'}
-      <Telescope className='h-5 w-5 ml-2' />
+      {isPending ? (
+        <Spinner variant='button' />
+      ) : (
+        <>
+          {learned || isSuccess ? 'I know it' : 'Got this?'}
+          <Telescope className='h-5 w-5 ml-2' />
+        </>
+      )}
     </Button>
   );
 };

@@ -59,12 +59,10 @@ export default function withAuthRoles(
       );
 
       if (defaultFallback === 'all' && !hasPermission) {
-        console.log('Redirect to auth page');
         setRedirectPath('/auth');
       }
 
       if (defaultFallback === 'auth' && credentials?.role) {
-        console.log('Redirects to profile page');
         setRedirectPath('/profile');
       }
       setLoading(false);

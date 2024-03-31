@@ -15,13 +15,6 @@ import { CourseDto } from '@/typings/course';
 import uniqBy from 'lodash/uniqBy';
 import { shuffle } from 'lodash';
 import Image from 'next/image';
-import { CourseLevel } from '@/api/courses.types';
-
-interface WordOption {
-  title: CourseLevel;
-  description: string;
-  href: string;
-}
 
 const WordOptions = ({ courses }: { courses: CourseDto[] }) => {
   const BASE_DESCRIPTION = 'Most frequently used english words - Top';

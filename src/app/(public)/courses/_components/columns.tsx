@@ -27,6 +27,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { useState } from 'react';
+import { Spinner } from '@/components/ui/spinner';
 
 function DeleteCourseDialog({
   isOpen,
@@ -112,7 +113,13 @@ const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
         onClick={() => setDeleteDialogOpen(true)}
         className='bg-red-500 hover:bg-red-600'
         variant={'action'}>
-        Delete course <Trash2 className='h-4 w-4 ml-2' />
+        {isPendingDelete ? (
+          <Spinner variant='button' />
+        ) : (
+          <>
+            Delete course <Trash2 className='h-4 w-4 ml-2' />
+          </>
+        )}
       </Button>
     );
   };
@@ -124,7 +131,13 @@ const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
         onClick={onAddCourse}
         className='bg-green-500 hover:bg-green-600'
         variant={'action'}>
-        Add course <Plus className='h-4 w-4 ml-2' />
+        {isPendingAdd ? (
+          <Spinner variant='button' />
+        ) : (
+          <>
+            Add course <Plus className='h-4 w-4 ml-2' />
+          </>
+        )}
       </Button>
     );
   };

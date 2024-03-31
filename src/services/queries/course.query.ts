@@ -94,7 +94,6 @@ export function useGetUserCoursesPreviewByUserId(userId?: number) {
     queryKey: [USER_COURSES_PREVIEW_QUERY_KEY],
     queryFn: () => getUserCoursesPreviewByUserId({ id: userId! }),
     enabled: enabled,
-    gcTime: 0,
   });
   return query;
 }
@@ -137,9 +136,6 @@ export function useLearnUserCourseItem() {
     },
     onSuccess() {
       queryClient.invalidateQueries({
-        queryKey: [USER_COURSE_ITEMS_PREVIEW_QUERY_KEY],
-      });
-      queryClient.invalidateQueries({
         queryKey: [USER_COURSES_PREVIEW_QUERY_KEY],
       });
     },
@@ -155,6 +151,9 @@ export function useGetUserCourseItemsPreview(
     useCourseStore().courses.findIndex(
       (course) => course.id === req.courseId && course.progress !== undefined
     ) !== -1;
+  queryClient.invalidateQueries({
+    queryKey: [USER_COURSE_ITEMS_PREVIEW_QUERY_KEY],
+  });
   const query = useQuery<ResponseGetUserCourseItemsPreview, Error>({
     queryKey: [USER_COURSE_ITEMS_PREVIEW_QUERY_KEY, req.courseId],
     queryFn: () => getUserCourseItemsPreview(req),

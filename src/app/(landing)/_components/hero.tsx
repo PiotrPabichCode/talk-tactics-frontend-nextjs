@@ -32,7 +32,6 @@ const Hero = ({
   const theme = useTheme().theme;
 
   useEffect(() => {
-    console.log(theme);
     if (theme) {
       setReady(true);
     }
