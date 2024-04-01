@@ -53,3 +53,5 @@ export const Spinner = React.memo(
   },
   (prevProps, nextProps) => prevProps.variant === nextProps.variant
 );
+
+Spinner.displayName = 'Spinner';

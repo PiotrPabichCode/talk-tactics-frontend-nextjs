@@ -46,7 +46,7 @@ export function DataTableToolbar<TData>({
     table
       .getColumn('progress')
       ?.setFilterValue(filterMyCourses ? '%' : undefined);
-  }, [filterMyCourses]);
+  }, [table, filterMyCourses]);
 
   return (
     <div className='flex items-center justify-between overflow-scroll md:overflow-auto'>
