@@ -58,7 +58,7 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
             </CardDescription>
           </CardHeader>
           <CardContent className='grid gap-4'>
-            <div className='grid md:grid-cols-2 gap-6'>
+            {/* <div className='grid md:grid-cols-2 gap-6'>
               <Button variant='outline'>
                 <Icons.gitHub className='mr-2 h-4 w-4' />
                 Github
@@ -67,7 +67,7 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
                 <Icons.google className='mr-2 h-4 w-4' />
                 Google
               </Button>
-            </div>
+            </div> */}
             <div className='relative'>
               <div className='absolute inset-0 flex items-center'>
                 <span className='w-full border-t' />
