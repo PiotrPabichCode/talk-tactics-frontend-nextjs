@@ -1,19 +1,9 @@
 # SmartSenior
 
-https://www.piotrpabich.com/projects/TalkTactics
+Demo website: https://talk-tactics-frontend.vercel.app/
+More info: https://www.piotrpabich.com/projects/TalkTactics
 
 Fullstack website designed to help users learn the most popular words in English. This project contains fronted repository written in Next.js 14 with App Router with combination of React Query (caching / better performance), Zod / React Hook Form (validation, better user experience), Zustand and more.
-
-## Some app screenshots
-
-<div style="text-align: center;">
-    <img src="/img/AllCourses.webp" alt="image" width="300" height="auto">
-    <img src="/img/Course.webp" alt="image" width="300" height="auto">
-    <img src="/img/LandingPage.webp" alt="image" width="300" height="auto">
-    <img src="/img/Word.webp" alt="image" width="300" height="auto">
-    <img src="/img/Preferences.webp" alt="image" width="300" height="auto">
-    <img src="/img/MobileView.webp" alt="image" width="300" height="auto">
-</div>
 
 ## Technologies Used
 
@@ -26,6 +16,17 @@ Fullstack website designed to help users learn the most popular words in English
 ✅ Axios
 
 **And many more :)**
+
+## Some app screenshots
+
+<div style="text-align: center;">
+    <img src="public/img/AllCourses.webp" alt="image" width="600" height="auto"><br>
+    <img src="public/img/Course.webp" alt="image" width="600" height="auto"><br>
+    <img src="public/img/LandingPage.webp" alt="image" width="600" height="auto"><br>
+    <img src="public/img/Word.webp" alt="image" width="600" height="auto"><br>
+    <img src="public/img/Preferences.webp" alt="image" width="600" height="auto"><br>
+    <img src="public/img/MobileView.webp" alt="image" width="600" height="auto"><br>
+</div>
 
 ## Prerequisites
 
