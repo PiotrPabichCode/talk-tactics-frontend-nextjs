@@ -1,16 +1,16 @@
 # SmartSenior
 
-Demo website: https://talk-tactics-frontend.vercel.app/
-More info: https://www.piotrpabich.com/projects/TalkTactics
+- Demo website: https://talk-tactics-frontend.vercel.app/
+- More info: https://www.piotrpabich.com/projects/TalkTactics
 
 Fullstack website designed to help users learn the most popular words in English. This project contains fronted repository written in Next.js 14 with App Router with combination of React Query (caching / better performance), Zod / React Hook Form (validation, better user experience), Zustand and more.
 
 ## Technologies Used
 
-✅ Next.js 14
+✅ Next.js 14  
 ✅ App Router  
 ✅ React Hook Form  
-✅ React Query
+✅ React Query  
 ✅ Zustand  
 ✅ Zod  
 ✅ Axios
