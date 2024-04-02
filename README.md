@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SmartSenior
 
-## Getting Started
+https://www.piotrpabich.com/projects/TalkTactics
 
-First, run the development server:
+Fullstack website designed to help users learn the most popular words in English. This project contains fronted repository written in Next.js 14 with App Router with combination of React Query (caching / better performance), Zod / React Hook Form (validation, better user experience), Zustand and more.
+
+## Some app screenshots
+
+<div style="text-align: center;">
+    <img src="/img/AllCourses.webp" alt="image" width="300" height="auto">
+    <img src="/img/Course.webp" alt="image" width="300" height="auto">
+    <img src="/img/LandingPage.webp" alt="image" width="300" height="auto">
+    <img src="/img/Word.webp" alt="image" width="300" height="auto">
+    <img src="/img/Preferences.webp" alt="image" width="300" height="auto">
+    <img src="/img/MobileView.webp" alt="image" width="300" height="auto">
+</div>
+
+## Technologies Used
+
+✅ Next.js 14
+✅ App Router  
+✅ React Hook Form  
+✅ React Query
+✅ Zustand  
+✅ Zod  
+✅ Axios
+
+**And many more :)**
+
+## Prerequisites
+
+1. Configure secrets
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+NEXT_PUBLIC_API_BASE_URL=_YOUR_DATABASE_BASE_URL OR http://localhost:8080/api/v1
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How to start
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Make sure you have Node.js installed on your system. You can download and install Node.js from the official website: https://nodejs.org.
+2. Open a command-line interface (CLI) or terminal and navigate to the frontend directory of the project.
+3. Install the project dependencies by running the following command: npm install
+4. Start development server by running command: npm run dev
+5. The development server will start, and you should see console output indicating that the server is running. It will also open your default web browser and navigate to http://localhost:3000, where you can access the frontend of the project
