@@ -47,10 +47,13 @@ export const errorInterceptor = async (err: AxiosError): Promise<void> => {
         const newToken = await axios({
           method: 'POST',
           url: '/auth/refresh-token',
-          headers: originalConfig.headers,
+          headers: {
+            ...originalConfig.headers,
+            'Content-Type': 'application/json', // Ensure this is set
+          },
           data: {
             username: credentials?.username,
-            refreshToken: credentials?.refreshToken,
+            refresh_token: credentials?.refreshToken,
           },
         });
         login(newToken.data);
