@@ -70,8 +70,8 @@ const Hero = ({
                   className='border-2 shadow-2xl scale-100'
                   src={
                     theme === 'light'
-                      ? '/preview-page-light.png'
-                      : '/preview-page-dark.png'
+                      ? '/preview-page-light.webp'
+                      : '/preview-page-dark.webp'
                   }
                   alt='TalkTactics landing page'
                 />

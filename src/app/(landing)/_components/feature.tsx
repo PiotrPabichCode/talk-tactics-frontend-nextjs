@@ -39,7 +39,7 @@ export default function Feature() {
               <motion.div className='h-full w-full' variants={scrollAnimation}>
                 <img
                   className='border-2 shadow-2xl'
-                  src='/preview-light-mode.png'
+                  src='/preview-light-mode.webp'
                   alt='TalkTactics light mode'
                 />
               </motion.div>
@@ -50,7 +50,7 @@ export default function Feature() {
               <motion.div className='h-full w-full' variants={scrollAnimation}>
                 <img
                   className='border-2 shadow-2xl'
-                  src='/preview-dark-mode.png'
+                  src='/preview-dark-mode.webp'
                   alt='TalkTactics dark mode'
                 />
               </motion.div>
