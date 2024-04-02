@@ -73,11 +73,17 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
                 <span className='w-full border-t' />
               </div>
               <div className='relative flex justify-center text-xs uppercase'>
-                <span className='bg-background px-2 text-muted-foreground'>
+                {/* <span className='bg-background px-2 text-muted-foreground'>
                   Or continue with
-                </span>
+                </span> */}
               </div>
             </div>
+            <Card className='text-sm text-muted-foreground border-none'>
+              <p>Test account</p>
+              <p>Login: user1</p>
+              <p>Password: user1</p>
+            </Card>
+            <span className='w-full border-t' />
             <div className={'grid gap-4'}>
               <FormField
                 name='username'
