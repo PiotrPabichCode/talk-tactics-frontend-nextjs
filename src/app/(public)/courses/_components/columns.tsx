@@ -276,6 +276,10 @@ export const columns: ColumnDef<CourseDto>[] = [
       customName: 'Progress',
       auth: true,
     },
+    filterFn: (row, id, value) => {
+      return row.getValue(id) !== undefined;
+    },
+    enableColumnFilter: false,
     header: ({ column }) => (
       <DataTableColumnHeader
         className='w-[50px]'
@@ -288,6 +292,7 @@ export const columns: ColumnDef<CourseDto>[] = [
       if (progress === undefined) {
         return null;
       }
+      console.log(progress);
       return (
         <div className='flex justify-center items-center'>
           <span className='truncate font-medium'>{`${progress}%`}</span>

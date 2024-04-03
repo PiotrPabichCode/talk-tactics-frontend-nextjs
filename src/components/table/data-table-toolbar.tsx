@@ -45,7 +45,7 @@ export function DataTableToolbar<TData>({
   useEffect(() => {
     table
       .getColumn('progress')
-      ?.setFilterValue(filterMyCourses ? '%' : undefined);
+      ?.setFilterValue(filterMyCourses ? true : undefined);
   }, [table, filterMyCourses]);
 
   return (
