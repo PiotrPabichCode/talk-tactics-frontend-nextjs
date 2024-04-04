@@ -1,14 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter, Manrope } from 'next/font/google';
 import './globals.css';
 import NextTopLoader from 'nextjs-toploader';
 import { Footer } from '@/components/footer';
 import Header from '@/components/header';
 import { Providers } from './provider';
 import { Toaster } from 'sonner';
-
-const inter = Inter({ subsets: ['latin'], display: 'swap' });
-const manrope = Manrope({ subsets: ['latin'], display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'TalkTactics',
@@ -22,16 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body
-        className={`${inter.className} ${manrope.className} flex flex-col min-h-screen`}>
-        <Providers>
-          <Toaster duration={3000} position='top-center' visibleToasts={3} />
-          <NextTopLoader showSpinner={false} />
-          <Header />
-          <div className='flex-grow pt-[70px]'>{children}</div>
-          <Footer />
-        </Providers>
-      </body>
+      <Providers>
+        <Toaster duration={3000} position='top-center' visibleToasts={3} />
+        <NextTopLoader showSpinner={false} />
+        <Header />
+        <div className='flex-grow pt-[70px]'>{children}</div>
+        <Footer />
+      </Providers>
     </html>
   );
 }

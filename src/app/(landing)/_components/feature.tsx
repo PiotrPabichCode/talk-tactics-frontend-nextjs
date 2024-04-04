@@ -23,7 +23,7 @@ export default function Feature() {
 
   return (
     <div
-      className='max-w-screen-4xl px-8 xl:px-16 mx-auto pt-16 pb-8 gap-8'
+      className='max-w-screen-4xl px-8 xl:px-16 mx-auto pt-8 md:pt-16 pb-8'
       id='feature'>
       <ScrollAnimationWrapper>
         <motion.h3

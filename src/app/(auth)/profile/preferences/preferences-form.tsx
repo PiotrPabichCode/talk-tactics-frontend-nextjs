@@ -1,12 +1,12 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CaretSortIcon, ChevronDownIcon } from '@radix-ui/react-icons';
+import { CaretSortIcon } from '@radix-ui/react-icons';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { cn } from '@/lib/utils';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -33,6 +33,9 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import { CheckIcon } from 'lucide-react';
+import { FontType } from '@/typings/settings';
+import useSettingsStore from '@/store/useSettingsStore';
+import { LightMode, DarkMode } from './_components';
 
 const languages = [
   { label: 'English', value: 'en' },
@@ -47,12 +50,17 @@ const languages = [
   { label: 'Chinese', value: 'zh' },
 ] as const;
 
+const fonts = [
+  { label: 'Inter', value: 'inter' },
+  { label: 'Manrope', value: 'manrope' },
+  { label: 'Montserrat', value: 'montserrat' },
+];
+
 const preferencesFormSchema = z.object({
   theme: z.enum(['light', 'dark'], {
     required_error: 'Please select a theme.',
   }),
-  font: z.enum(['inter', 'manrope', 'system'], {
-    invalid_type_error: 'Select a font',
+  font: z.string({
     required_error: 'Please select a font.',
   }),
   language: z.string({
@@ -64,9 +72,11 @@ type PreferencesFormSchema = z.infer<typeof preferencesFormSchema>;
 
 export function PreferencesForm() {
   const { setTheme, theme } = useTheme();
+  const { font, changeFont } = useSettingsStore();
   const defaultValues: Partial<PreferencesFormSchema> = {
     theme: theme as 'light' | 'dark',
     language: 'en',
+    font: font as FontType,
   };
 
   const form = useForm<PreferencesFormSchema>({
@@ -153,23 +163,56 @@ export function PreferencesForm() {
           control={form.control}
           name='font'
           render={({ field }) => (
-            <FormItem>
+            <FormItem className='flex flex-col'>
               <FormLabel>Font</FormLabel>
-              <div className='relative w-max'>
-                <FormControl>
-                  <select
-                    className={cn(
-                      buttonVariants({ variant: 'outline' }),
-                      'w-[200px] appearance-none font-normal'
-                    )}
-                    {...field}>
-                    <option value='inter'>Inter</option>
-                    <option value='manrope'>Manrope</option>
-                    <option value='system'>System</option>
-                  </select>
-                </FormControl>
-                <ChevronDownIcon className='absolute right-3 top-2.5 h-4 w-4 opacity-50' />
-              </div>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant='outline'
+                      role='combobox'
+                      className={cn(
+                        'w-[200px] justify-between',
+                        !field.value && 'text-muted-foreground'
+                      )}>
+                      {field.value
+                        ? fonts.find((font) => font.value === field.value)
+                            ?.label
+                        : 'Select font'}
+                      <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className='w-[200px] p-0'>
+                  <Command>
+                    <CommandInput placeholder='Search font...' />
+                    <CommandEmpty>No font found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandList>
+                        {fonts.map((font) => (
+                          <CommandItem
+                            value={font.label}
+                            key={font.value}
+                            onSelect={() => {
+                              form.setValue('font', font.value as FontType);
+                              changeFont(font.value as FontType);
+                            }}>
+                            <CheckIcon
+                              className={cn(
+                                'mr-2 h-4 w-4',
+                                font.value === field.value
+                                  ? 'opacity-100'
+                                  : 'opacity-0'
+                              )}
+                            />
+                            {font.label}
+                          </CommandItem>
+                        ))}
+                      </CommandList>
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
               <FormDescription>
                 Set the font you want to use in the dashboard.
               </FormDescription>
@@ -197,25 +240,7 @@ export function PreferencesForm() {
                     <FormControl>
                       <RadioGroupItem value='light' className='sr-only' />
                     </FormControl>
-                    <div className='items-center rounded-md border-2 border-muted p-1 hover:border-accent'>
-                      <div className='space-y-2 rounded-sm bg-[#ecedef] p-2'>
-                        <div className='space-y-2 rounded-md bg-white p-2 shadow-sm'>
-                          <div className='h-2 w-[80px] rounded-lg bg-[#ecedef]' />
-                          <div className='h-2 w-[80px] md:w-[100px] rounded-lg bg-[#ecedef]' />
-                        </div>
-                        <div className='flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm'>
-                          <div className='h-4 w-4 rounded-full bg-[#ecedef]' />
-                          <div className='h-2 w-[100px] rounded-lg bg-[#ecedef]' />
-                        </div>
-                        <div className='flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm'>
-                          <div className='h-4 w-4 rounded-full bg-[#ecedef]' />
-                          <div className='h-2 w-[100px] rounded-lg bg-[#ecedef]' />
-                        </div>
-                      </div>
-                    </div>
-                    <span className='block w-full p-2 text-center font-normal'>
-                      Light
-                    </span>
+                    <LightMode />
                   </FormLabel>
                 </FormItem>
                 <FormItem>
@@ -223,25 +248,7 @@ export function PreferencesForm() {
                     <FormControl>
                       <RadioGroupItem value='dark' className='sr-only' />
                     </FormControl>
-                    <div className='items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground'>
-                      <div className='space-y-2 rounded-sm bg-slate-950 p-2'>
-                        <div className='space-y-2 rounded-md bg-slate-800 p-2 shadow-sm'>
-                          <div className='h-2 w-[80px] rounded-lg bg-slate-400' />
-                          <div className='h-2 w-[80px] md:w-[100px] rounded-lg bg-slate-400' />
-                        </div>
-                        <div className='flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm'>
-                          <div className='h-4 w-4 rounded-full bg-slate-400' />
-                          <div className='h-2 w-[100px] rounded-lg bg-slate-400' />
-                        </div>
-                        <div className='flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm'>
-                          <div className='h-4 w-4 rounded-full bg-slate-400' />
-                          <div className='h-2 w-[100px] rounded-lg bg-slate-400' />
-                        </div>
-                      </div>
-                    </div>
-                    <span className='block w-full p-2 text-center font-normal'>
-                      Dark
-                    </span>
+                    <DarkMode />
                   </FormLabel>
                 </FormItem>
               </RadioGroup>
@@ -249,7 +256,7 @@ export function PreferencesForm() {
           )}
         />
 
-        <Button type='submit'>Update preferences</Button>
+        {/* <Button type='submit'>Update preferences</Button> */}
       </form>
     </Form>
   );

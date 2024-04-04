@@ -292,7 +292,6 @@ export const columns: ColumnDef<CourseDto>[] = [
       if (progress === undefined) {
         return null;
       }
-      console.log(progress);
       return (
         <div className='flex justify-center items-center'>
           <span className='truncate font-medium'>{`${progress}%`}</span>
