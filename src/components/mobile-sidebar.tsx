@@ -5,10 +5,10 @@ import React, { useState } from 'react';
 import { NavigationMenuLink } from './ui/navigation-menu';
 import { cn } from '@/lib/utils';
 import { LinksNav } from './links-nav';
-import { CourseDto } from '@/typings/course';
+import { CourseNavbarDto } from '@/typings/course';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  courses: CourseDto[];
+  courses: CourseNavbarDto[];
 }
 
 const ListItem = React.forwardRef<

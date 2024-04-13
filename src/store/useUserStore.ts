@@ -7,6 +7,7 @@ export interface UserStore extends IAuthUser {
   setUserDetails: (details: Partial<IAuthUser>) => void;
   setLoading: (val: boolean) => void;
   clearUser: () => void;
+  isUserLoaded: () => boolean;
 }
 
 const initialState = {
@@ -18,7 +19,7 @@ const initialState = {
 };
 
 const useUserStore = create<UserStore>()(
-  logger<UserStore>((set) => ({
+  logger<UserStore>((set, get) => ({
     ...initialState,
     setUserDetails(details) {
       set((state) => ({ ...state, ...details, loading: false }));
@@ -32,7 +33,12 @@ const useUserStore = create<UserStore>()(
         loading: false,
       }));
     },
+    isUserLoaded() {
+      return !get().loading;
+    },
   }))
 );
+
+export const useUserLoading = () => useUserStore().isUserLoaded();
 
 export default useUserStore;

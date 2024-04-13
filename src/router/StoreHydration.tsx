@@ -25,10 +25,12 @@ const StoreHydration = () => {
         if (!state.credentials?.username) {
           useUserStore.getState().setLoading(false);
         } else {
-          await getUserDetails({
-            username: state.credentials?.username ?? 'none',
+          await getUserCoursesPreviewByUserId({
+            id: state.credentials?.id,
           });
-          await getUserCoursesPreviewByUserId({ id: state.credentials.id });
+          await getUserDetails({
+            username: state.credentials?.username,
+          });
         }
       });
       /**

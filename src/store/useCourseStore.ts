@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 import { logger } from './logger';
 import { CourseDto, UserCoursePreviewDto } from '@/typings/course';
-import { isArray, mergeWith } from 'lodash';
 
 export interface CourseStore {
   courses: CourseDto[];
   setCourses: (courses: CourseDto[]) => void;
   clearUserCourses: () => void;
   setUserCourses: (userCourses: UserCoursePreviewDto[]) => void;
+  isCourseAdded: (courseId: number) => boolean;
 }
 
 function combineCourses(
@@ -37,7 +37,7 @@ function combineCourses(
 }
 
 const useCourseStore = create<CourseStore>()(
-  logger<CourseStore>((set) => ({
+  logger<CourseStore>((set, get) => ({
     courses: [],
     setCourses(courses) {
       set((state) => {
@@ -64,14 +64,25 @@ const useCourseStore = create<CourseStore>()(
         };
       });
     },
-
     clearUserCourses() {
       set((state) => ({ courses: combineCourses(state.courses, []) }));
     },
     setUserCourses(userCourses) {
       set((state) => ({ courses: combineCourses(state.courses, userCourses) }));
     },
+    isCourseAdded(courseId) {
+      return (
+        get().courses.findIndex(
+          (c: CourseDto) => c.id === courseId && c.progress !== undefined
+        ) !== -1
+      );
+    },
   }))
 );
+
+export const useCourseAdded = (courseId: number) =>
+  useCourseStore().isCourseAdded(courseId);
+
+export const useCoursesEmpty = () => useCourseStore().courses.length === 0;
 
 export default useCourseStore;

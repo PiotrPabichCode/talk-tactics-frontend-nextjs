@@ -5,6 +5,7 @@ import {
   getCourseItemById,
   getCourseItemsPreviewByCourseId,
   getCourses,
+  getNavbarCourses,
   getUserCourseItemsPreview,
   getUserCoursesPreviewByUserId,
   learnUserCourseItem,
@@ -12,16 +13,19 @@ import {
 import {
   ApiRequestAddUserCourse,
   ApiRequestDeleteUserCourse,
-  ApiRequestGetUserCourseItemsPreview,
   CourseDto,
   CourseItem,
   CourseItemDto,
+  CourseNavbarDto,
   ResponseGetUserCourseItemsPreview,
   UserCoursePreviewDto,
 } from '@/typings/course';
-import useCourseStore from '@/store/useCourseStore';
+import { useCourseAdded, useCoursesEmpty } from '@/store/useCourseStore';
+import { userId } from '@/store/useAuthStore';
+import { useUserLoading } from '@/store/useUserStore';
 
 const QUERY_KEY = 'courses';
+const COURSES_NAVBAR_QUERY_KEY = 'courses_navbar';
 const COURSE_ITEMS_PREVIEW_QUERY_KEY = 'course_items_preview';
 const USER_COURSE_ITEMS_PREVIEW_QUERY_KEY = 'user_course_items_preview';
 const USER_COURSES_PREVIEW_QUERY_KEY = 'user_courses_preview';
@@ -39,12 +43,27 @@ export function getQueryKey(page?: number) {
 
 export function useGetCourses(page?: number) {
   const queryClient = useQueryClient();
+  const enabled = useCoursesEmpty();
   const query = useQuery<CourseDto[], Error>({
     queryKey: getQueryKey(page),
     queryFn: () => getCourses(),
     staleTime: Infinity,
+    enabled: enabled,
     initialData: () => {
       return queryClient.getQueryData(getQueryKey()) as CourseDto[];
+    },
+  });
+  return query;
+}
+
+export function useGetNavbarCourses() {
+  const queryClient = useQueryClient();
+  const query = useQuery<CourseNavbarDto[], Error>({
+    queryKey: [COURSES_NAVBAR_QUERY_KEY],
+    queryFn: () => getNavbarCourses(),
+    staleTime: Infinity,
+    initialData: () => {
+      return queryClient.getQueryData(getQueryKey()) as CourseNavbarDto[];
     },
   });
   return query;
@@ -65,31 +84,8 @@ export function useGetCourseItemById(id: number) {
   return query;
 }
 
-export function useGetCourseItemsPreviewByCourseId(courseId: number) {
-  const queryClient = useQueryClient();
-  const enabled =
-    useCourseStore().courses.findIndex(
-      (course) =>
-        course.id === Number(courseId) && course.progress === undefined
-    ) !== -1;
-  const query = useQuery<CourseItemDto[], Error>({
-    queryKey: [COURSE_ITEMS_PREVIEW_QUERY_KEY, courseId],
-    queryFn: () => getCourseItemsPreviewByCourseId({ courseId }),
-    enabled: enabled,
-    gcTime: 0,
-    initialData: () => {
-      return queryClient.getQueryData([
-        COURSE_ITEMS_PREVIEW_QUERY_KEY,
-        courseId,
-      ]) as CourseItemDto[];
-    },
-  });
-  return query;
-}
-
 export function useGetUserCoursesPreviewByUserId(userId?: number) {
-  const queryClient = useQueryClient();
-  const enabled = useCourseStore().courses.length > 0 && !!userId;
+  const enabled = !useCoursesEmpty() && !!userId;
   const query = useQuery<UserCoursePreviewDto[], Error>({
     queryKey: [USER_COURSES_PREVIEW_QUERY_KEY],
     queryFn: () => getUserCoursesPreviewByUserId({ id: userId! }),
@@ -132,9 +128,12 @@ export function useLearnUserCourseItem() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
-      await learnUserCourseItem({ id });
+      return await learnUserCourseItem({ id });
     },
-    onSuccess() {
+    onSuccess({ courseId }) {
+      queryClient.invalidateQueries({
+        queryKey: [USER_COURSE_ITEMS_PREVIEW_QUERY_KEY, courseId],
+      });
       queryClient.invalidateQueries({
         queryKey: [USER_COURSES_PREVIEW_QUERY_KEY],
       });
@@ -143,25 +142,44 @@ export function useLearnUserCourseItem() {
   });
 }
 
-export function useGetUserCourseItemsPreview(
-  req: ApiRequestGetUserCourseItemsPreview
-) {
+export function useGetCourseItemsPreviewByCourseId(courseId: number) {
   const queryClient = useQueryClient();
-  const enabled =
-    useCourseStore().courses.findIndex(
-      (course) => course.id === req.courseId && course.progress !== undefined
-    ) !== -1;
-  queryClient.invalidateQueries({
-    queryKey: [USER_COURSE_ITEMS_PREVIEW_QUERY_KEY],
+  const isLoaded = useUserLoading();
+  const isAdded = useCourseAdded(courseId);
+  const enabled = isLoaded && !isAdded;
+  const query = useQuery<CourseItemDto[], Error>({
+    queryKey: [COURSE_ITEMS_PREVIEW_QUERY_KEY, courseId],
+    queryFn: () => getCourseItemsPreviewByCourseId({ courseId }),
+    enabled: enabled,
+    initialData: () => {
+      return queryClient.getQueryData([
+        COURSE_ITEMS_PREVIEW_QUERY_KEY,
+        courseId,
+      ]) as CourseItemDto[];
+    },
   });
+  return query;
+}
+
+export function useGetUserCourseItemsPreviewByCourseId({
+  courseId,
+}: {
+  courseId: number;
+}) {
+  const queryClient = useQueryClient();
+  const enabled = useCourseAdded(courseId);
   const query = useQuery<ResponseGetUserCourseItemsPreview, Error>({
-    queryKey: [USER_COURSE_ITEMS_PREVIEW_QUERY_KEY, req.courseId],
-    queryFn: () => getUserCourseItemsPreview(req),
+    queryKey: [USER_COURSE_ITEMS_PREVIEW_QUERY_KEY, courseId],
+    queryFn: () =>
+      getUserCourseItemsPreview({
+        courseId: courseId,
+        userId: userId(),
+      }),
     enabled: enabled,
     initialData: () => {
       return queryClient.getQueryData([
         USER_COURSE_ITEMS_PREVIEW_QUERY_KEY,
-        req.courseId,
+        courseId,
       ]) as ResponseGetUserCourseItemsPreview;
     },
   });

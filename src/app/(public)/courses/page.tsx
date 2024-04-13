@@ -13,16 +13,12 @@ import useCourseStore from '@/store/useCourseStore';
 
 export default function CoursesPage() {
   const userId = useAuthStore().credentials?.id;
+  const { isFetching: isFetchingCourses } = useGetCourses();
+  const { isFetching } = useGetUserCoursesPreviewByUserId(userId);
   const courses = useCourseStore().courses;
-  const { isFetching, isError } = useGetCourses();
-  const { isFetching: isFetchingUserCourses } =
-    useGetUserCoursesPreviewByUserId(userId);
 
-  if (isFetching || isFetchingUserCourses) {
+  if (isFetchingCourses || isFetching) {
     return <Spinner />;
-  }
-  if (isError) {
-    return <p>Something went wrong</p>;
   }
 
   return (

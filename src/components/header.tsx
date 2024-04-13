@@ -6,13 +6,13 @@ import UserNav from './user-nav';
 import Link from 'next/link';
 import { ModeToggle } from './mode-toggle';
 import { LinksNav } from './links-nav';
-import useCourseStore from '@/store/useCourseStore';
 import useUserStore from '@/store/useUserStore';
+import { useGetNavbarCourses } from '@/services/queries/course.query';
 
 export default function Header() {
-  const courses = useCourseStore().courses;
+  const { data: courses, isLoading } = useGetNavbarCourses();
   const userLoading = useUserStore().loading;
-  if (courses.length === 0 || userLoading) {
+  if (isLoading || userLoading) {
     return null;
   }
   return (

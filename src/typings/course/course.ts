@@ -55,6 +55,13 @@ export interface ApiCourseItemDto {
   course_name: string;
 }
 
+export interface CourseNavbarDto {
+  id: number;
+  title: string;
+  level: CourseLevel;
+  quantity: number;
+}
+
 export interface CourseDto {
   id: number;
   title: string;

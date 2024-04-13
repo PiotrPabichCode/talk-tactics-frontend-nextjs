@@ -154,6 +154,9 @@ export const userColumns: ColumnDef<UserCourseItemPreviewDto>[] = [
   {
     accessorKey: 'setLearned',
     enableHiding: false,
+    meta: {
+      auth: true,
+    },
     header: ({ column }) => null,
     cell: SetLearnCell,
   },

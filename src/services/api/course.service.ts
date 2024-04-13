@@ -22,6 +22,9 @@ import {
   toGetUserCourseItemsPreviewRequestMapper,
   ApiResponseGetUserCourseItemsPreview,
   toGetUserCourseItemsPreviewResponseMapper,
+  CourseNavbarDto,
+  toLearnUserCourseItemResponseMapper,
+  ApiResponseLearnUserCourseItem,
 } from '@/typings/course';
 
 const ENDPOINT = 'courses';
@@ -37,6 +40,15 @@ export const getCourses = async (): Promise<CourseDto[]> => {
   const res = toGetCourseResponseMapper(data);
   useCourseStore.getState().setCourses(res);
   return res;
+};
+
+export const getNavbarCourses = async (): Promise<CourseNavbarDto[]> => {
+  const { data } = await axios<CourseNavbarDto[]>({
+    method: 'GET',
+    url: ENDPOINT + '/navbar',
+  });
+
+  return data;
 };
 
 export const getUserCoursesPreviewByUserId = async ({ id }: { id: number }) => {
@@ -92,10 +104,11 @@ export const deleteUserCourse = async (req: ApiRequestDeleteUserCourse) => {
 };
 
 export const learnUserCourseItem = async ({ id }: { id: number }) => {
-  await axios({
+  const { data } = await axios<ApiResponseLearnUserCourseItem>({
     method: 'POST',
     url: `${USER_COURSE_ITEM_ENDPOINT}/learn/id/${id}`,
   });
+  return toLearnUserCourseItemResponseMapper(data);
 };
 
 export const getUserCourse = async (req: ApiRequestGetUserCourse) => {
@@ -115,7 +128,5 @@ export const getUserCourseItemsPreview = async (
     data: toGetUserCourseItemsPreviewRequestMapper(req),
   });
 
-  const res = toGetUserCourseItemsPreviewResponseMapper(data);
-
-  return res;
+  return toGetUserCourseItemsPreviewResponseMapper(data);
 };

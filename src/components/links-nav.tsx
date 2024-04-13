@@ -11,27 +11,76 @@ import {
 } from './ui/navigation-menu';
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { CourseDto } from '@/typings/course';
-import uniqBy from 'lodash/uniqBy';
-import { shuffle } from 'lodash';
+import { CourseNavbarDto } from '@/typings/course';
 import Image from 'next/image';
 
-const WordOptions = ({ courses }: { courses: CourseDto[] }) => {
+const RecommendedCourses = ({ courses }: { courses: CourseNavbarDto[] }) => {
+  return (
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>English courses</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <ul className='grid gap-3 p-6 w-[90vw] md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]'>
+          <li className='row-span-3'>
+            <NavigationMenuLink asChild>
+              <Link
+                className='flex h-full w-full select-none flex-col rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md'
+                href='/courses'>
+                <div className='flex flex-row items-center justify-center md:block space-x-3 md:space-x-0'>
+                  <Image
+                    src={'/english.svg'}
+                    alt='English flag'
+                    width={32}
+                    height={32}
+                  />
+                  <div className='mb-2 mt-4 text-lg font-medium'>
+                    English courses
+                  </div>
+                </div>
+                <p className='text-sm leading-tight text-muted-foreground'>
+                  {courses[0].title}
+                </p>
+              </Link>
+            </NavigationMenuLink>
+          </li>
+          {courses.map((course) => (
+            <ListItem
+              key={course.id}
+              href={`/courses/${course.id}`}
+              title={course.level}>
+              {course.title}
+            </ListItem>
+          ))}
+        </ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  );
+};
+
+const WordOptions = ({ courses }: { courses: CourseNavbarDto[] }) => {
   const BASE_DESCRIPTION = 'Most frequently used english words - Top';
-  return courses.map((course) => (
-    <ListItem
-      key={course.level + '_word'}
-      title={course.level}
-      href={`/courses/${course.id}/words/${Math.floor(
-        Math.random() * course.quantity
-      )}`}>{`${BASE_DESCRIPTION} ${
-      course.level === 'ADVANCED'
-        ? '<85%'
-        : course.level === 'INTERMEDIATE'
-        ? '85-94%'
-        : '95-99%'
-    }`}</ListItem>
-  ));
+  return (
+    <NavigationMenuItem className=''>
+      <NavigationMenuTrigger>Generate random word</NavigationMenuTrigger>
+      <NavigationMenuContent className='overflow-x-hidden'>
+        <ul className='grid grid-cols-1 gap-3 p-4 w-full'>
+          {courses.map((course) => (
+            <ListItem
+              key={course.level + '_word'}
+              title={course.level}
+              href={`/courses/${course.id}/words/${Math.floor(
+                Math.random() * course.quantity
+              )}`}>{`${BASE_DESCRIPTION} ${
+              course.level === 'ADVANCED'
+                ? '<85%'
+                : course.level === 'INTERMEDIATE'
+                ? '85-94%'
+                : '95-99%'
+            }`}</ListItem>
+          ))}
+        </ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  );
 };
 
 const ListItem = React.forwardRef<
@@ -66,64 +115,13 @@ export function LinksNav({
   courses,
 }: {
   header?: boolean;
-  courses: CourseDto[];
+  courses: CourseNavbarDto[];
 }) {
-  if (courses.length < 3) {
-    return null;
-  }
-  const shuffledCourses = shuffle(courses);
-  const uniqueCourses: CourseDto[] = uniqBy(
-    shuffledCourses,
-    (course: CourseDto) => course.level
-  );
   return (
     <NavigationMenu orientation={!header ? 'vertical' : 'horizontal'}>
       <NavigationMenuList className={cn(!header && 'flex-col items-start')}>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>English courses</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className='grid gap-3 p-6 w-[90vw] md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]'>
-              <li className='row-span-3'>
-                <NavigationMenuLink asChild>
-                  <Link
-                    className='flex h-full w-full select-none flex-col rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md'
-                    href='/courses'>
-                    <div className='flex flex-row items-center justify-center md:block space-x-3 md:space-x-0'>
-                      <Image
-                        src={'/english.svg'}
-                        alt='English flag'
-                        width={32}
-                        height={32}
-                      />
-                      <div className='mb-2 mt-4 text-lg font-medium'>
-                        English courses
-                      </div>
-                    </div>
-                    <p className='text-sm leading-tight text-muted-foreground'>
-                      {uniqueCourses[0].description}
-                    </p>
-                  </Link>
-                </NavigationMenuLink>
-              </li>
-              {uniqueCourses.map((course) => (
-                <ListItem
-                  key={course.id}
-                  href={`/courses/${course.id}`}
-                  title={course.level}>
-                  {course.title}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem className=''>
-          <NavigationMenuTrigger>Generate random word</NavigationMenuTrigger>
-          <NavigationMenuContent className='overflow-x-hidden'>
-            <ul className='grid grid-cols-1 gap-3 p-4 w-full'>
-              <WordOptions courses={uniqueCourses} />
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+        <RecommendedCourses courses={courses} />
+        <WordOptions courses={courses} />
       </NavigationMenuList>
     </NavigationMenu>
   );

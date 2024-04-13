@@ -31,4 +31,6 @@ export const useAuthStore = create<IAuthStore>()(
   )
 );
 
+export const userId = () => useAuthStore.getState().credentials?.id!;
+
 export default useAuthStore;

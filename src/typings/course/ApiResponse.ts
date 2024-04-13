@@ -109,3 +109,19 @@ export const toGetUserCourseItemsPreviewResponseMapper = ({
     })),
   };
 };
+
+export interface ApiResponseLearnUserCourseItem {
+  course_id: number;
+}
+
+export interface ResponseLearnUserCourseItem {
+  courseId: number;
+}
+
+export const toLearnUserCourseItemResponseMapper = ({
+  course_id,
+}: ApiResponseLearnUserCourseItem) => {
+  return {
+    courseId: course_id,
+  };
+};
