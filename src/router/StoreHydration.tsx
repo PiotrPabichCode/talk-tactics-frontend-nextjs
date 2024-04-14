@@ -21,13 +21,9 @@ const StoreHydration = () => {
     }
     if (!useAuthStore.persist.hasHydrated()) {
       useAuthStore.persist.onFinishHydration(async (state) => {
-        await getCourses();
         if (!state.credentials?.username) {
           useUserStore.getState().setLoading(false);
         } else {
-          await getUserCoursesPreviewByUserId({
-            id: state.credentials?.id,
-          });
           await getUserDetails({
             username: state.credentials?.username,
           });

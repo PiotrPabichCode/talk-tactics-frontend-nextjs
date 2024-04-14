@@ -4,41 +4,18 @@ import { CourseDto, UserCoursePreviewDto } from '@/typings/course';
 
 export interface CourseStore {
   courses: CourseDto[];
+  userCourses: UserCoursePreviewDto[];
   setCourses: (courses: CourseDto[]) => void;
   clearUserCourses: () => void;
   setUserCourses: (userCourses: UserCoursePreviewDto[]) => void;
+  getCombinedCourses: () => CourseDto[];
   isCourseAdded: (courseId: number) => boolean;
-}
-
-function combineCourses(
-  courses: CourseDto[],
-  userCourses: UserCoursePreviewDto[]
-): CourseDto[] {
-  const combined = courses.map((course) => {
-    const userCourse = userCourses.find(
-      (userCourse) => userCourse.courseId === course.id
-    );
-    if (userCourse) {
-      return {
-        ...course,
-        progress: userCourse.progress,
-        completed: userCourse.completed,
-      };
-    } else {
-      return {
-        ...course,
-        progress: undefined,
-        completed: undefined,
-      };
-    }
-  });
-
-  return combined;
 }
 
 const useCourseStore = create<CourseStore>()(
   logger<CourseStore>((set, get) => ({
     courses: [],
+    userCourses: [],
     setCourses(courses) {
       set((state) => {
         const updatedCourses = [...state.courses];
@@ -48,12 +25,7 @@ const useCourseStore = create<CourseStore>()(
             (course) => course.id === newCourse.id
           );
 
-          if (existingCourseIndex > -1) {
-            const existingCourse = updatedCourses[existingCourseIndex];
-            if (!existingCourse.progress) {
-              updatedCourses[existingCourseIndex] = newCourse;
-            }
-          } else {
+          if (existingCourseIndex === -1) {
             updatedCourses.push(newCourse);
           }
         });
@@ -65,16 +37,52 @@ const useCourseStore = create<CourseStore>()(
       });
     },
     clearUserCourses() {
-      set((state) => ({ courses: combineCourses(state.courses, []) }));
+      set((state) => ({ ...state, userCourses: [] }));
     },
     setUserCourses(userCourses) {
-      set((state) => ({ courses: combineCourses(state.courses, userCourses) }));
+      set((state) => {
+        const updatedUserCourses = [...state.userCourses];
+
+        userCourses.forEach((newUserCourse) => {
+          const existingUserCourseIndex = updatedUserCourses.findIndex(
+            (userCourse) => userCourse.id === newUserCourse.id
+          );
+
+          if (existingUserCourseIndex === -1) {
+            updatedUserCourses.push(newUserCourse);
+          }
+        });
+
+        return {
+          ...state,
+          userCourses: updatedUserCourses,
+        };
+      });
+    },
+    getCombinedCourses() {
+      return get().courses.map((course) => {
+        const userCourse = get().userCourses.find(
+          (userCourse) => userCourse.courseId === course.id
+        );
+
+        if (userCourse) {
+          return {
+            ...course,
+            progress: userCourse.progress,
+            completed: userCourse.completed,
+            isAdded: true,
+          };
+        }
+
+        return {
+          ...course,
+          isAdded: false,
+        };
+      });
     },
     isCourseAdded(courseId) {
-      return (
-        get().courses.findIndex(
-          (c: CourseDto) => c.id === courseId && c.progress !== undefined
-        ) !== -1
+      return get().userCourses.some(
+        (userCourse) => userCourse.courseId === courseId
       );
     },
   }))

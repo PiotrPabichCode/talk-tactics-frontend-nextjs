@@ -15,7 +15,7 @@ export default function CoursesPage() {
   const userId = useAuthStore().credentials?.id;
   const { isFetching: isFetchingCourses } = useGetCourses();
   const { isFetching } = useGetUserCoursesPreviewByUserId(userId);
-  const courses = useCourseStore().courses;
+  const courses = useCourseStore().getCombinedCourses();
 
   if (isFetchingCourses || isFetching) {
     return <Spinner />;
