@@ -7,7 +7,7 @@ import {
   getCourses,
   getNavbarCourses,
   getUserCourseItemsPreview,
-  getUserCoursesPreviewByUserId,
+  getUserCourses,
   learnUserCourseItem,
 } from '../api/course.service';
 import {
@@ -20,7 +20,11 @@ import {
   ResponseGetUserCourseItemsPreview,
   UserCoursePreviewDto,
 } from '@/typings/course';
-import { useCourseAdded, useCoursesEmpty } from '@/store/useCourseStore';
+import {
+  useCourseAdded,
+  useCoursesEmpty,
+  useUserCoursesEmpty,
+} from '@/store/useCourseStore';
 import { userId } from '@/store/useAuthStore';
 import { useUserLoading } from '@/store/useUserStore';
 
@@ -63,7 +67,9 @@ export function useGetNavbarCourses() {
     queryFn: () => getNavbarCourses(),
     staleTime: Infinity,
     initialData: () => {
-      return queryClient.getQueryData(getQueryKey()) as CourseNavbarDto[];
+      return queryClient.getQueryData([
+        COURSES_NAVBAR_QUERY_KEY,
+      ]) as CourseNavbarDto[];
     },
   });
   return query;
@@ -84,11 +90,12 @@ export function useGetCourseItemById(id: number) {
   return query;
 }
 
-export function useGetUserCoursesPreviewByUserId(userId?: number) {
-  const enabled = !useCoursesEmpty() && !!userId;
-  const query = useQuery<UserCoursePreviewDto[], Error>({
+export function useGetUserCoursesByUserId(userId?: number) {
+  const enabled = !!userId;
+  const query = useQuery<CourseDto[], Error>({
     queryKey: [USER_COURSES_PREVIEW_QUERY_KEY],
-    queryFn: () => getUserCoursesPreviewByUserId({ id: userId! }),
+    queryFn: () => getUserCourses({ id: userId! }),
+    staleTime: Infinity,
     enabled: enabled,
   });
   return query;

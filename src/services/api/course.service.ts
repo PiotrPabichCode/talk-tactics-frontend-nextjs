@@ -51,14 +51,13 @@ export const getNavbarCourses = async (): Promise<CourseNavbarDto[]> => {
   return data;
 };
 
-export const getUserCoursesPreviewByUserId = async ({ id }: { id: number }) => {
-  const { data } = await axios<ApiResponseGetUserCoursesPreviewByUserId>({
+export const getUserCourses = async ({ id }: { id: number }) => {
+  const { data } = await axios<CourseDto[]>({
     method: 'GET',
-    url: `${USER_COURSE_ENDPOINT}/preview/user-id/${id}`,
+    url: `${USER_COURSE_ENDPOINT}/user-id/${id}`,
   });
-  const res = toGetUserCoursesPreviewByUserIdResponseMapper(data);
-  useCourseStore.getState().setUserCourses(res);
-  return res;
+  useCourseStore.getState().setUserCourses(data);
+  return data;
 };
 
 export const getCourseItemsPreviewByCourseId = async ({

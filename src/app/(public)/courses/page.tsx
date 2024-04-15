@@ -6,7 +6,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { filters } from './_components/filters';
 import {
   useGetCourses,
-  useGetUserCoursesPreviewByUserId,
+  useGetUserCoursesByUserId,
 } from '@/services/queries/course.query';
 import useAuthStore from '@/store/useAuthStore';
 import useCourseStore from '@/store/useCourseStore';
@@ -14,7 +14,7 @@ import useCourseStore from '@/store/useCourseStore';
 export default function CoursesPage() {
   const userId = useAuthStore().credentials?.id;
   const { isFetching: isFetchingCourses } = useGetCourses();
-  const { isFetching } = useGetUserCoursesPreviewByUserId(userId);
+  const { isFetching } = useGetUserCoursesByUserId(userId);
   const courses = useCourseStore().getCombinedCourses();
 
   if (isFetchingCourses || isFetching) {

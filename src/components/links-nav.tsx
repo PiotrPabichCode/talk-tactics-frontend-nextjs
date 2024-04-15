@@ -37,7 +37,8 @@ const RecommendedCourses = ({ courses }: { courses: CourseNavbarDto[] }) => {
                   </div>
                 </div>
                 <p className='text-sm leading-tight text-muted-foreground'>
-                  {courses[0].title}
+                  Discover our English courses. Improve your language skills.
+                  Beginner to advanced. Start today!
                 </p>
               </Link>
             </NavigationMenuLink>

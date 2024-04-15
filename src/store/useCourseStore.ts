@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 import { logger } from './logger';
-import { CourseDto, UserCoursePreviewDto } from '@/typings/course';
+import { CourseDto } from '@/typings/course';
 
 export interface CourseStore {
   courses: CourseDto[];
-  userCourses: UserCoursePreviewDto[];
+  userCourses: CourseDto[];
   setCourses: (courses: CourseDto[]) => void;
   clearUserCourses: () => void;
-  setUserCourses: (userCourses: UserCoursePreviewDto[]) => void;
+  setUserCourses: (userCourses: CourseDto[]) => void;
   getCombinedCourses: () => CourseDto[];
   isCourseAdded: (courseId: number) => boolean;
 }
@@ -40,56 +40,31 @@ const useCourseStore = create<CourseStore>()(
       set((state) => ({ ...state, userCourses: [] }));
     },
     setUserCourses(userCourses) {
-      set((state) => {
-        const updatedUserCourses = [...state.userCourses];
-
-        userCourses.forEach((newUserCourse) => {
-          const existingUserCourseIndex = updatedUserCourses.findIndex(
-            (userCourse) => userCourse.id === newUserCourse.id
-          );
-
-          if (existingUserCourseIndex === -1) {
-            updatedUserCourses.push(newUserCourse);
-          }
-        });
-
-        return {
-          ...state,
-          userCourses: updatedUserCourses,
-        };
-      });
+      set({ userCourses });
     },
     getCombinedCourses() {
-      return get().courses.map((course) => {
-        const userCourse = get().userCourses.find(
-          (userCourse) => userCourse.courseId === course.id
-        );
+      const { courses, userCourses } = get();
 
-        if (userCourse) {
-          return {
-            ...course,
-            progress: userCourse.progress,
-            completed: userCourse.completed,
-            isAdded: true,
-          };
+      const courseMap = new Map(courses.map((course) => [course.id, course]));
+      userCourses.forEach((course) => {
+        if (courseMap.has(course.id)) {
+          courseMap.set(course.id, course);
         }
-
-        return {
-          ...course,
-          isAdded: false,
-        };
       });
+
+      return Array.from(courseMap.values()).sort((a, b) => a.id - b.id);
     },
     isCourseAdded(courseId) {
-      return get().userCourses.some(
-        (userCourse) => userCourse.courseId === courseId
-      );
+      return get().userCourses.some((userCourse) => userCourse.id === courseId);
     },
   }))
 );
 
 export const useCourseAdded = (courseId: number) =>
   useCourseStore().isCourseAdded(courseId);
+
+export const useUserCoursesEmpty = () =>
+  useCourseStore().userCourses.length === 0;
 
 export const useCoursesEmpty = () => useCourseStore().courses.length === 0;
 
