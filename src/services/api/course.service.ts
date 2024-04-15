@@ -12,8 +12,6 @@ import {
   toGetCourseItemsPreviewByCourseIdResponseMapper,
   ApiRequestAddUserCourse,
   toAddUserCourseRequestMapper,
-  ApiResponseGetUserCoursesPreviewByUserId,
-  toGetUserCoursesPreviewByUserIdResponseMapper,
   ApiRequestDeleteUserCourse,
   toDeleteUserCourseRequestMapper,
   toGetUserCourseRequestMapper,

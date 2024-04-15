@@ -18,13 +18,8 @@ import {
   CourseItemDto,
   CourseNavbarDto,
   ResponseGetUserCourseItemsPreview,
-  UserCoursePreviewDto,
 } from '@/typings/course';
-import {
-  useCourseAdded,
-  useCoursesEmpty,
-  useUserCoursesEmpty,
-} from '@/store/useCourseStore';
+import { useCourseAdded, useCoursesEmpty } from '@/store/useCourseStore';
 import { userId } from '@/store/useAuthStore';
 import { useUserLoading } from '@/store/useUserStore';
 

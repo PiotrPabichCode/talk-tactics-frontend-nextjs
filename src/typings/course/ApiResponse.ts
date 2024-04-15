@@ -68,21 +68,6 @@ export const toGetCourseItemByIdResponseMapper = ({
   };
 };
 
-export type ApiResponseGetUserCoursesPreviewByUserId =
-  ApiUserCoursePreviewDto[];
-
-export const toGetUserCoursesPreviewByUserIdResponseMapper = (
-  res: ApiResponseGetUserCoursesPreviewByUserId
-) => {
-  return res.map((userCourse) => ({
-    id: userCourse.id,
-    userId: userCourse.user_id,
-    courseId: userCourse.course_id,
-    progress: userCourse.progress,
-    completed: userCourse.completed,
-  }));
-};
-
 export interface ApiResponseGetUserCourseItemsPreview {
   course_name: string;
   items: ApiUserCourseItemPreviewDto[];

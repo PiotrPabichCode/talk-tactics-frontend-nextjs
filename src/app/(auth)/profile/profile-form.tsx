@@ -24,13 +24,15 @@ import {
   ApiRequestUpdateUserSchema,
   UpdateUserFormValues,
 } from '@/typings/user';
+import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
-import { useEffect } from 'react';
 
 export function ProfileForm() {
   const credentials = useAuthStore().credentials;
   const { isPending, mutateAsync: updateUser } = useUpdateUserDetailsQuery();
   const { firstName, lastName, email, bio } = useUserStore();
+  const [enableSubmit, setEnableSubmit] = useState(false);
 
   let defaultValues = {
     username: credentials?.username,
@@ -49,7 +51,9 @@ export function ProfileForm() {
   useEffect(() => {
     const isNew = !isEqual(defaultValues, form.getValues());
     if (isNew) {
-      form.reset(defaultValues);
+      setEnableSubmit(true);
+    } else {
+      setEnableSubmit(false);
     }
   }, [defaultValues]);
 
@@ -159,7 +163,10 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <Button type='submit' disabled={isPending}>
+        <Button
+          className={cn(!enableSubmit && 'hidden')}
+          type='submit'
+          disabled={isPending || !enableSubmit}>
           Update profile
         </Button>
       </form>
