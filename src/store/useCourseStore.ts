@@ -1,14 +1,18 @@
 import { create } from 'zustand';
 import { logger } from './logger';
-import { CourseDto, UserCoursePreviewDto } from '@/typings/course';
+import { CourseDto } from '@/typings/course';
+import { ColumnFiltersState, PaginationState } from '@tanstack/react-table';
 
 export interface CourseStore {
   courses: CourseDto[];
-  userCourses: UserCoursePreviewDto[];
+  userCourses: CourseDto[];
   setCourses: (courses: CourseDto[]) => void;
   clearUserCourses: () => void;
-  setUserCourses: (userCourses: UserCoursePreviewDto[]) => void;
-  getCombinedCourses: () => CourseDto[];
+  setUserCourses: (userCourses: CourseDto[]) => void;
+  getCombinedCourses: (
+    pagination: PaginationState,
+    filters: ColumnFiltersState
+  ) => CourseDto[];
   isCourseAdded: (courseId: number) => boolean;
 }
 
@@ -17,24 +21,7 @@ const useCourseStore = create<CourseStore>()(
     courses: [],
     userCourses: [],
     setCourses(courses) {
-      set((state) => {
-        const updatedCourses = [...state.courses];
-
-        courses.forEach((newCourse) => {
-          const existingCourseIndex = updatedCourses.findIndex(
-            (course) => course.id === newCourse.id
-          );
-
-          if (existingCourseIndex === -1) {
-            updatedCourses.push(newCourse);
-          }
-        });
-
-        return {
-          ...state,
-          courses: updatedCourses,
-        };
-      });
+      set({ courses });
     },
     clearUserCourses() {
       set((state) => ({ ...state, userCourses: [] }));
@@ -59,37 +46,33 @@ const useCourseStore = create<CourseStore>()(
         };
       });
     },
-    getCombinedCourses() {
-      return get().courses.map((course) => {
-        const userCourse = get().userCourses.find(
-          (userCourse) => userCourse.courseId === course.id
-        );
+    getCombinedCourses(pagination, filters) {
+      const { courses, userCourses } = get();
 
-        if (userCourse) {
-          return {
-            ...course,
-            progress: userCourse.progress,
-            completed: userCourse.completed,
-            isAdded: true,
-          };
+      if (filters.some((filter) => filter.id === 'progress')) {
+        return userCourses;
+      }
+
+      const courseMap = new Map(courses.map((course) => [course.id, course]));
+      userCourses.forEach((course) => {
+        if (courseMap.has(course.id)) {
+          courseMap.set(course.id, course);
         }
-
-        return {
-          ...course,
-          isAdded: false,
-        };
       });
+
+      return Array.from(courseMap.values()).sort((a, b) => a.id - b.id);
     },
     isCourseAdded(courseId) {
-      return get().userCourses.some(
-        (userCourse) => userCourse.courseId === courseId
-      );
+      return get().userCourses.some((userCourse) => userCourse.id === courseId);
     },
   }))
 );
 
 export const useCourseAdded = (courseId: number) =>
   useCourseStore().isCourseAdded(courseId);
+
+export const useUserCoursesEmpty = () =>
+  useCourseStore().userCourses.length === 0;
 
 export const useCoursesEmpty = () => useCourseStore().courses.length === 0;
 

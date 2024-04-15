@@ -1,13 +1,23 @@
-type PageMeta = {
+export type PageMeta = {
   currentPage: number;
-  limit: number;
   totalItems: number;
   totalPages: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
+  first: boolean;
+  last: boolean;
+  size: number;
 };
 
 export type Page<T> = {
   items: Array<T>;
   meta: PageMeta;
+};
+
+export type ApiPage<T> = {
+  content: Array<T>;
+  totalPages: number;
+  totalElements: number;
+  number: number;
+  first: boolean;
+  last: boolean;
+  size: number;
 };

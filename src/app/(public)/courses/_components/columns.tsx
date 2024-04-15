@@ -183,7 +183,14 @@ export const columns: ColumnDef<CourseDto>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader className='w-[10px]' column={column} title='No.' />
     ),
-    cell: ({ row }) => <div className='w-[10px]'>{Number(row.id) + 1}</div>,
+    cell: ({ row, table }) => {
+      const index =
+        table.getState().pagination?.pageIndex *
+          table.getState().pagination?.pageSize +
+        Number(row.id) +
+        1;
+      return <div className='w-[10px]'>{index}</div>;
+    },
     enableSorting: false,
     enableHiding: false,
   },

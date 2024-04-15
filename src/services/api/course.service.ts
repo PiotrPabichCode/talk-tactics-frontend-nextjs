@@ -26,20 +26,42 @@ import {
   toLearnUserCourseItemResponseMapper,
   ApiResponseLearnUserCourseItem,
 } from '@/typings/course';
+import { ApiPage, Page } from '@/typings/page.types';
+import { getColumnFiltersUrl } from '@/utils';
+import { ColumnFiltersState, PaginationState } from '@tanstack/react-table';
 
 const ENDPOINT = 'courses';
 const COURSE_ITEM_ENDPOINT = 'course-items';
 const USER_COURSE_ENDPOINT = 'user-courses';
 const USER_COURSE_ITEM_ENDPOINT = 'user-course-items';
 
-export const getCourses = async (): Promise<CourseDto[]> => {
-  const { data } = await axios<ApiResponseGetCourses>({
+export const getCourses = async (
+  pagination: PaginationState,
+  filters: ColumnFiltersState
+): Promise<Page<CourseDto>> => {
+  const { data } = await axios<ApiPage<CourseDto>>({
     method: 'GET',
-    url: ENDPOINT + '/all/preview',
+    url:
+      ENDPOINT +
+      '/all?page=' +
+      pagination.pageIndex +
+      '&size=' +
+      pagination.pageSize +
+      getColumnFiltersUrl(filters),
   });
-  const res = toGetCourseResponseMapper(data);
-  useCourseStore.getState().setCourses(res);
-  return res;
+
+  useCourseStore.getState().setCourses(data.content);
+  return {
+    items: data.content,
+    meta: {
+      currentPage: data.number,
+      totalItems: data.totalElements,
+      totalPages: data.totalPages,
+      first: data.first,
+      last: data.last,
+      size: data.size,
+    },
+  };
 };
 
 export const getNavbarCourses = async (): Promise<CourseNavbarDto[]> => {
@@ -51,14 +73,13 @@ export const getNavbarCourses = async (): Promise<CourseNavbarDto[]> => {
   return data;
 };
 
-export const getUserCoursesPreviewByUserId = async ({ id }: { id: number }) => {
-  const { data } = await axios<ApiResponseGetUserCoursesPreviewByUserId>({
+export const getUserCourses = async ({ id }: { id: number }) => {
+  const { data } = await axios<CourseDto[]>({
     method: 'GET',
-    url: `${USER_COURSE_ENDPOINT}/preview/user-id/${id}`,
+    url: `${USER_COURSE_ENDPOINT}/user-id/${id}`,
   });
-  const res = toGetUserCoursesPreviewByUserIdResponseMapper(data);
-  useCourseStore.getState().setUserCourses(res);
-  return res;
+  useCourseStore.getState().setUserCourses(data);
+  return data;
 };
 
 export const getCourseItemsPreviewByCourseId = async ({

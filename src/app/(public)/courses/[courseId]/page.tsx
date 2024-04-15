@@ -13,7 +13,7 @@ import {
   ResponseGetUserCourseItemsPreview,
 } from '@/typings/course';
 
-const UserCourseMapper = ({
+const UserCourseItemsMapper = ({
   userCourse,
 }: {
   userCourse: ResponseGetUserCourseItemsPreview;
@@ -35,7 +35,11 @@ const UserCourseMapper = ({
   );
 };
 
-const CourseMapper = ({ courseItems }: { courseItems: CourseItemDto[] }) => {
+const CourseItemsMapper = ({
+  courseItems,
+}: {
+  courseItems: CourseItemDto[];
+}) => {
   return (
     courseItems && (
       <>
@@ -82,8 +86,8 @@ export default function SingleCoursePage({
   return (
     <div className='block lg:flex justify-center h-full'>
       <div className='w-full lg:w-[80%] xl:w-[60%] 2xl:w-[50%] overflow-scroll md:overflow-auto p-2 md:p-4'>
-        <UserCourseMapper userCourse={userCourseMeta} />
-        <CourseMapper courseItems={courseItems} />
+        <UserCourseItemsMapper userCourse={userCourseMeta} />
+        <CourseItemsMapper courseItems={courseItems} />
       </div>
     </div>
   );

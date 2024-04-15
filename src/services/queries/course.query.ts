@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import {
   addUserCourse,
   deleteUserCourse,
@@ -7,7 +12,7 @@ import {
   getCourses,
   getNavbarCourses,
   getUserCourseItemsPreview,
-  getUserCoursesPreviewByUserId,
+  getUserCourses,
   learnUserCourseItem,
 } from '../api/course.service';
 import {
@@ -20,9 +25,15 @@ import {
   ResponseGetUserCourseItemsPreview,
   UserCoursePreviewDto,
 } from '@/typings/course';
-import { useCourseAdded, useCoursesEmpty } from '@/store/useCourseStore';
+import useCourseStore, {
+  useCourseAdded,
+  useCoursesEmpty,
+  useUserCoursesEmpty,
+} from '@/store/useCourseStore';
 import { userId } from '@/store/useAuthStore';
 import { useUserLoading } from '@/store/useUserStore';
+import { Page } from '@/typings/page.types';
+import { ColumnFiltersState, PaginationState } from '@tanstack/react-table';
 
 const QUERY_KEY = 'courses';
 const COURSES_NAVBAR_QUERY_KEY = 'courses_navbar';
@@ -34,23 +45,31 @@ const DELETE_USER_COURSE_QUERY_KEY = 'delete_user_course';
 const ADD_USER_COURSE_QUERY_KEY = 'add_user_course';
 const LEARN_USER_COURSE_ITEM_QUERY_KEY = 'learn_user_course_item';
 
-export function getQueryKey(page?: number) {
-  if (page === undefined) {
+export function getQueryKey(paginationState?: PaginationState) {
+  if (paginationState === undefined) {
     return [QUERY_KEY];
   }
-  return [QUERY_KEY, page];
+  return [QUERY_KEY, paginationState];
 }
 
-export function useGetCourses(page?: number) {
+export function useGetCourses(
+  pagination: PaginationState,
+  filters: ColumnFiltersState
+) {
   const queryClient = useQueryClient();
   const enabled = useCoursesEmpty();
-  const query = useQuery<CourseDto[], Error>({
-    queryKey: getQueryKey(page),
-    queryFn: () => getCourses(),
-    staleTime: Infinity,
-    enabled: enabled,
+  console.log(queryClient.getQueryData(['courses', pagination, filters]));
+  const query = useQuery<Page<CourseDto>, Error>({
+    queryKey: ['courses', pagination, filters],
+    queryFn: () => getCourses(pagination, filters),
     initialData: () => {
-      return queryClient.getQueryData(getQueryKey()) as CourseDto[];
+      const data = queryClient.getQueryData([
+        'courses',
+        pagination,
+        filters,
+      ]) as Page<CourseDto>;
+      useCourseStore.getState().setCourses(data?.items ?? []);
+      return data;
     },
   });
   return query;
@@ -84,11 +103,11 @@ export function useGetCourseItemById(id: number) {
   return query;
 }
 
-export function useGetUserCoursesPreviewByUserId(userId?: number) {
-  const enabled = !useCoursesEmpty() && !!userId;
-  const query = useQuery<UserCoursePreviewDto[], Error>({
-    queryKey: [USER_COURSES_PREVIEW_QUERY_KEY],
-    queryFn: () => getUserCoursesPreviewByUserId({ id: userId! }),
+export function useGetUserCoursesByUserId(userId?: number) {
+  const enabled = useUserCoursesEmpty() && !!userId;
+  const query = useQuery<CourseDto[], Error>({
+    queryKey: [USER_COURSES_PREVIEW_QUERY_KEY, userId],
+    queryFn: () => getUserCourses({ id: userId! }),
     enabled: enabled,
   });
   return query;

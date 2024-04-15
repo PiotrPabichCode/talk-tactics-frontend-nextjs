@@ -33,7 +33,7 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const userId = useAuthStore().credentials?.id;
   const isFiltered =
-    table.getState().columnFilters.length > 0 || table.getState().globalFilter;
+    table.getState().columnFilters?.length > 0 || table.getState().globalFilter;
   const params = useParams();
   const searchParams = useSearchParams();
   const [globalFilter, setGlobalFilter] = useState<string>('');

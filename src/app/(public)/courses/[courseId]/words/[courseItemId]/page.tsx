@@ -1,6 +1,6 @@
 'use client';
 
-import { Table } from '@/components/table/table';
+import { TablePaginated } from '@/components/table/table-paginate';
 import {
   Card,
   CardContent,
@@ -52,7 +52,7 @@ export default function SingleCourseItemPage({
         </CardHeader>
         <Separator className='mb-2' />
         <CardContent>
-          <Table columns={columns} data={courseItem.meanings} />
+          <TablePaginated columns={columns} data={courseItem.meanings} />
         </CardContent>
       </Card>
     </div>

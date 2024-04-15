@@ -15,6 +15,8 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  PaginationState,
+  OnChangeFn,
 } from '@tanstack/react-table';
 
 import {
@@ -29,12 +31,19 @@ import {
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
 import useAuthStore from '@/store/useAuthStore';
+import nav, { useRouter } from 'next/navigation';
+import { PageMeta } from '@/typings/page.types';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   filters?: TFilters;
   viewOptions?: boolean;
+  pagination?: PaginationState;
+  onPaginationChange?: OnChangeFn<PaginationState>;
+  pageMeta?: PageMeta;
+  columnFilters?: ColumnFiltersState;
+  onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
 }
 
 export function Table<TData, TValue>({
@@ -42,33 +51,42 @@ export function Table<TData, TValue>({
   data,
   filters,
   viewOptions = true,
+  pagination,
+  onPaginationChange,
+  pageMeta,
+  columnFilters,
+  onColumnFiltersChange,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const router = useRouter();
   const userId = useAuthStore().credentials?.id;
+
+  console.log(pageMeta);
 
   const table = useReactTable({
     data,
     columns,
+    rowCount: pageMeta?.totalPages,
     state: {
       sorting,
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onColumnFiltersChange: onColumnFiltersChange,
+    onPaginationChange: onPaginationChange,
+    manualPagination: true,
+    manualFiltering: true,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -109,7 +127,10 @@ export function Table<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => {
+              table.getRowModel().rows.map((row, index) => {
+                if (pagination && index >= pagination.pageSize) {
+                  return null;
+                }
                 return (
                   <TableRow
                     key={row.id}
@@ -143,7 +164,7 @@ export function Table<TData, TValue>({
           </TableBody>
         </UITable>
       </div>
-      <DataTablePagination table={table} />
+      {pagination && <DataTablePagination table={table} />}
     </div>
   );
 }
