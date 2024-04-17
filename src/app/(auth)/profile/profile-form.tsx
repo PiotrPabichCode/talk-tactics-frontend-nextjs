@@ -27,12 +27,18 @@ import {
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { Spinner } from '@/components/ui/spinner';
 
 export function ProfileForm() {
   const credentials = useAuthStore().credentials;
   const { isPending, mutateAsync: updateUser } = useUpdateUserDetailsQuery();
-  const { firstName, lastName, email, bio } = useUserStore();
+  const userDetails = useUserStore();
+  const { email, firstName, lastName, bio } = userDetails;
   const [enableSubmit, setEnableSubmit] = useState(false);
+
+  if (!userDetails) {
+    return <Spinner />;
+  }
 
   let defaultValues = {
     username: credentials?.username,
@@ -41,6 +47,7 @@ export function ProfileForm() {
     lastName: lastName,
     bio: bio ?? '',
   };
+  console.log('AFTER');
 
   let form = useForm<UpdateUserFormValues>({
     resolver: zodResolver(ApiRequestUpdateUserSchema),

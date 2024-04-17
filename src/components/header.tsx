@@ -6,13 +6,13 @@ import UserNav from './user-nav';
 import Link from 'next/link';
 import { ModeToggle } from './mode-toggle';
 import { LinksNav } from './links-nav';
-import useUserStore from '@/store/useUserStore';
+import { useUserIsHydrated } from '@/store/useUserStore';
 import { useGetNavbarCourses } from '@/services/queries/course.query';
 
 export default function Header() {
-  const { data: courses, isLoading } = useGetNavbarCourses();
-  const userLoading = useUserStore().loading;
-  if (isLoading || userLoading) {
+  const { data: courses, isLoading: coursesLoading } = useGetNavbarCourses();
+  const isUserHydrated = useUserIsHydrated();
+  if (coursesLoading || !isUserHydrated) {
     return null;
   }
   return (

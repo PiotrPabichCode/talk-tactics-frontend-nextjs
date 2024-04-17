@@ -1,7 +1,7 @@
 'use client';
 import { Spinner } from '@/components/ui/spinner';
 import useAuthStore from '@/store/useAuthStore';
-import useUserStore from '@/store/useUserStore';
+import { useUserIsHydrated } from '@/store/useUserStore';
 import { IAuthRole } from '@/typings/auth';
 import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -41,14 +41,14 @@ export default function withAuthRoles(
 ) {
   return function IsAuth(props: any) {
     const authStore = useAuthStore();
-    const initialLoading = useUserStore().loading;
+    const isHydrated = useUserIsHydrated();
     const [loading, setLoading] = useState(true);
     const [redirectPath, setRedirectPath] = useState<undefined | string>(
       undefined
     );
 
     useEffect(() => {
-      if (initialLoading) {
+      if (!isHydrated) {
         return;
       }
 
@@ -66,7 +66,7 @@ export default function withAuthRoles(
         setRedirectPath('/profile');
       }
       setLoading(false);
-    }, [authStore, initialLoading]);
+    }, [authStore, isHydrated]);
 
     if (loading) {
       if (skipLoader) {
@@ -75,7 +75,6 @@ export default function withAuthRoles(
       return (
         <div className='flex min-h-screen flex-col items-center justify-center text-white'>
           <Spinner />
-          <p>Loading...</p>
         </div>
       );
     }

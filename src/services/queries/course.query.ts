@@ -21,7 +21,7 @@ import {
 } from '@/typings/course';
 import { useCourseAdded, useCoursesEmpty } from '@/store/useCourseStore';
 import { userId } from '@/store/useAuthStore';
-import { useUserLoading } from '@/store/useUserStore';
+import { useUserIsHydrated } from '@/store/useUserStore';
 
 const QUERY_KEY = 'courses';
 const COURSES_NAVBAR_QUERY_KEY = 'courses_navbar';
@@ -46,7 +46,6 @@ export function useGetCourses(page?: number) {
   const query = useQuery<CourseDto[], Error>({
     queryKey: getQueryKey(page),
     queryFn: () => getCourses(),
-    staleTime: Infinity,
     enabled: enabled,
     initialData: () => {
       return queryClient.getQueryData(getQueryKey()) as CourseDto[];
@@ -60,7 +59,6 @@ export function useGetNavbarCourses() {
   const query = useQuery<CourseNavbarDto[], Error>({
     queryKey: [COURSES_NAVBAR_QUERY_KEY],
     queryFn: () => getNavbarCourses(),
-    staleTime: Infinity,
     initialData: () => {
       return queryClient.getQueryData([
         COURSES_NAVBAR_QUERY_KEY,
@@ -88,9 +86,8 @@ export function useGetCourseItemById(id: number) {
 export function useGetUserCoursesByUserId(userId?: number) {
   const enabled = !!userId;
   const query = useQuery<CourseDto[], Error>({
-    queryKey: [USER_COURSES_PREVIEW_QUERY_KEY],
+    queryKey: [USER_COURSES_PREVIEW_QUERY_KEY, userId],
     queryFn: () => getUserCourses({ id: userId! }),
-    staleTime: Infinity,
     enabled: enabled,
   });
   return query;
@@ -146,9 +143,9 @@ export function useLearnUserCourseItem() {
 
 export function useGetCourseItemsPreviewByCourseId(courseId: number) {
   const queryClient = useQueryClient();
-  const isLoaded = useUserLoading();
+  const isUserHydrated = useUserIsHydrated();
   const isAdded = useCourseAdded(courseId);
-  const enabled = isLoaded && !isAdded;
+  const enabled = isUserHydrated && !isAdded;
   const query = useQuery<CourseItemDto[], Error>({
     queryKey: [COURSE_ITEMS_PREVIEW_QUERY_KEY, courseId],
     queryFn: () => getCourseItemsPreviewByCourseId({ courseId }),
