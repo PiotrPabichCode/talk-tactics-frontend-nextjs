@@ -24,7 +24,7 @@ import {
   ApiRequestUpdateUserSchema,
   UpdateUserFormValues,
 } from '@/typings/user';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
@@ -32,14 +32,8 @@ import { Spinner } from '@/components/ui/spinner';
 export function ProfileForm() {
   const credentials = useAuthStore().credentials;
   const { isPending, mutateAsync: updateUser } = useUpdateUserDetailsQuery();
-  const userDetails = useUserStore();
-  const { email, firstName, lastName, bio } = userDetails;
+  const { email, firstName, lastName, bio, isReady } = useUserStore();
   const [enableSubmit, setEnableSubmit] = useState(false);
-
-  if (!userDetails) {
-    return <Spinner />;
-  }
-
   let defaultValues = {
     username: credentials?.username,
     email: email,
@@ -47,13 +41,24 @@ export function ProfileForm() {
     lastName: lastName,
     bio: bio ?? '',
   };
-  console.log('AFTER');
-
   let form = useForm<UpdateUserFormValues>({
     resolver: zodResolver(ApiRequestUpdateUserSchema),
     defaultValues,
     mode: 'onChange',
   });
+
+  useMemo(() => {
+    if (isReady) {
+      defaultValues = {
+        username: credentials?.username,
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        bio: bio ?? '',
+      };
+      form.reset(defaultValues);
+    }
+  }, [isReady]);
 
   useEffect(() => {
     const isNew = !isEqual(defaultValues, form.getValues());
@@ -62,7 +67,11 @@ export function ProfileForm() {
     } else {
       setEnableSubmit(false);
     }
-  }, [defaultValues]);
+  }, [defaultValues, isReady]);
+
+  if (!isReady) {
+    return <Spinner />;
+  }
 
   async function onSubmit(data: UpdateUserFormValues) {
     const changedValues = omitBy(

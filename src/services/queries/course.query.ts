@@ -85,10 +85,18 @@ export function useGetCourseItemById(id: number) {
 
 export function useGetUserCoursesByUserId(userId?: number) {
   const enabled = !!userId;
+  const queryClient = useQueryClient();
   const query = useQuery<CourseDto[], Error>({
     queryKey: [USER_COURSES_PREVIEW_QUERY_KEY, userId],
     queryFn: () => getUserCourses({ id: userId! }),
+    staleTime: 0,
     enabled: enabled,
+    initialData: () => {
+      return queryClient.getQueryData([
+        USER_COURSES_PREVIEW_QUERY_KEY,
+        userId,
+      ]) as CourseDto[];
+    },
   });
   return query;
 }
@@ -174,6 +182,7 @@ export function useGetUserCourseItemsPreviewByCourseId({
         courseId: courseId,
         userId: userId(),
       }),
+    staleTime: 0,
     enabled: enabled,
     initialData: () => {
       return queryClient.getQueryData([

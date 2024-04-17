@@ -16,9 +16,10 @@ import {
   useSearchParams,
 } from 'next/navigation';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useAuthStore from '@/store/useAuthStore';
 import { cn } from '@/lib/utils';
+import { useUserIsReady } from '@/store/useUserStore';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -31,22 +32,29 @@ export function DataTableToolbar<TData>({
   filters: settings,
   viewOptions,
 }: DataTableToolbarProps<TData>) {
-  const userId = useAuthStore().credentials?.id;
+  const isUserReady = useUserIsReady();
   const isFiltered =
     table.getState().columnFilters.length > 0 || table.getState().globalFilter;
   const params = useParams();
-  const searchParams = useSearchParams();
+  const myCourses = useSearchParams().get('myCourses');
   const [globalFilter, setGlobalFilter] = useState<string>('');
-  const [filterMyCourses, setFilterMyCourses] = useState(
-    searchParams.get('filter') === 'added' && !!userId
-  );
+  const [filterMyCourses, setFilterMyCourses] = useState<boolean>(false);
   const backUrl = `/courses/${params.courseItemId ? params.courseId : ''}`;
 
+  useMemo(() => {
+    if (!isUserReady) {
+      return setFilterMyCourses(false);
+    }
+    setFilterMyCourses(!!myCourses);
+  }, [myCourses, isUserReady]);
+
   useEffect(() => {
-    table
-      .getColumn('progress')
-      ?.setFilterValue(filterMyCourses ? true : undefined);
-  }, [table, filterMyCourses]);
+    if (Object.keys(params).length === 0) {
+      table
+        .getColumn('progress')
+        ?.setFilterValue(filterMyCourses ? true : undefined);
+    }
+  }, [filterMyCourses]);
 
   return (
     <div className='flex items-center justify-between overflow-scroll md:overflow-auto'>
@@ -61,7 +69,7 @@ export function DataTableToolbar<TData>({
             }}
             className='h-8 w-[150px] lg:w-[250px]'
           />
-          {userId && !params.courseId && (
+          {isUserReady && !params.courseId && (
             <Button
               onClick={() => {
                 setFilterMyCourses(!filterMyCourses);
