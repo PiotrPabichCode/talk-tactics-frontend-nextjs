@@ -15,6 +15,7 @@ import { columns } from './_components/columns';
 import { Button } from '@/components/ui/button';
 import { Undo2 } from 'lucide-react';
 import Link from 'next/link';
+import { AudioPlayer } from './_components/audio-player';
 
 export default function SingleCourseItemPage({
   params,
@@ -42,9 +43,12 @@ export default function SingleCourseItemPage({
             <Undo2 className=' h-4 w-4' />
           </Button>
         </Link>
-        <CardHeader>
+        <CardHeader className='items-center'>
           <CardTitle>{courseItem.word}</CardTitle>
-          <CardDescription>{courseItem.phonetic}</CardDescription>
+          <CardDescription className='flex flex-row items-center gap-1'>
+            {courseItem.phonetic}
+            {courseItem.audio && <AudioPlayer url={courseItem.audio} />}
+          </CardDescription>
           <CardDescription>{courseItem.partOfSpeech}</CardDescription>
           <CardDescription className='font-bold pt-2'>
             {courseItem.course.title}

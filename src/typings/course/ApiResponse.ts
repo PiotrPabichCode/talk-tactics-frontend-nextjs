@@ -43,6 +43,7 @@ export interface ApiResponseCourseItem {
   id: number;
   word: string;
   phonetic: string;
+  audio: string;
   part_of_speech: string;
   meanings: WordMeaning[];
   course: ICourse;
@@ -55,6 +56,7 @@ export const toGetCourseItemByIdResponseMapper = ({
   word,
   meanings,
   part_of_speech,
+  audio,
   course,
   phonetic,
 }: ApiResponseCourseItem): CourseItem => {
@@ -63,6 +65,7 @@ export const toGetCourseItemByIdResponseMapper = ({
     word: word,
     meanings: meanings,
     partOfSpeech: part_of_speech,
+    audio: audio,
     course: course,
     phonetic: phonetic,
   };

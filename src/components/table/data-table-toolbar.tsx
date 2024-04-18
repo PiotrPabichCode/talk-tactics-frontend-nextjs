@@ -8,19 +8,12 @@ import { Input } from '@/components/ui/input';
 import { DataTableViewOptions } from './data-table-view-options';
 
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
-import { Check, Undo2 } from 'lucide-react';
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from 'next/navigation';
+import { Undo2 } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
-import useAuthStore from '@/store/useAuthStore';
-import { cn } from '@/lib/utils';
-import { useUserIsReady } from '@/store/useUserStore';
-
+import { useState } from 'react';
+import { useMyCoursesFilter } from './hooks/use-my-courses-filter';
+import { MyCoursesFilter } from './components/my-courses-filter';
+import { useParams } from 'next/navigation';
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   filters?: TFilters;
@@ -32,29 +25,12 @@ export function DataTableToolbar<TData>({
   filters: settings,
   viewOptions,
 }: DataTableToolbarProps<TData>) {
-  const isUserReady = useUserIsReady();
+  const { setFilterMyCourses } = useMyCoursesFilter({ table });
+  const params = useParams();
   const isFiltered =
     table.getState().columnFilters.length > 0 || table.getState().globalFilter;
-  const params = useParams();
-  const myCourses = useSearchParams().get('myCourses');
   const [globalFilter, setGlobalFilter] = useState<string>('');
-  const [filterMyCourses, setFilterMyCourses] = useState<boolean>(false);
   const backUrl = `/courses/${params.courseItemId ? params.courseId : ''}`;
-
-  useMemo(() => {
-    if (!isUserReady) {
-      return setFilterMyCourses(false);
-    }
-    setFilterMyCourses(!!myCourses);
-  }, [myCourses, isUserReady]);
-
-  useEffect(() => {
-    if (Object.keys(params).length === 0) {
-      table
-        .getColumn('progress')
-        ?.setFilterValue(filterMyCourses ? true : undefined);
-    }
-  }, [filterMyCourses]);
 
   return (
     <div className='flex items-center justify-between overflow-scroll md:overflow-auto'>
@@ -69,21 +45,7 @@ export function DataTableToolbar<TData>({
             }}
             className='h-8 w-[150px] lg:w-[250px]'
           />
-          {isUserReady && !params.courseId && (
-            <Button
-              onClick={() => {
-                setFilterMyCourses(!filterMyCourses);
-              }}
-              variant='outline'
-              size='sm'
-              className={cn(
-                'h-8 border-dashed',
-                filterMyCourses && 'bg-green-500 hover:bg-green-600 border-none'
-              )}>
-              {filterMyCourses && <Check className='mr-2 h-4 w-4' />}
-              My courses
-            </Button>
-          )}
+          <MyCoursesFilter table={table} />
           {settings.filters?.map(
             (filter) =>
               table.getColumn(filter.name) && (

@@ -25,6 +25,7 @@ export interface CourseItem {
   id: number;
   word: string;
   phonetic: string;
+  audio: string;
   partOfSpeech: string;
   meanings: WordMeaning[];
   course: ICourse;
@@ -34,6 +35,7 @@ export interface ApiCourseItem {
   id: number;
   word: string;
   phonetic: string;
+  audio: string;
   part_of_speech: string;
   meanings: WordMeaning[];
   course: ICourse;
