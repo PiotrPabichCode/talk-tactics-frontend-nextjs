@@ -1,5 +1,5 @@
 'use client';
-import { getUserDetails } from '@/services/api/auth.service';
+import { getUserDetails } from '@/services/api/user.service';
 import useAuthStore, { IAuthStore } from '@/store/useAuthStore';
 import useStore from '@/store/useStore';
 import useUserStore from '@/store/useUserStore';

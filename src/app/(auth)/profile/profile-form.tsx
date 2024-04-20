@@ -18,7 +18,7 @@ import { Textarea } from '@/components/ui/textarea';
 import useAuthStore from '@/store/useAuthStore';
 import useUserStore from '@/store/useUserStore';
 import { isEqual, omitBy } from 'lodash';
-import { useUpdateUserDetailsQuery } from '@/services/queries/auth.query';
+import { useUpdateUserDetailsMutation } from '@/services/queries/user.query';
 import {
   ApiRequestUpdateUser,
   ApiRequestUpdateUserSchema,
@@ -31,7 +31,7 @@ import { Spinner } from '@/components/ui/spinner';
 
 export function ProfileForm() {
   const credentials = useAuthStore().credentials;
-  const { isPending, mutateAsync: updateUser } = useUpdateUserDetailsQuery();
+  const { isPending, mutateAsync: updateUser } = useUpdateUserDetailsMutation();
   const { email, firstName, lastName, bio, isReady } = useUserStore();
   const [enableSubmit, setEnableSubmit] = useState(false);
   let defaultValues = {

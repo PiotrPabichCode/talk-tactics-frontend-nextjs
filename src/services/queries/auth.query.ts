@@ -1,9 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
-import { signIn, signUp, updateUser } from '../api/auth.service';
+import { signIn, signUp } from '../api/auth.service';
 import { ApiRequestSignIn, ApiRequestSignUp } from '@/typings/auth';
-import { ApiRequestUpdateUser } from '@/typings/user';
 
-export const useSignInQuery = () => {
+export const useSignInMutation = () => {
   return useMutation({
     mutationFn: async (req: ApiRequestSignIn) => {
       const res = await signIn(req);
@@ -20,15 +19,5 @@ export const useSignUpQuery = () => {
       return res;
     },
     mutationKey: ['signUp'],
-  });
-};
-
-export const useUpdateUserDetailsQuery = () => {
-  return useMutation({
-    mutationFn: async ({ id, updatedFields }: ApiRequestUpdateUser) => {
-      const res = await updateUser({ id, updatedFields });
-      return res;
-    },
-    mutationKey: ['updateUserDetails'],
   });
 };

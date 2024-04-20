@@ -1,4 +1,4 @@
-import { IApiAuthUser } from './user';
+import { IApiAuthUser, IApiUserProfile } from './user';
 
 export type ApiResponseUpdateUser = IApiAuthUser;
 
@@ -30,4 +30,17 @@ export const toGetUserDetailsResponseMapper = ({
     bio: bio,
     email: email,
   };
+};
+
+export type ApiResponseGetUserProfiles = IApiUserProfile[];
+
+export const toGetUserProfilesResponseMapper = (
+  data: ApiResponseGetUserProfiles
+) => {
+  return data.map((profile) => ({
+    id: profile.id,
+    fullName: profile.full_name,
+    totalPoints: profile.total_points,
+    bio: profile.bio,
+  }));
 };

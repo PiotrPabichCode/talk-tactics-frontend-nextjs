@@ -84,6 +84,24 @@ const WordOptions = ({ courses }: { courses: CourseNavbarDto[] }) => {
   );
 };
 
+const Leaderboard = () => {
+  return (
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Leaderboard</NavigationMenuTrigger>
+      <NavigationMenuContent className='overflow-x-hidden'>
+        <ul className='grid grid-cols-1 gap-3 p-4 w-full'>
+          {/* <ListItem href='/leaderboard' title='Leaderboard'>
+            Top 10 users
+          </ListItem> */}
+          <ListItem href='/profiles' title='Profiles'>
+            All users
+          </ListItem>
+        </ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  );
+};
+
 const ListItem = React.forwardRef<
   React.ElementRef<'a'>,
   React.ComponentPropsWithoutRef<'a'>
@@ -119,8 +137,9 @@ export function LinksNav({
   courses: CourseNavbarDto[];
 }) {
   return (
-    <NavigationMenu orientation={!header ? 'vertical' : 'horizontal'}>
+    <NavigationMenu>
       <NavigationMenuList className={cn(!header && 'flex-col items-start')}>
+        <Leaderboard />
         <RecommendedCourses courses={courses} />
         <WordOptions courses={courses} />
       </NavigationMenuList>

@@ -11,3 +11,17 @@ export interface IApiAuthUser {
   email: string;
   bio: string;
 }
+
+export interface IUserProfile {
+  id: number;
+  fullName: string;
+  totalPoints: number;
+  bio: string;
+}
+
+export interface IApiUserProfile {
+  id: number;
+  full_name: string;
+  total_points: number;
+  bio: string;
+}
