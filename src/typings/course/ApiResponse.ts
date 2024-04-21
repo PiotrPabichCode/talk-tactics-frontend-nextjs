@@ -3,7 +3,6 @@ import {
   ApiCourseItem,
   ApiCourseItemDto,
   ApiUserCourseItemPreviewDto,
-  ApiUserCoursePreviewDto,
   CourseDto,
   CourseItem,
   ICourse,

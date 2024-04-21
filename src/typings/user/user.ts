@@ -1,3 +1,5 @@
+import { UserCourse } from '../course';
+
 export interface IAuthUser {
   firstName: string;
   lastName: string;
@@ -12,16 +14,25 @@ export interface IApiAuthUser {
   bio: string;
 }
 
-export interface IUserProfile {
+export interface IUserProfilePreview {
   id: number;
-  fullName: string;
+  firstName: string;
+  lastName: string;
   totalPoints: number;
   bio: string;
 }
 
-export interface IApiUserProfile {
+export interface IApiUserProfilePreview {
   id: number;
-  full_name: string;
+  first_name: string;
+  last_name: string;
   total_points: number;
   bio: string;
+}
+export interface IUserProfile extends IUserProfilePreview {
+  courses: UserCourse[];
+}
+
+export interface IApiUserProfile extends IApiUserProfilePreview {
+  courses: UserCourse[];
 }

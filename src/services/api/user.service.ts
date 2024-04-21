@@ -4,9 +4,11 @@ import {
   ApiRequestGetUserDetails,
   ApiRequestUpdateUser,
   ApiResponseGetUserDetails,
-  ApiResponseGetUserProfiles,
+  ApiResponseGetUserProfile,
+  ApiResponseGetUserProfilePreviews,
   ApiResponseUpdateUser,
   toGetUserDetailsResponseMapper,
+  toGetUserProfileResponseMapper,
   toGetUserProfilesResponseMapper,
   toUpdateUserRequestMapper,
   toUpdateUserResponseMapper,
@@ -37,9 +39,17 @@ export const updateUser = async ({
 };
 
 export const getUserProfiles = async () => {
-  const { data } = await axios<ApiResponseGetUserProfiles>({
+  const { data } = await axios<ApiResponseGetUserProfilePreviews>({
     method: 'GET',
     url: USERS_ENDPOINT + '/profiles',
   });
   return toGetUserProfilesResponseMapper(data);
+};
+
+export const getUserProfileByUserId = async ({ id }: { id: number }) => {
+  const { data } = await axios<ApiResponseGetUserProfile>({
+    method: 'GET',
+    url: USERS_ENDPOINT + '/profiles/' + id,
+  });
+  return toGetUserProfileResponseMapper(data);
 };

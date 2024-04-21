@@ -1,12 +1,12 @@
 'use client';
 
 import { Spinner } from '@/components/ui/spinner';
-import { useGetUserProfiles } from '@/services/queries/user.query';
+import { useGetUserProfilePreviews } from '@/services/queries/user.query';
 import { ProfilesMapper } from './_components/ProfilesMapper';
 import { Separator } from '@/components/ui/separator';
 
 export default function ProfilesPage() {
-  const { data: profiles, isPending, isError } = useGetUserProfiles();
+  const { data: profiles, isPending, isError } = useGetUserProfilePreviews();
 
   if (isPending) {
     return <Spinner />;

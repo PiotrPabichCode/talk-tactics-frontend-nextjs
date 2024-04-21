@@ -19,6 +19,7 @@ export interface ICourse {
   title: string;
   description: string;
   level: CourseLevel;
+  quantity: number;
 }
 
 export interface CourseItem {
@@ -96,6 +97,12 @@ export interface ApiUserCoursePreviewDto {
   course_id: number;
   progress: number;
   completed: boolean;
+}
+
+export interface UserCourse extends ICourse {
+  points: number;
+  progress: number;
+  completed: number;
 }
 
 export interface UserCourseItemPreviewDto {
