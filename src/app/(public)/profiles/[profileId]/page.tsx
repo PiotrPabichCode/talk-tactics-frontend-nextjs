@@ -86,7 +86,10 @@ export default function ProfilePage({
   return (
     <div className='h-lvh overflow-scroll'>
       <div className='relative flex justify-center items-center w-full h-[60%] lg:pr-40'>
-        <div className="absolute inset-0 bg-[url('/profile-bg.webp')] bg-cover bg-center bg-no-repeat brightness-50" />
+        <div
+          className="absolute inset-0 bg-[url('/profile-bg.webp')] bg-cover bg-center bg-no-repeat brightness-50 animate-fade-in"
+          style={{ animationDelay: '0.8s', animationFillMode: 'both' }}
+        />
         <div className='flex flex-col lg:flex-row gap-5 items-center relative z-10'>
           <Avatar
             className='w-32 h-32 2xl:w-64 2xl:h-64 lg:mr-10 animate-fade-up'
