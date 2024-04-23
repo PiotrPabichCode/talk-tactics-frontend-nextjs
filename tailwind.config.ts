@@ -59,6 +59,17 @@ const config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
+        'fade-in': {
+          '0%': {
+            opacity: '0',
+          },
+          '75%': {
+            opacity: '0.6',
+          },
+          '100%': {
+            opacity: '1',
+          },
+        },
         'fade-up': {
           '0%': {
             opacity: '0',
@@ -82,6 +93,7 @@ const config = {
         },
       },
       animation: {
+        'fade-in': 'fade-in 0.5s ease-out',
         'fade-up': 'fade-up 0.5s ease-out',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',

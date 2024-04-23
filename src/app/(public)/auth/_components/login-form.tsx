@@ -49,7 +49,10 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='animate-fade-up'
+        style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
         <Card className='m-4 overflow-y-auto items-center text-center'>
           <CardHeader className='space-y-1'>
             <CardTitle className='text-2xl'>Sign in</CardTitle>

@@ -10,6 +10,20 @@ export function useMyCoursesFilter({ table }: { table: Table<any> }) {
   const myCourses = useSearchParams().get('custom') === 'my-courses';
   const [myCoursesFilter, setMyCoursesFilter] = useState<boolean>(false);
 
+  useMemo(() => {
+    if (isCoursesPage) {
+      setMyCoursesFilter(myCourses);
+    }
+  }, [myCourses, isCoursesPage]);
+
+  useEffect(() => {
+    if (isCoursesPage) {
+      table
+        .getColumn('progress')
+        ?.setFilterValue(myCoursesFilter ? true : undefined);
+    }
+  }, [myCoursesFilter, table, isCoursesPage]);
+
   if (!isUserReady || !isCoursesPage) {
     return {
       isEnabled: false,
@@ -17,16 +31,6 @@ export function useMyCoursesFilter({ table }: { table: Table<any> }) {
       onMyCoursesFilterChange: () => {},
     };
   }
-
-  useMemo(() => {
-    setMyCoursesFilter(myCourses);
-  }, [myCourses]);
-
-  useEffect(() => {
-    table
-      .getColumn('progress')
-      ?.setFilterValue(myCoursesFilter ? true : undefined);
-  }, [myCoursesFilter, table]);
 
   return {
     isEnabled: true,

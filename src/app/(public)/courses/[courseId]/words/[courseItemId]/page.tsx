@@ -37,25 +37,45 @@ export default function SingleCourseItemPage({
   return (
     <div className='p-4 text-center'>
       <Card className='relative'>
-        <Link href={`/courses/${params.courseId}`}>
+        <Link
+          href={`/courses/${params.courseId}`}
+          className='animate-fade-up'
+          style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
           <Button variant='action' className='absolute top-5 right-5'>
             <p className='hidden md:block md:mr-2'>Back</p>
             <Undo2 className=' h-4 w-4' />
           </Button>
         </Link>
         <CardHeader className='items-center'>
-          <CardTitle>{courseItem.word}</CardTitle>
-          <CardDescription className='flex flex-row items-center gap-1'>
+          <CardTitle
+            className='animate-fade-up'
+            style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
+            {courseItem.word}
+          </CardTitle>
+          <CardDescription
+            className='flex flex-row items-center gap-1 animate-fade-up'
+            style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
             {courseItem.phonetic}
             {courseItem.audio && <AudioPlayer url={courseItem.audio} />}
           </CardDescription>
-          <CardDescription>{courseItem.partOfSpeech}</CardDescription>
-          <CardDescription className='font-bold pt-2'>
+          <CardDescription
+            className='animate-fade-up'
+            style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
+            {courseItem.partOfSpeech}
+          </CardDescription>
+          <CardDescription
+            className='font-bold pt-2 animate-fade-up'
+            style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
             {courseItem.course.title}
           </CardDescription>
         </CardHeader>
-        <Separator className='mb-2' />
-        <CardContent>
+        <Separator
+          className='mb-2 animate-fade-up'
+          style={{ animationDelay: '0.4s', animationFillMode: 'both' }}
+        />
+        <CardContent
+          className='animate-fade-up'
+          style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
           <Table columns={columns} data={courseItem.meanings} />
         </CardContent>
       </Card>

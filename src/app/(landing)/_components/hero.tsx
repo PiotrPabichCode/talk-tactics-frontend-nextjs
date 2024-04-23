@@ -7,6 +7,7 @@ import 'react-medium-image-zoom/dist/styles.css';
 import PreviewLightMode from '../../../../public/preview-light-mode.webp';
 import PreviewDarkMode from '../../../../public/preview-dark-mode.webp';
 import Image from 'next/image';
+import useAuthStore, { userId } from '@/store/useAuthStore';
 
 export function Hero({
   testimonials = [
@@ -28,6 +29,7 @@ export function Hero({
   ],
 }) {
   const [ready, setReady] = useState(false);
+  const user = useAuthStore().credentials?.id;
   const theme = useTheme().theme;
 
   useEffect(() => {
@@ -62,15 +64,17 @@ export function Hero({
               style={{ animationDelay: '0.20s', animationFillMode: 'both' }}>
               Transform your aspirations into achievements — word by word.
             </p>
-            <Link href={'/auth'}>
-              <Button
-                variant={'action'}
-                className='bg-blue-500 hover:bg-blue-600 animate-fade-up'
-                style={{ animationDelay: '0.30s', animationFillMode: 'both' }}
-                size={'lg'}>
-                Begin now
-              </Button>
-            </Link>
+            {!user && (
+              <Link href={'/auth'}>
+                <Button
+                  variant={'action'}
+                  className='bg-blue-500 hover:bg-blue-600 animate-fade-up'
+                  style={{ animationDelay: '0.30s', animationFillMode: 'both' }}
+                  size={'lg'}>
+                  Begin now
+                </Button>
+              </Link>
+            )}
           </div>
           <div
             className='flex w-full animate-fade-up'

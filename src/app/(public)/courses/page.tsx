@@ -22,7 +22,9 @@ export default function CoursesPage() {
   }
 
   return (
-    <div className='w-screen h-full overflow-scroll md:overflow-auto p-2 md:p-4'>
+    <div
+      className='w-screen h-full overflow-scroll md:overflow-auto p-2 md:p-4 animate-fade-up'
+      style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
       <Table data={courses} columns={columns} filters={filters} />
     </div>
   );

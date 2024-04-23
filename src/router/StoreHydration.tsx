@@ -1,4 +1,5 @@
 'use client';
+import { getUserCourses } from '@/services/api/course.service';
 import { getUserDetails } from '@/services/api/user.service';
 import useAuthStore, { IAuthStore } from '@/store/useAuthStore';
 import useStore from '@/store/useStore';
@@ -20,6 +21,9 @@ const StoreHydration = () => {
         if (!state.credentials?.username) {
           useUserStore.getState().finishHydration();
         } else {
+          await getUserCourses({
+            id: state.credentials?.id,
+          });
           await getUserDetails({
             username: state.credentials?.username,
           });
