@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-type CourseLevel = 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
+export enum CourseLevel {
+  BEGINNER = 'BEGINNER',
+  INTERMEDIATE = 'INTERMEDIATE',
+  ADVANCED = 'ADVANCED',
+}
 
 const CourseLevelSchema = z.union([
   z.literal('BEGINNER'),

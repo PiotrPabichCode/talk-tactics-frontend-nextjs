@@ -16,7 +16,7 @@ const sidebarNavItems = [
   },
   {
     title: 'My courses',
-    href: '/courses?filter=my-courses',
+    href: '/courses?custom=my-courses',
   },
 ];
 

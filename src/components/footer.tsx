@@ -2,14 +2,7 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    // <footer className='py-6 items-center justify-center mt-auto shadow-sm border-t'>
-    //   <Link href='https://www.piotrpabich.com/projects/TalkTactics'>
-    //     <p className='text-current text-center font-semibold'>
-    //       © 2024 Piotr Pabich
-    //     </p>
-    //   </Link>
-    // </footer>
-    <footer className='px-4 py-6 mt-auto shadow-sm border-t flex flex-col md:flex-row items-center justify-center md:gap-6'>
+    <footer className='px-4 py-6 mt-auto shadow-sm border-t flex flex-col md:flex-row items-center justify-center md:gap-6 z-50'>
       <span className='text-sm text-semibold text-current'>
         <Link href='https://www.piotrpabich.com/projects/TalkTactics'>
           © 2024 Piotr Pabich™

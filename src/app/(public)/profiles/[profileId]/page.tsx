@@ -15,6 +15,17 @@ import { Badge as UiBadge } from '@/components/ui/badge';
 import { useGetUserProfile } from '@/services/queries/user.query';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { UserCourse, getLevel } from '@/typings/course';
+import { useMemo } from 'react';
+
+const countCompletedCourses = (courses: UserCourse[]) => {
+  return courses.reduce((acc, course) => {
+    if (course.completed) {
+      return acc + 1;
+    }
+    return acc;
+  }, 0);
+};
 
 const getBadgeName = (points: number): string => {
   let name = '';
@@ -58,6 +69,12 @@ export default function ProfilePage({
   const router = useRouter();
   const profileId = Number(params.profileId);
   const { data: profile, isPending, isError } = useGetUserProfile(profileId);
+  const completedCourses = useMemo(() => {
+    if (!profile?.courses) {
+      return 0;
+    }
+    return countCompletedCourses(profile.courses);
+  }, [profile?.courses]);
 
   if (isPending) {
     return <Spinner />;
@@ -103,7 +120,7 @@ export default function ProfilePage({
             Points: {profile.totalPoints}
           </p>
           <p className='font-medium text-center font-serif'>
-            Completed Courses: {profile.totalPoints}
+            Completed Courses: {completedCourses}
           </p>
         </div>
 
@@ -126,8 +143,11 @@ export default function ProfilePage({
                   <TableCell>
                     <Link href={`/courses/${course.id}`}>{course.title}</Link>
                   </TableCell>
+
                   <TableCell>
-                    <Link href={`/courses/${course.id}`}>{course.level}</Link>
+                    <Link href={`/courses/${course.id}`}>
+                      {getLevel(course.level)}
+                    </Link>
                   </TableCell>
                   <TableCell>
                     <Link href={`/courses/${course.id}`}>

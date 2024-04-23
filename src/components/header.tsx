@@ -10,15 +10,15 @@ import { useUserIsHydrated } from '@/store/useUserStore';
 import { useGetNavbarCourses } from '@/services/queries/course.query';
 import Image from 'next/image';
 
-export default function Header() {
+export function Header() {
   const { data: courses, isLoading: coursesLoading } = useGetNavbarCourses();
   const isUserHydrated = useUserIsHydrated();
   if (coursesLoading || !isUserHydrated) {
     return null;
   }
   return (
-    <div className='fixed top-0 left-0 right-0 supports-backdrop-blur:bg-background/60 border-b bg-background/95 backdrop-blur z-20'>
-      <nav className='h-[70px] flex items-center justify-between md:justify-center px-4 gap-4'>
+    <div className='fixed top-0 left-0 right-0 supports-backdrop-blur:bg-background/60 border-b bg-background/95 backdrop-blur z-50'>
+      <nav className='h-20 flex items-center justify-between md:justify-center px-4 gap-4'>
         <div className='hidden md:block'>
           <Link href={'/'} className='flex flex-row items-center'>
             <h1 className='text-2xl text-current font-bold'>TalkTactics</h1>

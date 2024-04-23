@@ -25,7 +25,10 @@ export function DataTableToolbar<TData>({
   filters: settings,
   viewOptions,
 }: DataTableToolbarProps<TData>) {
-  const { setFilterMyCourses } = useMyCoursesFilter({ table });
+  const { isEnabled, myCoursesFilter, onMyCoursesFilterChange } =
+    useMyCoursesFilter({
+      table,
+    });
   const params = useParams();
   const isFiltered =
     table.getState().columnFilters.length > 0 || table.getState().globalFilter;
@@ -45,7 +48,11 @@ export function DataTableToolbar<TData>({
             }}
             className='h-8 w-[150px] lg:w-[250px]'
           />
-          <MyCoursesFilter table={table} />
+          <MyCoursesFilter
+            isEnabled={isEnabled}
+            isActive={myCoursesFilter}
+            onChange={onMyCoursesFilterChange}
+          />
           {settings.filters?.map(
             (filter) =>
               table.getColumn(filter.name) && (
@@ -64,7 +71,7 @@ export function DataTableToolbar<TData>({
                 table.resetColumnFilters();
                 table.resetGlobalFilter();
                 setGlobalFilter('');
-                setFilterMyCourses(false);
+                onMyCoursesFilterChange(false);
               }}
               className='h-8 px-2 lg:px-3'>
               Reset

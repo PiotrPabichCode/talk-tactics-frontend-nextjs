@@ -1,33 +1,38 @@
 import { useUserIsReady } from '@/store/useUserStore';
 import { Table } from '@tanstack/react-table';
-import { useParams, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 
 export function useMyCoursesFilter({ table }: { table: Table<any> }) {
   const isUserReady = useUserIsReady();
-  const params = useParams();
-  const myCourses = useSearchParams().get('filter')?.includes('my-courses');
-  const [filterMyCourses, setFilterMyCourses] = useState<boolean>(false);
+  const pathName = usePathname();
+  const isCoursesPage = useMemo(() => pathName === '/courses', [pathName]);
+  const myCourses = useSearchParams().get('custom') === 'my-courses';
+  const [myCoursesFilter, setMyCoursesFilter] = useState<boolean>(false);
+
+  if (!isUserReady || !isCoursesPage) {
+    return {
+      isEnabled: false,
+      myCoursesFilter: false,
+      onMyCoursesFilterChange: () => {},
+    };
+  }
 
   useMemo(() => {
-    if (!isUserReady) {
-      return setFilterMyCourses(false);
-    }
-    setFilterMyCourses(!!myCourses);
-  }, [myCourses, isUserReady, setFilterMyCourses]);
+    setMyCoursesFilter(myCourses);
+  }, [myCourses]);
 
   useEffect(() => {
-    if (Object.keys(params).length === 0) {
-      table
-        .getColumn('progress')
-        ?.setFilterValue(filterMyCourses ? true : undefined);
-    }
-  }, [filterMyCourses]);
+    table
+      .getColumn('progress')
+      ?.setFilterValue(myCoursesFilter ? true : undefined);
+  }, [myCoursesFilter, table]);
 
   return {
-    filterMyCourses,
-    setFilterMyCourses,
-    isUserReady,
-    params,
+    isEnabled: true,
+    myCoursesFilter,
+    onMyCoursesFilterChange: (value: boolean) => {
+      setMyCoursesFilter(value);
+    },
   };
 }
