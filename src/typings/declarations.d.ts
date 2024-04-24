@@ -21,6 +21,7 @@ declare module '@tanstack/table-core' {
   }
   interface TFilters {
     mainPlaceholder: string;
+    mainFilter: string;
     filters: TFilter[];
   }
 }

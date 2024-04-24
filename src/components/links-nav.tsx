@@ -69,7 +69,7 @@ const WordOptions = ({ courses }: { courses: CourseNavbarDto[] }) => {
               key={course.level + '_word'}
               title={course.level}
               href={`/courses/${course.id}/words/${Math.floor(
-                Math.random() * course.quantity
+                Math.random() * course.quantity + 1
               )}`}>{`${BASE_DESCRIPTION} ${
               course.level === 'ADVANCED'
                 ? '<85%'

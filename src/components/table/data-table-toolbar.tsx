@@ -10,10 +10,11 @@ import { DataTableViewOptions } from './data-table-view-options';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
 import { Undo2 } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMyCoursesFilter } from './hooks/use-my-courses-filter';
 import { MyCoursesFilter } from './components/my-courses-filter';
 import { useParams } from 'next/navigation';
+import { useDebounce } from '@/hooks/use-debounce';
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   filters?: TFilters;
@@ -30,10 +31,17 @@ export function DataTableToolbar<TData>({
       table,
     });
   const params = useParams();
-  const isFiltered =
-    table.getState().columnFilters.length > 0 || table.getState().globalFilter;
-  const [globalFilter, setGlobalFilter] = useState<string>('');
+  const isFiltered = table.getState().columnFilters.length > 0;
+  const [mainFilter, setMainFilter] = useState<string>('');
+  const debounceMainFilter = useDebounce(mainFilter, 500);
   const backUrl = `/courses/${params.courseItemId ? params.courseId : ''}`;
+
+  useEffect(() => {
+    settings &&
+      table
+        .getColumn(settings.mainFilter)
+        ?.setFilterValue(debounceMainFilter ? debounceMainFilter : undefined);
+  }, [debounceMainFilter, settings, table]);
 
   return (
     <div className='flex items-center justify-between overflow-scroll md:overflow-auto'>
@@ -41,10 +49,9 @@ export function DataTableToolbar<TData>({
         <div className='flex flex-1 items-center space-x-2'>
           <Input
             placeholder={settings.mainPlaceholder}
-            value={globalFilter}
+            value={mainFilter}
             onChange={(event) => {
-              setGlobalFilter(event.target.value);
-              table.setGlobalFilter(event.target.value);
+              setMainFilter(event.target.value);
             }}
             className='h-8 w-[150px] lg:w-[250px]'
           />
@@ -70,7 +77,7 @@ export function DataTableToolbar<TData>({
               onClick={() => {
                 table.resetColumnFilters();
                 table.resetGlobalFilter();
-                setGlobalFilter('');
+                setMainFilter('');
                 onMyCoursesFilterChange(false);
               }}
               className='h-8 px-2 lg:px-3'>
@@ -84,7 +91,7 @@ export function DataTableToolbar<TData>({
       {params.courseId && !params.courseItemId && (
         <Link href={backUrl} className='ml-auto'>
           <Button variant={'action'}>
-            <p className='hidden md:block md:mr-2'>Back</p>
+            <p className='hidden md:block md:mr-2'>Back to courses</p>
             <Undo2 className='h-4 w-4' />
           </Button>
         </Link>

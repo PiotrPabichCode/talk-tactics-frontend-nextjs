@@ -42,7 +42,7 @@ export default function SingleCourseItemPage({
           className='animate-fade-up'
           style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
           <Button variant='action' className='absolute top-5 right-5'>
-            <p className='hidden md:block md:mr-2'>Back</p>
+            <p className='hidden md:block md:mr-2'>Back to course</p>
             <Undo2 className=' h-4 w-4' />
           </Button>
         </Link>

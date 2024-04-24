@@ -2,7 +2,8 @@ import { TFilters } from '@tanstack/react-table';
 import { SparkleIcon, SparklesIcon, WandIcon } from 'lucide-react';
 
 export const filters: TFilters = {
-  mainPlaceholder: 'Find courses...',
+  mainPlaceholder: 'Search titles...',
+  mainFilter: 'title',
   filters: [
     {
       name: 'level',
