@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { IApiFriendRequestDto, IFriendRequestDto } from './user';
 
 export interface ApiRequestGetUserDetails {
   username: string;
@@ -53,3 +54,22 @@ export const toUpdateUserRequestMapper = ({
     bio: bio,
   };
 };
+
+export const toFriendRequestMapper = ({
+  friendId,
+  userId,
+}: IFriendRequestDto): IApiFriendRequestDto => {
+  return {
+    user_id: userId,
+    friend_id: friendId,
+  };
+};
+
+export type ApiRequestSendFriendRequest = IFriendRequestDto;
+export const toSendFriendRequestMapper = toFriendRequestMapper;
+
+export type ApiRequestAcceptFriendRequest = IFriendRequestDto;
+export const toAcceptFriendRequestMapper = toFriendRequestMapper;
+
+export type ApiRequestRejectFriendRequest = IFriendRequestDto;
+export const toRejectFriendRequestMapper = toFriendRequestMapper;

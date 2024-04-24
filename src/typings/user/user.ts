@@ -36,3 +36,13 @@ export interface IUserProfile extends IUserProfilePreview {
 export interface IApiUserProfile extends IApiUserProfilePreview {
   courses: UserCourse[];
 }
+
+export interface IFriendRequestDto {
+  userId: number;
+  friendId: number;
+}
+
+export interface IApiFriendRequestDto {
+  user_id: number;
+  friend_id: number;
+}
