@@ -7,6 +7,7 @@ import {
   ApiRequestSendFriendRequest,
   ApiRequestUpdateUser,
   ApiResponseGetUserDetails,
+  ApiResponseGetFriendList,
   ApiResponseGetUserProfile,
   ApiResponseGetUserProfilePreviews,
   ApiResponseUpdateUser,
@@ -18,6 +19,14 @@ import {
   toSendFriendRequestMapper,
   toUpdateUserRequestMapper,
   toUpdateUserResponseMapper,
+  ApiRequestDeleteFriend,
+  toDeleteFriendRequestMapper,
+  ApiResponseGetReceivedFriendRequests,
+  toGetReceivedFriendRequestsResponseMapper,
+  toGetSentFriendRequestsResponseMapper,
+  ApiResponseGetSentFriendRequests,
+  ApiRequestDeleteSentFriendRequest,
+  toDeleteSentFriendRequestMapper,
 } from '@/typings/user';
 
 const USERS_ENDPOINT = 'users';
@@ -60,6 +69,15 @@ export const getUserProfileByUserId = async ({ id }: { id: number }) => {
   return toGetUserProfileResponseMapper(data);
 };
 
+export const getFriendList = async ({ id }: { id: number }) => {
+  const { data } = await axios<ApiResponseGetFriendList>({
+    method: 'GET',
+    url: USERS_ENDPOINT + '/id/' + id + '/friends',
+  });
+
+  return toGetUserProfilesResponseMapper(data);
+};
+
 export const sendFriendRequest = async ({
   req,
 }: {
@@ -97,14 +115,41 @@ export const rejectFriendRequest = async ({
 };
 
 export const deleteFriend = async ({
-  id,
-  friendId,
+  req,
 }: {
-  id: number;
-  friendId: number;
+  req: ApiRequestDeleteFriend;
 }) => {
   await axios({
     method: 'DELETE',
-    url: USERS_ENDPOINT + '/id/' + id + '/friends/' + friendId,
+    url: USERS_ENDPOINT + 'delete-friend',
+    data: toDeleteFriendRequestMapper(req),
+  });
+};
+
+export const getReceivedFriendRequests = async ({ id }: { id: number }) => {
+  const { data } = await axios<ApiResponseGetReceivedFriendRequests>({
+    method: 'GET',
+    url: USERS_ENDPOINT + '/id/' + id + '/received-friend-requests',
+  });
+  return toGetReceivedFriendRequestsResponseMapper(data);
+};
+
+export const getSentFriendRequests = async ({ id }: { id: number }) => {
+  const { data } = await axios<ApiResponseGetSentFriendRequests>({
+    method: 'GET',
+    url: USERS_ENDPOINT + '/id/' + id + '/sent-friend-requests',
+  });
+  return toGetSentFriendRequestsResponseMapper(data);
+};
+
+export const deleteSentFriendRequest = async ({
+  req,
+}: {
+  req: ApiRequestDeleteSentFriendRequest;
+}) => {
+  await axios({
+    method: 'DELETE',
+    url: USERS_ENDPOINT + '/delete-sent-friend-request',
+    data: toDeleteSentFriendRequestMapper(req),
   });
 };

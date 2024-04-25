@@ -38,11 +38,23 @@ export interface IApiUserProfile extends IApiUserProfilePreview {
 }
 
 export interface IFriendRequestDto {
+  senderId: number;
+  receiverId: number;
+  status?: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+}
+
+export interface IApiFriendRequestDto {
+  sender_id: number;
+  receiver_id: number;
+  status?: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+}
+
+export interface IDeleteFriendDto {
   userId: number;
   friendId: number;
 }
 
-export interface IApiFriendRequestDto {
+export interface IApiDeleteFriendDto {
   user_id: number;
   friend_id: number;
 }

@@ -1,7 +1,9 @@
 import {
   IApiAuthUser,
+  IApiFriendRequestDto,
   IApiUserProfile,
   IApiUserProfilePreview,
+  IFriendRequestDto,
   IUserProfile,
   IUserProfilePreview,
 } from './user';
@@ -39,9 +41,10 @@ export const toGetUserDetailsResponseMapper = ({
 };
 
 export type ApiResponseGetUserProfilePreviews = IApiUserProfilePreview[];
+export type ApiResponseGetFriendList = IApiUserProfilePreview[];
 
 export const toGetUserProfilesResponseMapper = (
-  data: ApiResponseGetUserProfilePreviews
+  data: IApiUserProfilePreview[]
 ): IUserProfilePreview[] => {
   return data.map((profile) => ({
     id: profile.id,
@@ -66,3 +69,22 @@ export const toGetUserProfileResponseMapper = (
     courses: data.courses,
   };
 };
+
+export type ApiResponseGetReceivedFriendRequests = IApiFriendRequestDto[];
+export type ApiResponseGetSentFriendRequests = IApiFriendRequestDto[];
+
+export const toGetFriendRequestsResponseMapper = (
+  data: ApiResponseGetReceivedFriendRequests
+): IFriendRequestDto[] => {
+  return data.map((request) => ({
+    receiverId: request.receiver_id,
+    senderId: request.sender_id,
+    status: request.status,
+  }));
+};
+
+export const toGetReceivedFriendRequestsResponseMapper =
+  toGetFriendRequestsResponseMapper;
+
+export const toGetSentFriendRequestsResponseMapper =
+  toGetFriendRequestsResponseMapper;

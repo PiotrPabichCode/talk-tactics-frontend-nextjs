@@ -1,5 +1,10 @@
 import { z } from 'zod';
-import { IApiFriendRequestDto, IFriendRequestDto } from './user';
+import {
+  IApiDeleteFriendDto,
+  IApiFriendRequestDto,
+  IDeleteFriendDto,
+  IFriendRequestDto,
+} from './user';
 
 export interface ApiRequestGetUserDetails {
   username: string;
@@ -56,12 +61,14 @@ export const toUpdateUserRequestMapper = ({
 };
 
 export const toFriendRequestMapper = ({
-  friendId,
-  userId,
+  receiverId: friendId,
+  senderId: userId,
+  status,
 }: IFriendRequestDto): IApiFriendRequestDto => {
   return {
-    user_id: userId,
-    friend_id: friendId,
+    sender_id: userId,
+    receiver_id: friendId,
+    ...(status && { status }),
   };
 };
 
@@ -73,3 +80,18 @@ export const toAcceptFriendRequestMapper = toFriendRequestMapper;
 
 export type ApiRequestRejectFriendRequest = IFriendRequestDto;
 export const toRejectFriendRequestMapper = toFriendRequestMapper;
+
+export type ApiRequestDeleteFriend = IDeleteFriendDto;
+
+export type ApiRequestDeleteSentFriendRequest = IFriendRequestDto;
+export const toDeleteSentFriendRequestMapper = toFriendRequestMapper;
+
+export const toDeleteFriendRequestMapper = ({
+  userId,
+  friendId,
+}: ApiRequestDeleteFriend): IApiDeleteFriendDto => {
+  return {
+    user_id: userId,
+    friend_id: friendId,
+  };
+};
