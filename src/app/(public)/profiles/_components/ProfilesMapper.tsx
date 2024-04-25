@@ -9,6 +9,7 @@ export function ProfilesMapper({
 }) {
   const profileItems = profiles.map((profile) => {
     return {
+      id: profile.id,
       title: profile.firstName + ' ' + profile.lastName,
       description: profile.bio,
       link: '/profiles/' + profile.id,

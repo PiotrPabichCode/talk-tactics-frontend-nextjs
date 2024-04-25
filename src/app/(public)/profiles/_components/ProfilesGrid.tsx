@@ -3,12 +3,21 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { FriendRequestButton } from './FriendRequestButton';
+import {
+  useGetReceivedFriendRequestsQuery,
+  useGetSentFriendRequestsQuery,
+} from '@/services/queries/user.query';
+import useAuthStore from '@/store/useAuthStore';
+import { Spinner } from '@/components/ui/spinner';
+import { IFriendRequestDto } from '@/typings/user';
 
 export const ProfilesGrid = ({
   items,
   className,
 }: {
   items: {
+    id: number;
     title: string;
     points: number;
     description: string;
@@ -17,7 +26,42 @@ export const ProfilesGrid = ({
   }[];
   className?: string;
 }) => {
+  const userId = useAuthStore().credentials?.id;
+  const {
+    data: sentFriendRequests,
+    isPending,
+    isError,
+  } = useGetSentFriendRequestsQuery(userId);
+  const {
+    data: receivedFriendRequests,
+    isPending: isPendingReceived,
+    isError: isErrorReceived,
+  } = useGetReceivedFriendRequestsQuery(userId);
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  if (isPending || isPendingReceived) {
+    return <Spinner />;
+  }
+  if (isError || isErrorReceived) {
+    return 'Something went wrong';
+  }
+
+  const getFriendRequestStatus = (
+    friendId: number
+  ): IFriendRequestDto['status'] | undefined => {
+    const sentRequest = sentFriendRequests?.find(
+      (request) => request.receiverId === friendId
+    );
+    const receivedRequest = receivedFriendRequests?.find(
+      (request) => request.senderId === friendId
+    );
+    if (sentRequest) {
+      return sentRequest.status;
+    }
+    if (receivedRequest) {
+      return receivedRequest.status;
+    }
+  };
 
   return (
     <div
@@ -29,7 +73,7 @@ export const ProfilesGrid = ({
         <Link
           href={item?.link}
           key={item?.link}
-          className='relative group  block p-2 h-full w-full'
+          className='relative group block p-2 h-full w-full'
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}>
           <AnimatePresence>
@@ -50,6 +94,13 @@ export const ProfilesGrid = ({
             )}
           </AnimatePresence>
           <Card>
+            {userId !== item.id && (
+              <FriendRequestButton
+                friendId={item.id}
+                status={getFriendRequestStatus(item.id)}
+              />
+            )}
+
             <CardTitle
               title={item.title}
               points={item.points}
