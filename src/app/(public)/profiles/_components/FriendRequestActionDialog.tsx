@@ -1,4 +1,4 @@
-import { IFriendRequestDto } from '@/typings/user';
+import { IFriendInvitationDto } from '@/typings/user';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +16,7 @@ export function FriendRequestActionDialog({
   onOpenChange,
   onAction,
 }: {
-  status: IFriendRequestDto['status'];
+  status: 'FRIENDS' | 'PENDING' | 'SENT' | undefined;
   isOpen: boolean;
   onOpenChange: (_: boolean) => void;
   onAction: (e: React.MouseEvent<HTMLElement>) => void;
@@ -27,15 +27,19 @@ export function FriendRequestActionDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>
             {status === 'PENDING'
+              ? 'Accept friend request'
+              : status === 'SENT'
               ? 'Delete friend request'
-              : status === 'ACCEPTED'
+              : status === 'FRIENDS'
               ? 'Delete friend'
               : 'Send friend request'}
           </AlertDialogTitle>
           <AlertDialogDescription>
             {status === 'PENDING'
+              ? 'Are you sure you want to accept this friend request?'
+              : status === 'SENT'
               ? 'Are you sure you want to delete this friend request?'
-              : status === 'ACCEPTED'
+              : status === 'FRIENDS'
               ? 'Are you sure you want to delete this friend?'
               : 'Are you sure you want to send a friend request?'}
           </AlertDialogDescription>

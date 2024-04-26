@@ -6,27 +6,26 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import {
-  acceptFriendRequest,
+  acceptFriendInvitation,
   deleteFriend,
-  deleteSentFriendRequest,
+  deleteSentFriendInvitation,
   getFriendList,
-  getReceivedFriendRequests,
-  getSentFriendRequests,
+  getReceivedFriendInvitations,
+  getSentFriendInvitations,
   getUserProfileByUserId,
   getUserProfiles,
-  rejectFriendRequest,
-  sendFriendRequest,
+  rejectFriendInvitation,
+  sendFriendInvitation,
   updateUser,
 } from '../api/user.service';
 import {
-  ApiRequestAcceptFriendRequest,
+  ApiRequestAcceptFriendInvitation,
   ApiRequestDeleteFriend,
-  ApiRequestDeleteSentFriendRequest,
-  ApiRequestRejectFriendRequest,
-  ApiRequestSendFriendRequest,
+  ApiRequestDeleteSentFriendInvitation,
+  ApiRequestRejectFriendInvitation,
+  ApiRequestSendFriendInvitation,
   ApiRequestUpdateUser,
-  IDeleteFriendDto,
-  IFriendRequestDto,
+  IFriendInvitationDto,
   IUserProfile,
   IUserProfilePreview,
 } from '@/typings/user';
@@ -35,13 +34,14 @@ import useAuthStore from '@/store/useAuthStore';
 const UPDATE_USER_DETAILS_MUTATION_KEY = 'updateUserDetails';
 const GET_USER_PROFILES_QUERY_KEY = 'getUserProfiles';
 const GET_FRIEND_LIST_QUERY_KEY = 'getFriendList';
-const SEND_FRIEND_REQUEST_MUTATION_KEY = 'sendFriendRequest';
-const ACCEPT_FRIEND_REQUEST_MUTATION_KEY = 'acceptFriendRequest';
-const REJECT_FRIEND_REQUEST_MUTATION_KEY = 'rejectFriendRequest';
+const SEND_FRIEND_INVITATION_MUTATION_KEY = 'sendFriendInvitation';
+const ACCEPT_FRIEND_INVITATION_MUTATION_KEY = 'acceptFriendInvitation';
+const REJECT_FRIEND_INVITATION_MUTATION_KEY = 'rejectFriendInvitation';
 const DELETE_FRIEND_MUTATION_KEY = 'deleteFriend';
-const GET_RECEIVED_FRIEND_REQUESTS_QUERY_KEY = 'getReceivedFriendRequests';
-const GET_SENT_FRIEND_REQUESTS_QUERY_KEY = 'getSentFriendRequests';
-const DELETE_SENT_FRIEND_REQUESTS_QUERY_KEY = 'deleteSentFriendRequests';
+const GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY =
+  'getReceivedFriendInvitations';
+const GET_SENT_FRIEND_INVITATIONS_QUERY_KEY = 'getSentFriendInvitations';
+const DELETE_SENT_FRIEND_INVITATIONS_QUERY_KEY = 'deleteSentFriendInvitations';
 
 export const useUpdateUserDetailsMutation = () => {
   return useMutation({
@@ -93,7 +93,7 @@ export const useGetFriendList = (
 ): UseQueryResult<IUserProfilePreview[]> => {
   const queryClient = useQueryClient();
   const query = useQuery<IUserProfilePreview[]>({
-    queryKey: [GET_FRIEND_LIST_QUERY_KEY],
+    queryKey: [GET_FRIEND_LIST_QUERY_KEY, id],
     queryFn: id
       ? async () => {
           return await getFriendList({ id });
@@ -102,115 +102,149 @@ export const useGetFriendList = (
     initialData: () => {
       return queryClient.getQueryData<IUserProfilePreview[]>([
         GET_FRIEND_LIST_QUERY_KEY,
+        id,
       ]);
     },
   });
   return query;
 };
 
-export const useSendFriendRequestMutation = () => {
+export const useSendFriendInvitationMutation = () => {
   const queryClient = useQueryClient();
   const userId = useAuthStore().credentials?.id;
   return useMutation({
-    mutationFn: async (req: ApiRequestSendFriendRequest) => {
-      return await sendFriendRequest({ req });
+    mutationFn: async (req: ApiRequestSendFriendInvitation) => {
+      return await sendFriendInvitation({ req });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [GET_SENT_FRIEND_REQUESTS_QUERY_KEY, userId],
+        queryKey: [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, userId],
       });
     },
-    mutationKey: [SEND_FRIEND_REQUEST_MUTATION_KEY],
+    mutationKey: [SEND_FRIEND_INVITATION_MUTATION_KEY],
   });
 };
 
-export const useAcceptFriendRequestMutation = () => {
+export const useAcceptFriendInvitationMutation = () => {
   const queryClient = useQueryClient();
   const userId = useAuthStore().credentials?.id;
   return useMutation({
-    mutationFn: async (req: ApiRequestAcceptFriendRequest) => {
-      return await acceptFriendRequest({ req });
+    mutationFn: async (req: ApiRequestAcceptFriendInvitation) => {
+      return await acceptFriendInvitation({ req });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [GET_SENT_FRIEND_REQUESTS_QUERY_KEY, userId],
+        queryKey: [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, userId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY, userId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [GET_FRIEND_LIST_QUERY_KEY, userId],
       });
     },
-    mutationKey: [ACCEPT_FRIEND_REQUEST_MUTATION_KEY],
+    mutationKey: [ACCEPT_FRIEND_INVITATION_MUTATION_KEY],
   });
 };
 
-export const useRejectFriendRequestMutation = () => {
+export const useRejectFriendInvitationMutation = () => {
+  const queryClient = useQueryClient();
+  const userId = useAuthStore().credentials?.id;
   return useMutation({
-    mutationFn: async (req: ApiRequestRejectFriendRequest) => {
-      return await rejectFriendRequest({ req });
+    mutationFn: async (req: ApiRequestRejectFriendInvitation) => {
+      return await rejectFriendInvitation({ req });
     },
-    mutationKey: [REJECT_FRIEND_REQUEST_MUTATION_KEY],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, userId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY, userId],
+      });
+    },
+    mutationKey: [REJECT_FRIEND_INVITATION_MUTATION_KEY],
   });
 };
 
 export const useDeleteFriendMutation = () => {
+  const queryClient = useQueryClient();
+  const userId = useAuthStore().credentials?.id;
   return useMutation({
     mutationFn: async (req: ApiRequestDeleteFriend) => {
       return await deleteFriend({ req });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [GET_FRIEND_LIST_QUERY_KEY, userId],
+      });
     },
     mutationKey: [DELETE_FRIEND_MUTATION_KEY],
   });
 };
 
-export const useGetReceivedFriendRequestsQuery = (
-  id?: number
-): UseQueryResult<IFriendRequestDto[]> => {
+export const useGetReceivedFriendInvitationsQuery = (
+  id?: number,
+  withDetails?: boolean
+): UseQueryResult<IFriendInvitationDto[]> => {
   const queryClient = useQueryClient();
-  console.log(id);
-  return useQuery<IFriendRequestDto[]>({
-    queryKey: [GET_RECEIVED_FRIEND_REQUESTS_QUERY_KEY, id],
+  return useQuery<IFriendInvitationDto[]>({
+    queryKey: withDetails
+      ? [GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY, id, withDetails]
+      : [GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY, id],
     queryFn: id
       ? async () => {
-          return await getReceivedFriendRequests({ id });
+          return await getReceivedFriendInvitations({ id });
         }
       : skipToken,
     initialData: () => {
-      return queryClient.getQueryData<IFriendRequestDto[]>([
-        GET_RECEIVED_FRIEND_REQUESTS_QUERY_KEY,
-        id,
-      ]);
+      return queryClient.getQueryData<IFriendInvitationDto[]>(
+        withDetails
+          ? [GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY, id, withDetails]
+          : [GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY, id]
+      );
     },
   });
 };
 
-export const useGetSentFriendRequestsQuery = (
-  id?: number
-): UseQueryResult<IFriendRequestDto[]> => {
+export const useGetSentFriendInvitationsQuery = (
+  id?: number,
+  withDetails?: boolean
+): UseQueryResult<IFriendInvitationDto[]> => {
   const queryClient = useQueryClient();
-  return useQuery<IFriendRequestDto[]>({
-    queryKey: [GET_SENT_FRIEND_REQUESTS_QUERY_KEY, id],
+  return useQuery<IFriendInvitationDto[]>({
+    queryKey: withDetails
+      ? [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, id, withDetails]
+      : [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, id],
     queryFn: id
       ? async () => {
-          return await getSentFriendRequests({ id });
+          return await getSentFriendInvitations({ id });
         }
       : skipToken,
     initialData: () => {
-      return queryClient.getQueryData<IFriendRequestDto[]>([
-        GET_SENT_FRIEND_REQUESTS_QUERY_KEY,
-        id,
-      ]);
+      return queryClient.getQueryData<IFriendInvitationDto[]>(
+        withDetails
+          ? [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, id, withDetails]
+          : [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, id]
+      );
     },
   });
 };
 
-export const useDeleteSentFriendRequestMutation = () => {
+export const useDeleteSentFriendInvitationMutation = () => {
   const queryClient = useQueryClient();
   const userId = useAuthStore().credentials?.id;
   return useMutation({
-    mutationFn: async (req: ApiRequestDeleteSentFriendRequest) => {
-      return await deleteSentFriendRequest({ req });
+    mutationFn: async (req: ApiRequestDeleteSentFriendInvitation) => {
+      return await deleteSentFriendInvitation({ req });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [GET_SENT_FRIEND_REQUESTS_QUERY_KEY, userId],
+        queryKey: [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, userId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY, userId],
       });
     },
-    mutationKey: [DELETE_SENT_FRIEND_REQUESTS_QUERY_KEY],
+    mutationKey: [DELETE_SENT_FRIEND_INVITATIONS_QUERY_KEY],
   });
 };

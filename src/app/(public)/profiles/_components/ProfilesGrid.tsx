@@ -5,12 +5,13 @@ import { useState } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { FriendRequestButton } from './FriendRequestButton';
 import {
-  useGetReceivedFriendRequestsQuery,
-  useGetSentFriendRequestsQuery,
+  useGetFriendList,
+  useGetReceivedFriendInvitationsQuery,
+  useGetSentFriendInvitationsQuery,
 } from '@/services/queries/user.query';
 import useAuthStore from '@/store/useAuthStore';
 import { Spinner } from '@/components/ui/spinner';
-import { IFriendRequestDto } from '@/typings/user';
+import { IFriendInvitationDto } from '@/typings/user';
 
 export const ProfilesGrid = ({
   items,
@@ -29,37 +30,50 @@ export const ProfilesGrid = ({
   const userId = useAuthStore().credentials?.id;
   const {
     data: sentFriendRequests,
-    isPending,
-    isError,
-  } = useGetSentFriendRequestsQuery(userId);
+    isPending: isPendingSent,
+    isError: isErrorSent,
+  } = useGetSentFriendInvitationsQuery(userId);
   const {
     data: receivedFriendRequests,
     isPending: isPendingReceived,
     isError: isErrorReceived,
-  } = useGetReceivedFriendRequestsQuery(userId);
+  } = useGetReceivedFriendInvitationsQuery(userId);
+  const {
+    data: friends,
+    isPending: isPendingFriends,
+    isError: isErrorFriends,
+  } = useGetFriendList(userId);
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const isPending = isPendingSent || isPendingReceived || isPendingFriends;
+  const isError = isErrorSent || isErrorReceived || isErrorFriends;
 
-  if (isPending || isPendingReceived) {
+  if (isPending && userId) {
     return <Spinner />;
   }
-  if (isError || isErrorReceived) {
+  if (isError && userId) {
     return 'Something went wrong';
   }
 
-  const getFriendRequestStatus = (
+  const getFriendInvitationStatus = (
     friendId: number
-  ): IFriendRequestDto['status'] | undefined => {
+  ): 'FRIENDS' | 'PENDING' | 'SENT' | undefined => {
+    const isFriend = friends?.find((friend) => friend.id === friendId);
+    if (isFriend) {
+      return 'FRIENDS';
+    }
     const sentRequest = sentFriendRequests?.find(
       (request) => request.receiverId === friendId
     );
+
+    if (sentRequest) {
+      return 'SENT';
+    }
+
     const receivedRequest = receivedFriendRequests?.find(
       (request) => request.senderId === friendId
     );
-    if (sentRequest) {
-      return sentRequest.status;
-    }
     if (receivedRequest) {
-      return receivedRequest.status;
+      return 'PENDING';
     }
   };
 
@@ -94,10 +108,10 @@ export const ProfilesGrid = ({
             )}
           </AnimatePresence>
           <Card>
-            {userId !== item.id && (
+            {userId && userId !== item.id && (
               <FriendRequestButton
                 friendId={item.id}
-                status={getFriendRequestStatus(item.id)}
+                status={getFriendInvitationStatus(item.id)}
               />
             )}
 

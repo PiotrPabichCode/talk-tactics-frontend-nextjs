@@ -37,16 +37,18 @@ export interface IApiUserProfile extends IApiUserProfilePreview {
   courses: UserCourse[];
 }
 
-export interface IFriendRequestDto {
+export interface IFriendInvitationDto {
   senderId: number;
   receiverId: number;
-  status?: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+  sender?: IUserProfilePreview;
+  receiver?: IUserProfilePreview;
 }
 
-export interface IApiFriendRequestDto {
+export interface IApiFriendInvitationDto {
   sender_id: number;
   receiver_id: number;
-  status?: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+  sender?: IUserProfilePreview;
+  receiver?: IUserProfilePreview;
 }
 
 export interface IDeleteFriendDto {

@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
+  useAcceptFriendInvitationMutation,
   useDeleteFriendMutation,
-  useDeleteSentFriendRequestMutation,
-  useSendFriendRequestMutation,
+  useDeleteSentFriendInvitationMutation,
+  useSendFriendInvitationMutation,
 } from '@/services/queries/user.query';
 import useAuthStore from '@/store/useAuthStore';
-import { IFriendRequestDto } from '@/typings/user';
 import { Loader, UserCheck, UserPlus, Users } from 'lucide-react';
 import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
@@ -17,23 +17,28 @@ export function FriendRequestButton({
   status,
 }: {
   friendId: number;
-  status?: IFriendRequestDto['status'];
+  status: 'FRIENDS' | 'PENDING' | 'SENT' | undefined;
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const {
     isPending: isPendingSendFriendRequest,
     mutateAsync: sendFriendRequest,
-  } = useSendFriendRequestMutation();
+  } = useSendFriendInvitationMutation();
   const {
     isPending: isPendingDeleteFriendRequest,
     mutateAsync: deleteSentFriendRequest,
-  } = useDeleteSentFriendRequestMutation();
+  } = useDeleteSentFriendInvitationMutation();
   const { isPending: isPendingDeleteFriend, mutateAsync: deleteFriend } =
     useDeleteFriendMutation();
+  const {
+    isPending: isPendingAcceptFriendRequest,
+    mutateAsync: acceptFriendRequest,
+  } = useAcceptFriendInvitationMutation();
   const userId = useAuthStore().credentials?.id;
   const isPending =
     isPendingSendFriendRequest ||
     isPendingDeleteFriendRequest ||
+    isPendingAcceptFriendRequest ||
     isPendingDeleteFriend;
 
   const [isAnimating, startTransition] = useTransition();
@@ -46,13 +51,19 @@ export function FriendRequestButton({
           if (!status) {
             await sendFriendRequest({ senderId: userId, receiverId: friendId });
             toast.success('Friend request sent');
-          } else if (status === 'PENDING') {
+          } else if (status === 'SENT') {
             await deleteSentFriendRequest({
               senderId: userId,
               receiverId: friendId,
             });
             toast.success('Friend request deleted');
-          } else if (status === 'ACCEPTED') {
+          } else if (status === 'PENDING') {
+            await acceptFriendRequest({
+              senderId: friendId,
+              receiverId: userId,
+            });
+            toast.success('Friend added');
+          } else if (status === 'FRIENDS') {
             await deleteFriend({
               userId,
               friendId,
@@ -80,15 +91,18 @@ export function FriendRequestButton({
         }}
         variant={'ghost'}
         className={cn(
-          'absolute top-0 right-0',
-          status === 'ACCEPTED' && 'bg-green-700'
+          'absolute top-0 right-0 border-green-500 hover:bg-green-500',
+          status === 'FRIENDS' && 'border-2',
+          status === 'PENDING' && 'border-2',
+          status === 'SENT' && 'border-2'
         )}>
         {isAnimating ? (
           <Loader className='w-4 h-4 animate-spin' />
         ) : (
           <>
-            {status === 'PENDING' && <UserCheck className='w-4 h-4' />}
-            {status === 'ACCEPTED' && <Users className='w-4 h-4' />}
+            {status === 'SENT' && <UserCheck className='w-4 h-4' />}
+            {status === 'PENDING' && <UserPlus className='w-4 h-4' />}
+            {status === 'FRIENDS' && <Users className='w-4 h-4' />}
             {!status && <UserPlus className='w-4 h-4' />}
           </>
         )}

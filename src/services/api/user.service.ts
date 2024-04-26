@@ -1,32 +1,32 @@
 import { axios } from '@/lib/axios';
 import useUserStore from '@/store/useUserStore';
 import {
-  ApiRequestAcceptFriendRequest,
+  ApiRequestAcceptFriendInvitation,
   ApiRequestGetUserDetails,
-  ApiRequestRejectFriendRequest,
-  ApiRequestSendFriendRequest,
+  ApiRequestRejectFriendInvitation,
+  ApiRequestSendFriendInvitation,
   ApiRequestUpdateUser,
   ApiResponseGetUserDetails,
   ApiResponseGetFriendList,
   ApiResponseGetUserProfile,
   ApiResponseGetUserProfilePreviews,
   ApiResponseUpdateUser,
-  toAcceptFriendRequestMapper,
+  toAcceptFriendInvitationRequestMapper,
   toGetUserDetailsResponseMapper,
   toGetUserProfileResponseMapper,
   toGetUserProfilesResponseMapper,
-  toRejectFriendRequestMapper,
-  toSendFriendRequestMapper,
+  toRejectFriendInvitationRequestMapper,
+  toSendFriendInvitationRequestMapper,
   toUpdateUserRequestMapper,
   toUpdateUserResponseMapper,
   ApiRequestDeleteFriend,
   toDeleteFriendRequestMapper,
-  ApiResponseGetReceivedFriendRequests,
-  toGetReceivedFriendRequestsResponseMapper,
-  toGetSentFriendRequestsResponseMapper,
-  ApiResponseGetSentFriendRequests,
-  ApiRequestDeleteSentFriendRequest,
-  toDeleteSentFriendRequestMapper,
+  ApiResponseGetReceivedFriendInvitations,
+  toGetReceivedFriendInvitationsResponseMapper,
+  toGetSentFriendInvitationsResponseMapper,
+  ApiResponseGetSentFriendInvitations,
+  ApiRequestDeleteSentFriendInvitation,
+  toDeleteSentFriendInvitationRequestMapper,
 } from '@/typings/user';
 
 const USERS_ENDPOINT = 'users';
@@ -78,39 +78,39 @@ export const getFriendList = async ({ id }: { id: number }) => {
   return toGetUserProfilesResponseMapper(data);
 };
 
-export const sendFriendRequest = async ({
+export const sendFriendInvitation = async ({
   req,
 }: {
-  req: ApiRequestSendFriendRequest;
+  req: ApiRequestSendFriendInvitation;
 }) => {
   await axios({
     method: 'POST',
-    url: USERS_ENDPOINT + '/send-friend-request',
-    data: toSendFriendRequestMapper(req),
+    url: USERS_ENDPOINT + '/send-friend-invitation',
+    data: toSendFriendInvitationRequestMapper(req),
   });
 };
 
-export const acceptFriendRequest = async ({
+export const acceptFriendInvitation = async ({
   req,
 }: {
-  req: ApiRequestAcceptFriendRequest;
+  req: ApiRequestAcceptFriendInvitation;
 }) => {
   await axios({
     method: 'POST',
-    url: USERS_ENDPOINT + '/accept-friend-request',
-    data: toAcceptFriendRequestMapper(req),
+    url: USERS_ENDPOINT + '/accept-friend-invitation',
+    data: toAcceptFriendInvitationRequestMapper(req),
   });
 };
 
-export const rejectFriendRequest = async ({
+export const rejectFriendInvitation = async ({
   req,
 }: {
-  req: ApiRequestRejectFriendRequest;
+  req: ApiRequestRejectFriendInvitation;
 }) => {
   await axios({
     method: 'POST',
-    url: USERS_ENDPOINT + '/reject-friend-request',
-    data: toRejectFriendRequestMapper(req),
+    url: USERS_ENDPOINT + '/reject-friend-invitation',
+    data: toRejectFriendInvitationRequestMapper(req),
   });
 };
 
@@ -121,35 +121,35 @@ export const deleteFriend = async ({
 }) => {
   await axios({
     method: 'DELETE',
-    url: USERS_ENDPOINT + 'delete-friend',
+    url: USERS_ENDPOINT + '/delete-friend',
     data: toDeleteFriendRequestMapper(req),
   });
 };
 
-export const getReceivedFriendRequests = async ({ id }: { id: number }) => {
-  const { data } = await axios<ApiResponseGetReceivedFriendRequests>({
+export const getReceivedFriendInvitations = async ({ id }: { id: number }) => {
+  const { data } = await axios<ApiResponseGetReceivedFriendInvitations>({
     method: 'GET',
-    url: USERS_ENDPOINT + '/id/' + id + '/received-friend-requests',
+    url: USERS_ENDPOINT + '/id/' + id + '/received-friend-invitations',
   });
-  return toGetReceivedFriendRequestsResponseMapper(data);
+  return toGetReceivedFriendInvitationsResponseMapper(data);
 };
 
-export const getSentFriendRequests = async ({ id }: { id: number }) => {
-  const { data } = await axios<ApiResponseGetSentFriendRequests>({
+export const getSentFriendInvitations = async ({ id }: { id: number }) => {
+  const { data } = await axios<ApiResponseGetSentFriendInvitations>({
     method: 'GET',
-    url: USERS_ENDPOINT + '/id/' + id + '/sent-friend-requests',
+    url: USERS_ENDPOINT + '/id/' + id + '/sent-friend-invitations',
   });
-  return toGetSentFriendRequestsResponseMapper(data);
+  return toGetSentFriendInvitationsResponseMapper(data);
 };
 
-export const deleteSentFriendRequest = async ({
+export const deleteSentFriendInvitation = async ({
   req,
 }: {
-  req: ApiRequestDeleteSentFriendRequest;
+  req: ApiRequestDeleteSentFriendInvitation;
 }) => {
   await axios({
     method: 'DELETE',
-    url: USERS_ENDPOINT + '/delete-sent-friend-request',
-    data: toDeleteSentFriendRequestMapper(req),
+    url: USERS_ENDPOINT + '/delete-sent-friend-invitation',
+    data: toDeleteSentFriendInvitationRequestMapper(req),
   });
 };

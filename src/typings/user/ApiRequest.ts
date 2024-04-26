@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import {
   IApiDeleteFriendDto,
-  IApiFriendRequestDto,
+  IApiFriendInvitationDto,
   IDeleteFriendDto,
-  IFriendRequestDto,
+  IFriendInvitationDto,
 } from './user';
 
 export interface ApiRequestGetUserDetails {
@@ -60,32 +60,38 @@ export const toUpdateUserRequestMapper = ({
   };
 };
 
-export const toFriendRequestMapper = ({
-  receiverId: friendId,
-  senderId: userId,
-  status,
-}: IFriendRequestDto): IApiFriendRequestDto => {
+export interface ApiRequestFriendInvitation {
+  senderId: number;
+  receiverId: number;
+}
+
+export const toFriendInvitationRequestMapper = ({
+  receiverId,
+  senderId,
+}: ApiRequestFriendInvitation) => {
   return {
-    sender_id: userId,
-    receiver_id: friendId,
-    ...(status && { status }),
+    receiver_id: receiverId,
+    sender_id: senderId,
   };
 };
 
-export type ApiRequestSendFriendRequest = IFriendRequestDto;
-export const toSendFriendRequestMapper = toFriendRequestMapper;
+export type ApiRequestSendFriendInvitation = ApiRequestFriendInvitation;
+export const toSendFriendInvitationRequestMapper =
+  toFriendInvitationRequestMapper;
 
-export type ApiRequestAcceptFriendRequest = IFriendRequestDto;
-export const toAcceptFriendRequestMapper = toFriendRequestMapper;
+export type ApiRequestAcceptFriendInvitation = ApiRequestFriendInvitation;
+export const toAcceptFriendInvitationRequestMapper =
+  toFriendInvitationRequestMapper;
 
-export type ApiRequestRejectFriendRequest = IFriendRequestDto;
-export const toRejectFriendRequestMapper = toFriendRequestMapper;
+export type ApiRequestRejectFriendInvitation = ApiRequestFriendInvitation;
+export const toRejectFriendInvitationRequestMapper =
+  toFriendInvitationRequestMapper;
+
+export type ApiRequestDeleteSentFriendInvitation = ApiRequestFriendInvitation;
+export const toDeleteSentFriendInvitationRequestMapper =
+  toFriendInvitationRequestMapper;
 
 export type ApiRequestDeleteFriend = IDeleteFriendDto;
-
-export type ApiRequestDeleteSentFriendRequest = IFriendRequestDto;
-export const toDeleteSentFriendRequestMapper = toFriendRequestMapper;
-
 export const toDeleteFriendRequestMapper = ({
   userId,
   friendId,
