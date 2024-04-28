@@ -40,15 +40,21 @@ export interface IApiUserProfile extends IApiUserProfilePreview {
 export interface IFriendInvitationDto {
   senderId: number;
   receiverId: number;
-  sender?: IUserProfilePreview;
-  receiver?: IUserProfilePreview;
 }
 
 export interface IApiFriendInvitationDto {
   sender_id: number;
   receiver_id: number;
-  sender?: IUserProfilePreview;
-  receiver?: IUserProfilePreview;
+}
+
+export interface IFriendInvitationDetailsDto {
+  sender: IUserProfilePreview;
+  receiver: IUserProfilePreview;
+}
+
+export interface IApiFriendInvitationDetailsDto {
+  sender: IApiUserProfilePreview;
+  receiver: IApiUserProfilePreview;
 }
 
 export interface IDeleteFriendDto {

@@ -25,6 +25,7 @@ import {
   ApiRequestRejectFriendInvitation,
   ApiRequestSendFriendInvitation,
   ApiRequestUpdateUser,
+  IFriendInvitationDetailsDto,
   IFriendInvitationDto,
   IUserProfile,
   IUserProfilePreview,
@@ -182,53 +183,50 @@ export const useDeleteFriendMutation = () => {
   });
 };
 
-export const useGetReceivedFriendInvitationsQuery = (
-  id?: number,
-  withDetails?: boolean
-): UseQueryResult<IFriendInvitationDto[]> => {
+export function useGetReceivedFriendInvitationsQuery<
+  T extends IFriendInvitationDto[] | IFriendInvitationDetailsDto[]
+>(id?: number, withDetails: boolean = false) {
   const queryClient = useQueryClient();
-  return useQuery<IFriendInvitationDto[]>({
-    queryKey: withDetails
-      ? [GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY, id, withDetails]
-      : [GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY, id],
+  return useQuery<T, Error, T>({
+    queryKey: [GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY, id, withDetails],
     queryFn: id
-      ? async () => {
-          return await getReceivedFriendInvitations({ id });
+      ? () => {
+          return getReceivedFriendInvitations({
+            id,
+            withDetails,
+          }) as Promise<T>;
         }
       : skipToken,
     initialData: () => {
-      return queryClient.getQueryData<IFriendInvitationDto[]>(
-        withDetails
-          ? [GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY, id, withDetails]
-          : [GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY, id]
-      );
+      return queryClient.getQueryData<T>([
+        GET_RECEIVED_FRIEND_INVITATIONS_QUERY_KEY,
+        id,
+        withDetails,
+      ]);
     },
   });
-};
+}
 
-export const useGetSentFriendInvitationsQuery = (
-  id?: number,
-  withDetails?: boolean
-): UseQueryResult<IFriendInvitationDto[]> => {
+export function useGetSentFriendInvitationsQuery<
+  T extends IFriendInvitationDto[] | IFriendInvitationDetailsDto[]
+>(id?: number, withDetails: boolean = false) {
   const queryClient = useQueryClient();
-  return useQuery<IFriendInvitationDto[]>({
-    queryKey: withDetails
-      ? [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, id, withDetails]
-      : [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, id],
+  return useQuery<T>({
+    queryKey: [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, id, withDetails],
     queryFn: id
-      ? async () => {
-          return await getSentFriendInvitations({ id });
+      ? () => {
+          return getSentFriendInvitations({ id, withDetails }) as Promise<T>;
         }
       : skipToken,
     initialData: () => {
-      return queryClient.getQueryData<IFriendInvitationDto[]>(
-        withDetails
-          ? [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, id, withDetails]
-          : [GET_SENT_FRIEND_INVITATIONS_QUERY_KEY, id]
-      );
+      return queryClient.getQueryData<T>([
+        GET_SENT_FRIEND_INVITATIONS_QUERY_KEY,
+        id,
+        withDetails,
+      ]);
     },
   });
-};
+}
 
 export const useDeleteSentFriendInvitationMutation = () => {
   const queryClient = useQueryClient();

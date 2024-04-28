@@ -1,10 +1,5 @@
 import { z } from 'zod';
-import {
-  IApiDeleteFriendDto,
-  IApiFriendInvitationDto,
-  IDeleteFriendDto,
-  IFriendInvitationDto,
-} from './user';
+import { IApiDeleteFriendDto, IDeleteFriendDto } from './user';
 
 export interface ApiRequestGetUserDetails {
   username: string;

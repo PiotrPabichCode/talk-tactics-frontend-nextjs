@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { FriendRequestButton } from './FriendRequestButton';
+import { FriendInvitationButton } from '@/components/friend-invitation-button';
 import {
   useGetFriendList,
   useGetReceivedFriendInvitationsQuery,
@@ -32,12 +32,12 @@ export const ProfilesGrid = ({
     data: sentFriendRequests,
     isPending: isPendingSent,
     isError: isErrorSent,
-  } = useGetSentFriendInvitationsQuery(userId);
+  } = useGetSentFriendInvitationsQuery<IFriendInvitationDto[]>(userId);
   const {
     data: receivedFriendRequests,
     isPending: isPendingReceived,
     isError: isErrorReceived,
-  } = useGetReceivedFriendInvitationsQuery(userId);
+  } = useGetReceivedFriendInvitationsQuery<IFriendInvitationDto[]>(userId);
   const {
     data: friends,
     isPending: isPendingFriends,
@@ -56,25 +56,30 @@ export const ProfilesGrid = ({
 
   const getFriendInvitationStatus = (
     friendId: number
-  ): 'FRIENDS' | 'PENDING' | 'SENT' | undefined => {
+  ):
+    | 'SEND_INVITATION'
+    | 'ACCEPT_INVITATION'
+    | 'CANCEL_INVITATION'
+    | 'DELETE_FRIEND' => {
     const isFriend = friends?.find((friend) => friend.id === friendId);
     if (isFriend) {
-      return 'FRIENDS';
+      return 'DELETE_FRIEND';
     }
     const sentRequest = sentFriendRequests?.find(
       (request) => request.receiverId === friendId
     );
 
     if (sentRequest) {
-      return 'SENT';
+      return 'CANCEL_INVITATION';
     }
 
     const receivedRequest = receivedFriendRequests?.find(
       (request) => request.senderId === friendId
     );
     if (receivedRequest) {
-      return 'PENDING';
+      return 'ACCEPT_INVITATION';
     }
+    return 'SEND_INVITATION';
   };
 
   return (
@@ -109,7 +114,7 @@ export const ProfilesGrid = ({
           </AnimatePresence>
           <Card>
             {userId && userId !== item.id && (
-              <FriendRequestButton
+              <FriendInvitationButton
                 friendId={item.id}
                 status={getFriendInvitationStatus(item.id)}
               />
@@ -159,12 +164,12 @@ export const CardTitle = ({
   points: number;
 }) => {
   return (
-    <h4 className={cn('flex items-center', className)}>
+    <h4 className={cn('flex items-center text-sm', className)}>
       <Avatar className='bg-slate-100 mr-4'>
         <AvatarImage src={avatar} alt={'User account placeholder'} />
       </Avatar>
-      <div>
-        <p className='text-current font-bold tracking-wide'>{title}</p>
+      <div className='max-w-[55%]'>
+        <p className='text-current font-bold tracking-wide truncate'>{title}</p>
         <p>Total score: {points}</p>
       </div>
     </h4>

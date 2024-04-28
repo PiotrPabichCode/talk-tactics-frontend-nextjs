@@ -126,20 +126,42 @@ export const deleteFriend = async ({
   });
 };
 
-export const getReceivedFriendInvitations = async ({ id }: { id: number }) => {
+export const getReceivedFriendInvitations = async ({
+  id,
+  withDetails,
+}: {
+  id: number;
+  withDetails?: boolean;
+}) => {
   const { data } = await axios<ApiResponseGetReceivedFriendInvitations>({
     method: 'GET',
-    url: USERS_ENDPOINT + '/id/' + id + '/received-friend-invitations',
+    url:
+      USERS_ENDPOINT +
+      '/id/' +
+      id +
+      '/received-friend-invitations' +
+      (withDetails ? '?withDetails=true' : ''),
   });
-  return toGetReceivedFriendInvitationsResponseMapper(data);
+  return toGetReceivedFriendInvitationsResponseMapper(data, withDetails);
 };
 
-export const getSentFriendInvitations = async ({ id }: { id: number }) => {
+export const getSentFriendInvitations = async ({
+  id,
+  withDetails,
+}: {
+  id: number;
+  withDetails?: boolean;
+}) => {
   const { data } = await axios<ApiResponseGetSentFriendInvitations>({
     method: 'GET',
-    url: USERS_ENDPOINT + '/id/' + id + '/sent-friend-invitations',
+    url:
+      USERS_ENDPOINT +
+      '/id/' +
+      id +
+      '/sent-friend-invitations' +
+      (withDetails ? '?withDetails=true' : ''),
   });
-  return toGetSentFriendInvitationsResponseMapper(data);
+  return toGetSentFriendInvitationsResponseMapper(data, withDetails);
 };
 
 export const deleteSentFriendInvitation = async ({
