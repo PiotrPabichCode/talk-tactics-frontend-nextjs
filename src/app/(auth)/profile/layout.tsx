@@ -11,6 +11,10 @@ const sidebarNavItems = [
     href: '/profile',
   },
   {
+    title: 'Friends',
+    href: '/profile/friends',
+  },
+  {
     title: 'Preferences',
     href: '/profile/preferences',
   },

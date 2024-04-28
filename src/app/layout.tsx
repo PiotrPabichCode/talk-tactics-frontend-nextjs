@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import NextTopLoader from 'nextjs-toploader';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { Providers } from './provider';
@@ -20,7 +19,6 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <Providers>
         <Toaster duration={3000} position='top-center' visibleToasts={3} />
-        <NextTopLoader showSpinner={false} />
         <Header />
         <div className='flex-grow pt-20'>{children}</div>
         <Footer />
