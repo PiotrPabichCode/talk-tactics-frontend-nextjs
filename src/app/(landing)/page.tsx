@@ -1,13 +1,15 @@
 'use client';
-import { Feature } from './_components/feature';
+import { Modes } from './_components/modes';
 import { Hero } from './_components/hero';
+import { Friends } from './_components/friends';
 
 export default function LandingPage() {
   return (
-    <main className='container my-4 md:mt-0'>
-      <div className='mx-20 2xl:mx-0'>
+    <main className='md:container my-4 md:mt-0'>
+      <div className='mx-5 md:mx-20 2xl:mx-0'>
         <Hero />
-        <Feature />
+        <Modes />
+        <Friends />
       </div>
     </main>
   );

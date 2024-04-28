@@ -52,7 +52,7 @@ export function Hero({
           animationDelay: '0.20s',
           animationFillMode: 'backwards',
         }}>
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 pb-8 lg:pb-0'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 lg:pb-0 mb-4'>
           <div className='flex flex-col justify-center items-start row-start-2 sm:row-start-1'>
             <h1
               className='text-3xl lg:text-4xl xl:text-5xl font-medium text-black-600 leading-normal animate-fade-up'
@@ -82,7 +82,7 @@ export function Hero({
             <Zoom>
               <div className='h-full w-full'>
                 <Image
-                  className='border-2 shadow-2xl scale-100'
+                  className='border-2 shadow-2xl object-cover'
                   src={theme === 'light' ? PreviewLightMode : PreviewDarkMode}
                   alt='TalkTactics landing page'
                 />
@@ -96,7 +96,7 @@ export function Hero({
           style={{ animationDelay: '0.40s', animationFillMode: 'both' }}>
           {testimonials.map((testimonial, index) => (
             <div className='py-4 sm:py-0' key={index}>
-              <div className='flex md:justify-center sm:w-auto'>
+              <div className='flex md:justify-center sm:w-auto w-full'>
                 <div className='flex items-center justify-center bg-orange-100 w-[48px] h-[48px] mr-6 rounded-full'>
                   <img
                     alt={`hero-icon${index}`}
@@ -105,10 +105,12 @@ export function Hero({
                   />
                 </div>
                 <div className='flex flex-col'>
-                  <p className='text-xl text-black-600 font-bold'>
+                  <p className='text-md md:text-xl text-black-600 font-bold'>
                     {testimonial.number}+
                   </p>
-                  <p className='text-lg text-black-500'>{testimonial.name}</p>
+                  <p className='text-sm lg:text-lg text-black-500'>
+                    {testimonial.name}
+                  </p>
                 </div>
               </div>
             </div>
