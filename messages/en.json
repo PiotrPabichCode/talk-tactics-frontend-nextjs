@@ -1,0 +1,58 @@
+{
+  "Index": {
+    "title": "Hello world!"
+  },
+  "NotFoundPage": {
+    "title": "Page not found",
+    "message": "The page you are looking for does not exist."
+  },
+  "LocaleLayout": {
+    "title": "TalkTactics - The best way to learn a new language"
+  },
+  "LandingPage": {
+    "welcomeMessage1": "Unlock the Power of English with <Strong>TalkTactics</Strong>",
+    "welcomeMessage2": "The best way to learn a new language",
+    "buttonBegin": "Begin now",
+    "testimonials": {
+      "courses": "Courses",
+      "words": "Unique words",
+      "usages": "Example usages"
+    },
+    "modes": "Light / dark mode",
+    "friends": "Invite friends and compete with them"
+  },
+  "Navigation": {
+    "leaderboard": {
+      "title": "Leaderboard",
+      "profiles": "Profiles",
+      "users": "All users"
+    },
+    "courses": {
+      "title": "English courses",
+      "description": "Discover our English courses. Improve your language skills. Beginner to advanced. Start today!"
+    },
+    "random": {
+      "title": "Generate random word",
+      "top": "Most frequently used english words - Top"
+    },
+    "User": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "Mode": {
+      "title": "Toggle mode",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "Common": {
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "signIn": "Sign in"
+  }
+}

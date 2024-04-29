@@ -1,0 +1,58 @@
+{
+  "Index": {
+    "title": "Witaj!"
+  },
+  "NotFoundPage": {
+    "title": "Strona nie znaleziona",
+    "message": "Przepraszamy, ale strona, której szukasz, nie istnieje."
+  },
+  "LocaleLayout": {
+    "title": "TalkTactics - nauka języka angielskiego"
+  },
+  "LandingPage": {
+    "welcomeMessage1": "Odblokuj potęgę angielskiego z <Strong>TalkTactics</Strong>",
+    "welcomeMessage2": "Najlepszy sposób na naukę nowego języka",
+    "buttonBegin": "Zacznij teraz",
+    "testimonials": {
+      "courses": "Kursów",
+      "words": "Unikalnych słów",
+      "usages": "Przykładowych użyć"
+    },
+    "modes": "Jasny / ciemny motyw",
+    "friends": "Zaproś znajomych oraz rywalizuj z nimi"
+  },
+  "Navigation": {
+    "leaderboard": {
+      "title": "Tablica wyników",
+      "profiles": "Profile",
+      "users": "Użytkownicy"
+    },
+    "courses": {
+      "title": "Kursy angielskiego",
+      "description": "Odkryj nasze kursy angielskiego. Popraw swoje umiejętności językowe. Od początkujących do zaawansowanych. Zacznij już dziś!"
+    },
+    "random": {
+      "title": "Generuj losowe słowo",
+      "top": "Najczęściej używane angielskie słowa - Top"
+    },
+    "User": {
+      "profile": "Profil",
+      "settings": "Ustawienia",
+      "logout": "Wyloguj się"
+    },
+    "Mode": {
+      "title": "Wybór motywu",
+      "light": "Jasny",
+      "dark": "Ciemny",
+      "system": "Systemowy"
+    }
+  },
+  "Common": {
+    "levels": {
+      "beginner": "Początkujący",
+      "intermediate": "Średniozaawansowany",
+      "advanced": "Zaawansowany"
+    },
+    "signIn": "Zaloguj się"
+  }
+}

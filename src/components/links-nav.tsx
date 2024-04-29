@@ -11,15 +11,17 @@ import {
 } from './ui/navigation-menu';
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { CourseNavbarDto } from '@/typings/course';
+import { CourseNavbarDto, getLocaleLevel } from '@/typings/course';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 const RecommendedCourses = ({ courses }: { courses: CourseNavbarDto[] }) => {
+  const t = useTranslations('Navigation.courses');
   return (
     <NavigationMenuItem>
-      <NavigationMenuTrigger>English courses</NavigationMenuTrigger>
+      <NavigationMenuTrigger>{t('title')}</NavigationMenuTrigger>
       <NavigationMenuContent>
-        <ul className='grid gap-3 p-6 w-[90vw] md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]'>
+        <ul className='grid gap-3 p-6 w-[90vw] md:w-[400px] lg:w-[600px] lg:grid-cols-[.75fr_1fr]'>
           <li className='row-span-3'>
             <NavigationMenuLink asChild>
               <Link
@@ -33,12 +35,11 @@ const RecommendedCourses = ({ courses }: { courses: CourseNavbarDto[] }) => {
                     height={32}
                   />
                   <div className='mb-2 mt-4 text-lg font-medium'>
-                    English courses
+                    {t('title')}
                   </div>
                 </div>
                 <p className='text-sm leading-tight text-muted-foreground'>
-                  Discover our English courses. Improve your language skills.
-                  Beginner to advanced. Start today!
+                  {t('description')}
                 </p>
               </Link>
             </NavigationMenuLink>
@@ -47,7 +48,7 @@ const RecommendedCourses = ({ courses }: { courses: CourseNavbarDto[] }) => {
             <ListItem
               key={course.id}
               href={`/courses/${course.id}`}
-              title={course.level}>
+              title={getLocaleLevel(course.level)}>
               {course.title}
             </ListItem>
           ))}
@@ -58,16 +59,17 @@ const RecommendedCourses = ({ courses }: { courses: CourseNavbarDto[] }) => {
 };
 
 const WordOptions = ({ courses }: { courses: CourseNavbarDto[] }) => {
-  const BASE_DESCRIPTION = 'Most frequently used english words - Top';
+  const t = useTranslations('Navigation.random');
+  const BASE_DESCRIPTION = t('top');
   return (
     <NavigationMenuItem className=''>
-      <NavigationMenuTrigger>Generate random word</NavigationMenuTrigger>
+      <NavigationMenuTrigger>{t('title')}</NavigationMenuTrigger>
       <NavigationMenuContent className='overflow-x-hidden'>
         <ul className='grid grid-cols-1 gap-3 p-4 w-full'>
           {courses.map((course) => (
             <ListItem
               key={course.level + '_word'}
-              title={course.level}
+              title={getLocaleLevel(course.level)}
               href={`/courses/${course.id}/words/${Math.floor(
                 Math.random() * course.quantity + 1
               )}`}>{`${BASE_DESCRIPTION} ${
@@ -85,16 +87,14 @@ const WordOptions = ({ courses }: { courses: CourseNavbarDto[] }) => {
 };
 
 const Leaderboard = () => {
+  const t = useTranslations('Navigation.leaderboard');
   return (
     <NavigationMenuItem>
-      <NavigationMenuTrigger>Leaderboard</NavigationMenuTrigger>
+      <NavigationMenuTrigger>{t('title')}</NavigationMenuTrigger>
       <NavigationMenuContent className='overflow-x-hidden'>
         <ul className='grid grid-cols-1 gap-3 p-4 w-full'>
-          {/* <ListItem href='/leaderboard' title='Leaderboard'>
-            Top 10 users
-          </ListItem> */}
-          <ListItem href='/profiles' title='Profiles'>
-            All users
+          <ListItem href='/profiles' title={t('profiles')}>
+            {t('users')}
           </ListItem>
         </ul>
       </NavigationMenuContent>

@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import Zoom from 'react-medium-image-zoom';
-import PreviewLightMode from '../../../../public/preview-light-mode.webp';
-import PreviewDarkMode from '../../../../public/preview-dark-mode.webp';
+import PreviewLightMode from '../../../../../public/preview-light-mode.webp';
+import PreviewDarkMode from '../../../../../public/preview-dark-mode.webp';
 import 'react-medium-image-zoom/dist/styles.css';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 export function Modes() {
   const [ready, setReady] = useState(false);
   const theme = useTheme().theme;
+  const t = useTranslations('LandingPage');
 
   useEffect(() => {
     if (theme) {
@@ -22,7 +24,7 @@ export function Modes() {
 
   return (
     <div id='feature-modes'>
-      <h3 className='text-center text-4xl pb-8'>Light and Dark mode</h3>
+      <h3 className='text-center text-3xl lg:text-4xl pb-8'>{t('modes')}</h3>
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
         <div className='flex w-full'>
           <Zoom>

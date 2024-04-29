@@ -4,33 +4,35 @@ import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
-import PreviewLightMode from '../../../../public/preview-light-mode.webp';
-import PreviewDarkMode from '../../../../public/preview-dark-mode.webp';
+import PreviewLightMode from '../../../../../public/preview-light-mode.webp';
+import PreviewDarkMode from '../../../../../public/preview-dark-mode.webp';
 import Image from 'next/image';
-import useAuthStore, { userId } from '@/store/useAuthStore';
+import useAuthStore from '@/store/useAuthStore';
+import { useTranslations } from 'next-intl';
 
-export function Hero({
-  testimonials = [
+export function Hero() {
+  const [ready, setReady] = useState(false);
+  const user = useAuthStore().credentials?.id;
+  const theme = useTheme().theme;
+  const t = useTranslations('LandingPage');
+
+  const testimonials = [
     {
-      name: 'Courses',
+      name: t('testimonials.courses'),
       number: '50',
       icon: '/hero-graduation-cap.svg',
     },
     {
-      name: 'Unique Words',
+      name: t('testimonials.words'),
       number: '2000',
       icon: '/hero-words.svg',
     },
     {
-      name: 'Example usages',
+      name: t('testimonials.usages'),
       number: '10',
       icon: '/hero-examples.svg',
     },
-  ],
-}) {
-  const [ready, setReady] = useState(false);
-  const user = useAuthStore().credentials?.id;
-  const theme = useTheme().theme;
+  ];
 
   useEffect(() => {
     if (theme) {
@@ -57,12 +59,14 @@ export function Hero({
             <h1
               className='text-3xl lg:text-4xl xl:text-5xl font-medium text-black-600 leading-normal animate-fade-up'
               style={{ animationDelay: '0.10s', animationFillMode: 'both' }}>
-              Unlock the Power of English with <strong>TalkTactics</strong>.
+              {t.rich('welcomeMessage1', {
+                Strong: (chunks) => <strong>{chunks}</strong>,
+              })}
             </h1>
             <p
               className='text-black-500 mt-4 mb-6 animate-fade-up'
               style={{ animationDelay: '0.20s', animationFillMode: 'both' }}>
-              Transform your aspirations into achievements — word by word.
+              {t('welcomeMessage2')}
             </p>
             {!user && (
               <Link href={'/auth'}>
@@ -71,7 +75,7 @@ export function Hero({
                   className='bg-blue-500 hover:bg-blue-600 animate-fade-up'
                   style={{ animationDelay: '0.30s', animationFillMode: 'both' }}
                   size={'lg'}>
-                  Begin now
+                  {t('buttonBegin')}
                 </Button>
               </Link>
             )}
