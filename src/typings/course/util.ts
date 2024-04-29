@@ -14,7 +14,7 @@ export const getLevel = (level: CourseLevel): string => {
   }
 };
 
-export const getLocaleLevel = (level: CourseLevel): string => {
+export const LocalizeCourseLevel = (level: CourseLevel): string => {
   const t = useTranslations('Common.levels');
   switch (level) {
     case CourseLevel.BEGINNER:

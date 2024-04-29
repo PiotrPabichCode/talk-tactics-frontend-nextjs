@@ -11,7 +11,7 @@ import {
 } from './ui/navigation-menu';
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { CourseNavbarDto, getLocaleLevel } from '@/typings/course';
+import { CourseNavbarDto, LocalizeCourseLevel } from '@/typings/course';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
@@ -48,7 +48,7 @@ const RecommendedCourses = ({ courses }: { courses: CourseNavbarDto[] }) => {
             <ListItem
               key={course.id}
               href={`/courses/${course.id}`}
-              title={getLocaleLevel(course.level)}>
+              title={LocalizeCourseLevel(course.level)}>
               {course.title}
             </ListItem>
           ))}
@@ -69,7 +69,7 @@ const WordOptions = ({ courses }: { courses: CourseNavbarDto[] }) => {
           {courses.map((course) => (
             <ListItem
               key={course.level + '_word'}
-              title={getLocaleLevel(course.level)}
+              title={LocalizeCourseLevel(course.level)}
               href={`/courses/${course.id}/words/${Math.floor(
                 Math.random() * course.quantity + 1
               )}`}>{`${BASE_DESCRIPTION} ${

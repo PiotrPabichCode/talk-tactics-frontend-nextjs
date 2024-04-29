@@ -6,6 +6,7 @@ import { locales } from '@/config';
 import { ReactNode } from 'react';
 import { getTranslations } from 'next-intl/server';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
 type Props = {
   children: ReactNode;
@@ -27,6 +28,7 @@ export async function generateMetadata({
 }
 
 export default function LocaleLayout({ children, params: { locale } }: Props) {
+  unstable_setRequestLocale(locale); // https://github.com/vercel/next.js/discussions/58862
   const messages = useMessages();
   return (
     <html lang={locale} suppressHydrationWarning>
