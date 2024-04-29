@@ -13,7 +13,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { CourseNavbarDto, LocalizeCourseLevel } from '@/typings/course';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/i18n';
 
 const RecommendedCourses = ({ courses }: { courses: CourseNavbarDto[] }) => {
   const t = useTranslations('Navigation.courses');

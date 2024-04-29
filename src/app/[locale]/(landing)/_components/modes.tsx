@@ -5,7 +5,7 @@ import PreviewLightMode from '../../../../../public/preview-light-mode.webp';
 import PreviewDarkMode from '../../../../../public/preview-dark-mode.webp';
 import 'react-medium-image-zoom/dist/styles.css';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/i18n';
 
 export function Modes() {
   const [ready, setReady] = useState(false);

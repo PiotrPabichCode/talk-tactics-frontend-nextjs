@@ -23,6 +23,7 @@ import {
 import { ApiRequestSignInSchema, SignInFormValues } from '@/typings/auth';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
+import { useTranslations } from '@/i18n';
 
 const defaultValues: SignInFormValues = {
   username: '',
@@ -31,6 +32,7 @@ const defaultValues: SignInFormValues = {
 
 export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
   const { isPending, mutateAsync: signIn } = useSignInMutation();
+  const t = useTranslations('AuthPage.loginForm');
   const form = useForm<SignInFormValues>({
     defaultValues,
     resolver: zodResolver(ApiRequestSignInSchema),
@@ -38,7 +40,7 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
   const onSubmit: SubmitHandler<SignInFormValues> = async (data) => {
     try {
       await signIn(data);
-      toast.success('You have successfully logged in!');
+      toast.success(t('signInSuccess'));
     } catch (e) {
       toast.error('Oh no! Something went wrong.', {
         description: 'There was a problem with your request',
@@ -55,10 +57,8 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
         style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
         <Card className='m-4 overflow-y-auto items-center text-center'>
           <CardHeader className='space-y-1'>
-            <CardTitle className='text-2xl'>Sign in</CardTitle>
-            <CardDescription>
-              Enter your email below to create your account
-            </CardDescription>
+            <CardTitle className='text-2xl'>{t('title')}</CardTitle>
+            <CardDescription>{t('description')}</CardDescription>
           </CardHeader>
           <CardContent className='grid gap-4'>
             {/* <div className='grid md:grid-cols-2 gap-6'>
@@ -93,9 +93,12 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>{t('username')}</FormLabel>
                     <FormControl>
-                      <Input placeholder='Your username' {...field} />
+                      <Input
+                        placeholder={t('usernamePlaceholder')}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -106,10 +109,10 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t('password')}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='********'
+                        placeholder={t('passwordPlaceholder')}
                         type='password'
                         {...field}
                       />
@@ -122,7 +125,7 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
           </CardContent>
           <CardFooter>
             <Button type='submit' className='w-full' disabled={isPending}>
-              {isPending ? <Spinner variant='button' /> : 'Login'}
+              {isPending ? <Spinner variant='button' /> : t('signInButton')}
             </Button>
           </CardFooter>
           <CardFooter
@@ -132,9 +135,9 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
           gap-2
           justify-center
           '>
-            <div>New to TalkTactics?</div>
+            <div>{t('new')}</div>
             <div onClick={toggleVariant} className='underline cursor-pointer'>
-              Create an account
+              {t('createAccount')}
             </div>
           </CardFooter>
         </Card>

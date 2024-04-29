@@ -9,6 +9,7 @@ import { LinksNav } from './links-nav';
 import { useUserIsHydrated } from '@/store/useUserStore';
 import { useGetNavbarCourses } from '@/services/queries/course.query';
 import Image from 'next/image';
+import LocaleToggle from './locale-toggle';
 
 export function Header() {
   const { data: courses, isLoading: coursesLoading } = useGetNavbarCourses();
@@ -17,7 +18,9 @@ export function Header() {
     return null;
   }
   return (
-    <div className='fixed top-0 left-0 right-0 supports-backdrop-blur:bg-background/60 border-b bg-background/95 backdrop-blur z-50'>
+    <div
+      className='fixed top-0 left-0 right-0 supports-backdrop-blur:bg-background/60 border-b bg-background/95 backdrop-blur z-50 animate-fade-in'
+      style={{ animationFillMode: 'both', animationDelay: '0.3s' }}>
       <nav className='h-20 flex items-center justify-between md:justify-center px-4 gap-4'>
         <div className='hidden md:block'>
           <Link href={'/'} className='flex flex-row items-center'>
@@ -35,6 +38,7 @@ export function Header() {
 
         <div className='flex items-center gap-2'>
           <UserNav />
+          <LocaleToggle />
           <ModeToggle />
         </div>
       </nav>

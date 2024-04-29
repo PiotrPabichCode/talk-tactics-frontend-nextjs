@@ -4,7 +4,7 @@ import 'react-medium-image-zoom/dist/styles.css';
 import Leaderboard from '../../../../../public/leaderboard.webp';
 import UserPage from '../../../../../public/user-page.webp';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/i18n';
 
 export function Friends() {
   const t = useTranslations('LandingPage');

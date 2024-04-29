@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/form';
 import { ApiRequestSignUpSchema, SignUpFormValues } from '@/typings/auth';
 import { toast } from 'sonner';
+import { useTranslations } from '@/i18n';
 
 const defaultValues: SignUpFormValues = {
   username: '',
@@ -34,6 +35,7 @@ const defaultValues: SignUpFormValues = {
 
 export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
   const { isPending, mutateAsync: signUp } = useSignUpQuery();
+  const t = useTranslations('AuthPage.registerForm');
   const form = useForm<SignUpFormValues>({
     defaultValues,
     resolver: zodResolver(ApiRequestSignUpSchema),
@@ -42,7 +44,7 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
   const onSubmit: SubmitHandler<SignUpFormValues> = async (data) => {
     try {
       await signUp(data);
-      toast.success('You have successfully registered!');
+      toast.success(t('signUpSuccess'));
     } catch (e) {
       toast.error('Oh no! Something went wrong.', {
         description: 'There was a problem with your request',
@@ -59,13 +61,11 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
         style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
         <Card className='m-4 overflow-y-auto items-center text-center'>
           <CardHeader className='space-y-1'>
-            <CardTitle className='text-2xl'>Create an account</CardTitle>
-            <CardDescription>
-              Enter your email below to create your account
-            </CardDescription>
+            <CardTitle className='text-2xl'>{t('title')}</CardTitle>
+            <CardDescription>{t('description')}</CardDescription>
           </CardHeader>
           <CardContent className='grid gap-4'>
-            <div className='grid md:grid-cols-2 gap-6'>
+            {/* <div className='grid md:grid-cols-2 gap-6'>
               <Button variant='outline'>
                 <Icons.gitHub className='mr-2 h-4 w-4' />
                 Github
@@ -74,14 +74,14 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
                 <Icons.google className='mr-2 h-4 w-4' />
                 Google
               </Button>
-            </div>
+            </div> */}
             <div className='relative'>
               <div className='absolute inset-0 flex items-center'>
                 <span className='w-full border-t' />
               </div>
               <div className='relative flex justify-center text-xs uppercase'>
                 <span className='bg-background px-2 text-muted-foreground'>
-                  Or continue with
+                  {t('or')}
                 </span>
               </div>
             </div>
@@ -91,9 +91,12 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>{t('username')}</FormLabel>
                     <FormControl>
-                      <Input placeholder='Your username' {...field} />
+                      <Input
+                        placeholder={t('usernamePlaceholder')}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -104,10 +107,10 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t('password')}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='********'
+                        placeholder={t('passwordPlaceholder')}
                         type='password'
                         {...field}
                       />
@@ -121,10 +124,10 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Repeat Password</FormLabel>
+                    <FormLabel>{t('repeatPassword')}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='********'
+                        placeholder={t('passwordPlaceholder')}
                         type='password'
                         {...field}
                       />
@@ -138,10 +141,10 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t('email')}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='ppabich1@gmail.com'
+                        placeholder={t('emailPlaceholder')}
                         type='email'
                         {...field}
                       />
@@ -155,9 +158,12 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>First name</FormLabel>
+                    <FormLabel>{t('firstName')}</FormLabel>
                     <FormControl>
-                      <Input placeholder='Your first name' {...field} />
+                      <Input
+                        placeholder={t('firstNamePlaceholder')}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -168,9 +174,12 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Last name</FormLabel>
+                    <FormLabel>{t('lastName')}</FormLabel>
                     <FormControl>
-                      <Input placeholder='Your last name' {...field} />
+                      <Input
+                        placeholder={t('lastNamePlaceholder')}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -180,7 +189,7 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
           </CardContent>
           <CardFooter>
             <Button type='submit' className='w-full' disabled={isPending}>
-              Create an account
+              {t('signUpButton')}
             </Button>
           </CardFooter>
           <CardFooter
@@ -190,9 +199,9 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
           gap-2
           justify-center
           '>
-            <div>Already have an account?</div>
+            <div>{t('exists')}</div>
             <div onClick={toggleVariant} className='underline cursor-pointer'>
-              Login
+              {t('login')}
             </div>
           </CardFooter>
         </Card>

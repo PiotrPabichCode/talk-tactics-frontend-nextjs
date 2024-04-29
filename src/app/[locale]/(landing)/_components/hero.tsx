@@ -8,7 +8,7 @@ import PreviewLightMode from '../../../../../public/preview-light-mode.webp';
 import PreviewDarkMode from '../../../../../public/preview-dark-mode.webp';
 import Image from 'next/image';
 import useAuthStore from '@/store/useAuthStore';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from '@/i18n';
 
 export function Hero() {
   const [ready, setReady] = useState(false);

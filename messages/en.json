@@ -21,6 +21,40 @@
     "modes": "Light / dark mode",
     "friends": "Invite friends and compete with them"
   },
+  "AuthPage": {
+    "loginForm": {
+      "title": "Sign in",
+      "description": "Sign in to track your progress in learning English.",
+      "username": "Username",
+      "usernamePlaceholder": "Your username",
+      "password": "Password",
+      "passwordPlaceholder": "********",
+      "signInButton": "Login",
+      "new": "New to TalkTactics?",
+      "createAccount": "Create an account",
+      "signInSuccess": "You have successfully logged in!"
+    },
+    "registerForm": {
+      "title": "Create an account",
+      "description": "Sign up to track your progress in learning English.",
+      "or": "Or continue with",
+      "username": "Username",
+      "usernamePlaceholder": "Your username",
+      "password": "Password",
+      "passwordPlaceholder": "********",
+      "repeatPassword": "Repeat password",
+      "repeatPasswordPlaceholder": "********",
+      "email": "Email",
+      "emailPlaceholder": "ppabich1@gmail.com",
+      "firstName": "First name",
+      "firstNamePlaceholder": "Your first name",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Your last name",
+      "signUpButton": "Create an account",
+      "exists": "Already have an account?",
+      "login": "Login"
+    }
+  },
   "Navigation": {
     "leaderboard": {
       "title": "Leaderboard",
@@ -54,5 +88,16 @@
       "advanced": "Advanced"
     },
     "signIn": "Sign in"
+  },
+  "Error": {
+    "baseRequest": {
+      "title": "Oh no! Something went wrong.",
+      "description": "There was a problem with your request"
+    }
+  },
+  "Language": {
+    "title": "Language",
+    "pl": "Polish",
+    "en": "English"
   }
 }

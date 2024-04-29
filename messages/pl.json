@@ -21,6 +21,40 @@
     "modes": "Jasny / ciemny motyw",
     "friends": "Zaproś znajomych oraz rywalizuj z nimi"
   },
+  "AuthPage": {
+    "loginForm": {
+      "title": "Zaloguj się",
+      "description": "Zaloguj się, aby śledzić na bieżąco swoje postępy w nauce języka angielskiego.",
+      "username": "Nazwa użytkownika",
+      "usernamePlaceholder": "PiotrPabich123",
+      "password": "Hasło",
+      "passwordPlaceholder": "********",
+      "signInButton": "Zaloguj się",
+      "new": "Nie masz konta?",
+      "createAccount": "Zarejestruj się",
+      "signInSuccess": "Zalogowano pomyślnie!"
+    },
+    "registerForm": {
+      "title": "Zarejestruj się",
+      "description": "Zarejestruj się, aby zapisać postępy nauki języka angielskiego.",
+      "or": "Lub",
+      "username": "Nazwa użytkownika",
+      "usernamePlaceholder": "PiotrPabich123",
+      "password": "Hasło",
+      "passwordPlaceholder": "********",
+      "repeatPassword": "Powtórz hasło",
+      "repeatPasswordPlaceholder": "********",
+      "email": "Email",
+      "emailPlaceholder": "ppabich1@gmail.com",
+      "firstName": "Imię",
+      "firstNamePlaceholder": "Twoje imię",
+      "lastName": "Nazwisko",
+      "lastNamePlaceholder": "Twoje nazwisko",
+      "signUpButton": "Zarejestruj się",
+      "exists": "Masz już konto?",
+      "login": "Zaloguj się"
+    }
+  },
   "Navigation": {
     "leaderboard": {
       "title": "Tablica wyników",
@@ -54,5 +88,10 @@
       "advanced": "Zaawansowany"
     },
     "signIn": "Zaloguj się"
+  },
+  "Language": {
+    "title": "Język",
+    "pl": "Polski",
+    "en": "Angielski"
   }
 }
