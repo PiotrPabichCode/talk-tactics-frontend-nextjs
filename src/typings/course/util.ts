@@ -1,29 +1,25 @@
-import { useTranslations } from '@/i18n';
+import { useMessages } from 'next-intl';
 import { CourseLevel } from './course';
+import get from 'lodash/get';
 
-export const getLevel = (level: CourseLevel): string => {
-  switch (level) {
-    case CourseLevel.BEGINNER:
-      return 'Beginner';
-    case CourseLevel.INTERMEDIATE:
-      return 'Intermediate';
-    case CourseLevel.ADVANCED:
-      return 'Advanced';
-    default:
-      return 'Unknown';
-  }
+const getMessage = (key: string): string => {
+  const messages = useMessages();
+  return (get(messages, key) ?? 'Unknown') as string;
 };
 
 export const LocalizeCourseLevel = (level: CourseLevel): string => {
-  const t = useTranslations('Common.levels');
+  let value = '';
   switch (level) {
     case CourseLevel.BEGINNER:
-      return t('beginner');
+      value = 'beginner';
+      break;
     case CourseLevel.INTERMEDIATE:
-      return t('intermediate');
+      value = 'intermediate';
+      break;
     case CourseLevel.ADVANCED:
-      return t('advanced');
-    default:
-      return 'Unknown';
+      value = 'advanced';
+      break;
   }
+
+  return getMessage(`Common.levels.${value}`);
 };

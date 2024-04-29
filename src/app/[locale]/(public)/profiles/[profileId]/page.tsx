@@ -15,8 +15,9 @@ import { Badge as UiBadge } from '@/components/ui/badge';
 import { useGetUserProfile } from '@/services/queries/user.query';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { UserCourse, getLevel } from '@/typings/course';
+import { LocalizeCourseLevel, UserCourse } from '@/typings/course';
 import { useMemo } from 'react';
+import { useTranslations } from '@/i18n';
 
 const countCompletedCourses = (courses: UserCourse[]) => {
   return courses.reduce((acc, course) => {
@@ -67,6 +68,8 @@ export default function ProfilePage({
   params: { profileId: string };
 }) {
   const router = useRouter();
+  const t = useTranslations('ProfilePage');
+
   const profileId = Number(params.profileId);
   const { data: profile, isPending, isError } = useGetUserProfile(profileId);
   const completedCourses = useMemo(() => {
@@ -81,7 +84,7 @@ export default function ProfilePage({
   }
 
   if (isError) {
-    return <div>Error loading profile</div>;
+    return <div>{t('error')}</div>;
   }
   return (
     <div className='h-lvh overflow-scroll'>
@@ -113,10 +116,10 @@ export default function ProfilePage({
       </div>
       <Separator className='bg-slate-700' />
       <div
-        className='flex flex-col lg:flex-row justify-center p-8 gap-4 animate-fade-up'
+        className='flex flex-col lg:flex-row items-center justify-center p-8 gap-4 animate-fade-up'
         style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
         <div className='flex flex-col gap-2 max-w-[400px]'>
-          <p className='text-2xl text-center font-semibold'>About me</p>
+          <p className='text-2xl text-center font-semibold'>{t('about')}</p>
           <Separator />
           <p className='font-medium text-center font-serif'>{profile.bio}</p>
         </div>
@@ -125,13 +128,13 @@ export default function ProfilePage({
         <div
           className='flex flex-col gap-2 w-full animate-fade-up'
           style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
-          <p className='text-2xl text-center font-semibold'>Progress</p>
+          <p className='text-2xl text-center font-semibold'>{t('progress')}</p>
           <Separator />
           <p className='font-medium text-center font-serif'>
-            Points: {profile.totalPoints}
+            {t('pointsWithScore', { points: profile.totalPoints })}
           </p>
           <p className='font-medium text-center font-serif'>
-            Completed Courses: {completedCourses}
+            {t('completed', { courses: completedCourses })}
           </p>
         </div>
 
@@ -141,10 +144,10 @@ export default function ProfilePage({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Course</TableHead>
-                <TableHead>Level</TableHead>
-                <TableHead>Progress</TableHead>
-                <TableHead>Points scored</TableHead>
+                <TableHead>{t('course')}</TableHead>
+                <TableHead>{t('level')}</TableHead>
+                <TableHead>{t('progress')}</TableHead>
+                <TableHead>{t('points')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -159,7 +162,7 @@ export default function ProfilePage({
 
                   <TableCell>
                     <Link href={`/courses/${course.id}`}>
-                      {getLevel(course.level)}
+                      {LocalizeCourseLevel(course.level)}
                     </Link>
                   </TableCell>
                   <TableCell>

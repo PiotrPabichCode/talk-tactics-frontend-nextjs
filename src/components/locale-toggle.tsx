@@ -35,7 +35,7 @@ export default function LocaleToggle() {
     const lang =
       supportedLocales.find((curr) => curr.value === locale) ??
       supportedLocales[0];
-    return <lang.icon title={t(locale)} className='h-[2rem] w-[2rem]' />;
+    return <lang.icon className='h-[2rem] w-[2rem]' />;
   };
 
   return (

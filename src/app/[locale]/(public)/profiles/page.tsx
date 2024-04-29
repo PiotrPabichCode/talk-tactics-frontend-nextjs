@@ -4,8 +4,10 @@ import { Spinner } from '@/components/ui/spinner';
 import { useGetUserProfilePreviews } from '@/services/queries/user.query';
 import { ProfilesMapper } from './_components/ProfilesMapper';
 import { Separator } from '@/components/ui/separator';
+import { useTranslations } from '@/i18n';
 
 export default function ProfilesPage() {
+  const t = useTranslations('ProfilesPage');
   const { data: profiles, isPending, isError } = useGetUserProfilePreviews();
 
   if (isPending) {
@@ -13,7 +15,7 @@ export default function ProfilesPage() {
   }
 
   if (isError) {
-    return <div>Error loading profiles</div>;
+    return <div>{t('error')}</div>;
   }
 
   return (
@@ -22,7 +24,7 @@ export default function ProfilesPage() {
         <h1
           className='text-2xl font-bold text-center mb-2 animate-fade-up'
           style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
-          All user profiles
+          {t('title')}
         </h1>
         <Separator
           className='max-w-4xl animate-fade-up'

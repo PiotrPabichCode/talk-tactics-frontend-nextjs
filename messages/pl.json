@@ -21,6 +21,21 @@
     "modes": "Jasny / ciemny motyw",
     "friends": "Zaproś znajomych oraz rywalizuj z nimi"
   },
+  "ProfilesPage": {
+    "title": "Profile użytkowników",
+    "error": "Błąd podczas ładowania profili",
+    "total": "Punkty: {points}"
+  },
+  "ProfilePage": {
+    "about": "O mnie",
+    "error": "Błąd podczas ładowania profilu",
+    "progress": "Postęp",
+    "pointsWithScore": "Zdobyte punkty: {points}",
+    "points": "Zdobyte punkty",
+    "completed": "Ukończone kursy: {courses}",
+    "course": "Nazwa kursu",
+    "level": "Poziom"
+  },
   "AuthPage": {
     "loginForm": {
       "title": "Zaloguj się",
@@ -52,7 +67,8 @@
       "lastNamePlaceholder": "Twoje nazwisko",
       "signUpButton": "Zarejestruj się",
       "exists": "Masz już konto?",
-      "login": "Zaloguj się"
+      "login": "Zaloguj się",
+      "signUpSuccess": "Zarejestrowano pomyślnie!"
     }
   },
   "Navigation": {
@@ -89,9 +105,13 @@
     },
     "signIn": "Zaloguj się"
   },
+  "Error": {
+    "baseRequest": {
+      "title": "Coś poszło nie tak.",
+      "description": "Wystąpił problem z Twoim zapytaniem"
+    }
+  },
   "Language": {
-    "title": "Język",
-    "pl": "Polski",
-    "en": "Angielski"
+    "title": "Język"
   }
 }

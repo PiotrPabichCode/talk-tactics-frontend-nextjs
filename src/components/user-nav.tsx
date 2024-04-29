@@ -22,7 +22,7 @@ export default function UserNav() {
   const clearUserCourses = useCourseStore().clearUserCourses;
   const clearUser = useUserStore().clearUser;
   const { firstName, lastName, email } = useUserStore();
-  const t = useTranslations('Navigation.User');
+  const t = useTranslations('Navigation');
   const tCommon = useTranslations('Common');
 
   if (!credentials) {

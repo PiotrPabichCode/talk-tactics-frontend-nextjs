@@ -1,7 +1,12 @@
 import { notFound } from 'next/navigation';
 import { getRequestConfig } from 'next-intl/server';
 import { locales } from './config';
-import { useTranslations as NextIntlTranslations } from 'next-intl';
+import {
+  useTranslations as NextIntlTranslations,
+  useMessages as NextIntlMessages,
+  NamespaceKeys,
+  NestedKeyOf,
+} from 'next-intl';
 import { FlagComponent } from 'country-flag-icons/react/3x2';
 import { PL, US } from 'country-flag-icons/react/3x2';
 
@@ -19,8 +24,14 @@ export default getRequestConfig(async ({ locale }) => {
   };
 });
 
-export const useTranslations = (key?: string) => {
+export function useTranslations(
+  key?: NamespaceKeys<IntlMessages, NestedKeyOf<IntlMessages>>
+) {
   return NextIntlTranslations(key);
+}
+
+export const useMessages = () => {
+  return NextIntlMessages();
 };
 
 type LocaleOptions = {

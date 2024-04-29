@@ -21,6 +21,21 @@
     "modes": "Light / dark mode",
     "friends": "Invite friends and compete with them"
   },
+  "ProfilesPage": {
+    "title": "All user profiles",
+    "error": "Error loading profiles",
+    "total": "Total score: {points}"
+  },
+  "ProfilePage": {
+    "about": "About me",
+    "error": "Error loading profile",
+    "progress": "Progress",
+    "pointsWithScore": "Points scored: {points}",
+    "points": "Points scored",
+    "completed": "Completed courses: {courses}",
+    "course": "Course",
+    "level": "Level"
+  },
   "AuthPage": {
     "loginForm": {
       "title": "Sign in",
@@ -52,7 +67,8 @@
       "lastNamePlaceholder": "Your last name",
       "signUpButton": "Create an account",
       "exists": "Already have an account?",
-      "login": "Login"
+      "login": "Login",
+      "signUpSuccess": "You have successfully created an account!"
     }
   },
   "Navigation": {
@@ -96,8 +112,6 @@
     }
   },
   "Language": {
-    "title": "Language",
-    "pl": "Polish",
-    "en": "English"
+    "title": "Language"
   }
 }

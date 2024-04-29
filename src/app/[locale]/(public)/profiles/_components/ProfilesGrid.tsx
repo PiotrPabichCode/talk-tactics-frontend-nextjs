@@ -12,6 +12,7 @@ import {
 import useAuthStore from '@/store/useAuthStore';
 import { Spinner } from '@/components/ui/spinner';
 import { IFriendInvitationDto } from '@/typings/user';
+import { useTranslations } from '@/i18n';
 
 export const ProfilesGrid = ({
   items,
@@ -163,6 +164,7 @@ export const CardTitle = ({
   title: string;
   points: number;
 }) => {
+  const t = useTranslations('ProfilesPage');
   return (
     <h4 className={cn('flex items-center text-sm', className)}>
       <Avatar className='bg-slate-100 mr-4'>
@@ -170,7 +172,7 @@ export const CardTitle = ({
       </Avatar>
       <div className='max-w-[55%]'>
         <p className='text-current font-bold tracking-wide truncate'>{title}</p>
-        <p>Total score: {points}</p>
+        <p>{t('total', { points: points })}</p>
       </div>
     </h4>
   );
