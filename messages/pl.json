@@ -1,0 +1,280 @@
+{
+  "Index": {
+    "title": "Witaj!"
+  },
+  "NotFoundPage": {
+    "title": "Strona nie znaleziona",
+    "message": "Przepraszamy, ale strona, której szukasz, nie istnieje."
+  },
+  "LocaleLayout": {
+    "title": "TalkTactics - nauka języka angielskiego"
+  },
+  "LandingPage": {
+    "welcomeMessage1": "Odblokuj potęgę angielskiego z <Strong>TalkTactics</Strong>",
+    "welcomeMessage2": "Najlepszy sposób na naukę nowego języka",
+    "buttonBegin": "Zacznij teraz",
+    "testimonials": {
+      "courses": "Kursów",
+      "words": "Unikalnych słów",
+      "usages": "Przykładowych użyć"
+    },
+    "modes": "Jasny / ciemny motyw",
+    "friends": "Zaproś znajomych oraz rywalizuj z nimi"
+  },
+  "ProfilesPage": {
+    "title": "Profile użytkowników",
+    "error": "Błąd podczas ładowania profili",
+    "total": "Punkty: {points}"
+  },
+  "ProfilePage": {
+    "about": "O mnie",
+    "error": "Błąd podczas ładowania profilu",
+    "progress": "Postęp",
+    "pointsWithScore": "Zdobyte punkty: {points}",
+    "points": "Zdobyte punkty",
+    "completed": "Ukończone kursy: {courses}",
+    "course": "Nazwa kursu",
+    "level": "Poziom"
+  },
+  "AuthPage": {
+    "loginForm": {
+      "title": "Zaloguj się",
+      "description": "Zaloguj się, aby śledzić na bieżąco swoje postępy w nauce języka angielskiego.",
+      "username": "Nazwa użytkownika",
+      "usernamePlaceholder": "PiotrPabich123",
+      "password": "Hasło",
+      "passwordPlaceholder": "********",
+      "signInButton": "Zaloguj się",
+      "new": "Nie masz konta?",
+      "createAccount": "Zarejestruj się",
+      "signInSuccess": "Zalogowano pomyślnie!",
+      "testAccount": "Konto testowe",
+      "testAccountLogin": "Nazwa użytkownika: {login}",
+      "testAccountPassword": "Hasło: {password}"
+    },
+    "registerForm": {
+      "title": "Zarejestruj się",
+      "description": "Zarejestruj się, aby zapisać postępy nauki języka angielskiego.",
+      "or": "Lub",
+      "username": "Nazwa użytkownika",
+      "usernamePlaceholder": "PiotrPabich123",
+      "password": "Hasło",
+      "passwordPlaceholder": "********",
+      "repeatPassword": "Powtórz hasło",
+      "repeatPasswordPlaceholder": "********",
+      "email": "Email",
+      "emailPlaceholder": "ppabich1@gmail.com",
+      "firstName": "Imię",
+      "firstNamePlaceholder": "Twoje imię",
+      "lastName": "Nazwisko",
+      "lastNamePlaceholder": "Twoje nazwisko",
+      "signUpButton": "Zarejestruj się",
+      "exists": "Masz już konto?",
+      "login": "Zaloguj się",
+      "signUpSuccess": "Zarejestrowano pomyślnie!"
+    }
+  },
+  "Navigation": {
+    "leaderboard": {
+      "title": "Tablica wyników",
+      "profiles": "Profile",
+      "users": "Użytkownicy"
+    },
+    "courses": {
+      "title": "Kursy angielskiego",
+      "description": "Odkryj nasze kursy angielskiego. Popraw swoje umiejętności językowe. Od początkujących do zaawansowanych. Zacznij już dziś!"
+    },
+    "random": {
+      "title": "Generuj losowe słowo",
+      "top": "Najczęściej używane angielskie słowa - Top"
+    },
+    "User": {
+      "profile": "Profil",
+      "settings": "Ustawienia",
+      "logout": "Wyloguj się"
+    },
+    "Mode": {
+      "title": "Wybór motywu",
+      "light": "Jasny",
+      "dark": "Ciemny",
+      "system": "Systemowy"
+    }
+  },
+  "Common": {
+    "levels": {
+      "beginner": "Początkujący",
+      "intermediate": "Średniozaawansowany",
+      "advanced": "Zaawansowany"
+    },
+    "signIn": "Zaloguj się",
+    "yes": "Tak",
+    "no": "Nie"
+  },
+  "Error": {
+    "baseRequest": {
+      "title": "Coś poszło nie tak.",
+      "description": "Wystąpił problem z Twoim zapytaniem"
+    }
+  },
+  "Language": {
+    "title": "Język"
+  },
+  "UserProfile": {
+    "welcome": "👋 Witaj, {name}!",
+    "description": "Zobacz swój profil, postępy w nauce oraz ustawienia konta.",
+    "profile": "Profil",
+    "friends": "Znajomi",
+    "preferences": "Ustawienia",
+    "myCourses": "Moje kursy",
+    "Settings": {
+      "title": "Profil",
+      "description": "Tak będą widzieć Cię inni użytkownicy na stronie.",
+      "username": "Nazwa użytkownika",
+      "usernameDescription": "To jest Twoja publiczna nazwa użytkownika. Może to być Twoje prawdziwe imię lub pseudonim. Jest to również Twój login.",
+      "email": "Email",
+      "emailDescription": "Ten adres e-mail będzie Twoim podstawowym kontaktem. Będziemy go używać do wysyłania powiadomień, e-maili potwierdzających i żądań zmiany hasła.",
+      "firstName": "Imię",
+      "firstNameDescription": "To, jak inni cię nazywają.",
+      "lastName": "Nazwisko",
+      "lastNameDescription": "Twoje nazwisko rodowe, które dzielisz się z społecznością.",
+      "bio": "O mnie",
+      "bioPlaceholder": "Opowiedz nam coś o sobie. Możesz napisać kilka słów o swoich zainteresowaniach, pasjach, celach, itp.",
+      "bioDescription": "To pole jest opcjonalne. Możesz opowiedzieć nam coś o sobie, jeśli chcesz.",
+      "buttonSubmit": "Zapisz zmiany",
+      "successMessage": "Zmiany zostały zapisane pomyślnie!"
+    },
+    "Friends": {
+      "friends": "Znajomi",
+      "sentInvitations": "Wysłane zaproszenia",
+      "receivedInvitations": "Otrzymane zaproszenia",
+      "friendsLoadingError": "Błąd podczas ładowania znajomych",
+      "invitationsLoadingError": "Błąd podczas ładowania zaproszeń",
+      "friendsTitle": "Znajomi",
+      "friendsDescription": "Tutaj możesz zobaczyć listę swoich znajomych.",
+      "receivedInvitationsTitle": "Otrzymane zaproszenia",
+      "receivedInvitationsDescription": "Tutaj możesz zobaczyć listę otrzymanych zaproszeń do znajomych.",
+      "sentInvitationsTitle": "Wysłane zaproszenia",
+      "sentInvitationsDescription": "Tutaj możesz zobaczyć listę wysłanych zaproszeń do znajomych.",
+      "firstName": "Imię",
+      "lastName": "Nazwisko",
+      "action": "Akcje",
+      "delete": "Usuń",
+      "accept": "Akceptuj",
+      "reject": "Odrzuć",
+      "cancel": "Anuluj"
+    },
+    "Preferences": {
+      "title": "Preferencje",
+      "description": "Zaktualizuj preferencje aplikacji. Wybierz motyw, ustaw preferowany język i ustawienia czcionki.",
+      "language": "Język",
+      "selectLanguage": "Wybierz język",
+      "searchLanguage": "Wyszukaj język...",
+      "noLanguageFound": "Nie znaleziono języka",
+      "languageDescription": "Język używany w całej aplikacji.",
+      "font": "Czcionka",
+      "selectFont": "Wybierz czcionkę",
+      "searchFont": "Wyszukaj czcionkę...",
+      "noFontFound": "Nie znaleziono czcionki",
+      "fontDescription": "Ustaw czcionkę, którą chcesz używać w aplikacji.",
+      "theme": "Motyw",
+      "themeDescription": "Wybierz motyw dla pulpitu.",
+      "buttonSubmit": "Zaktualizuj preferencje"
+    }
+  },
+  "Theme": {
+    "system": "Systemowy",
+    "light": "Jasny",
+    "dark": "Ciemny"
+  },
+  "CoursesPage": {
+    "alertDeleteTitle": "Jesteś absolutnie pewny?",
+    "alertDeleteDescription": "Tej operacji nie można cofnąć. Spowoduje to trwałe usunięcie twojego kursu i usunięcie danych kursu z naszych serwerów.",
+    "cancel": "Anuluj",
+    "continue": "Kontynuuj",
+    "openCourse": "Otwórz kurs",
+    "addCourse": "Dodaj kurs ",
+    "deleteCourse": "Usuń kurs ",
+    "deleteCourseSuccess": "Pomyślnie usunięto kurs.",
+    "addCourseSuccess": "Pomyślnie dodano nowy kurs!",
+    "position": "Lp.",
+    "title": "Tytuł",
+    "description": "Opis",
+    "difficulty": "Trudność",
+    "words": "Słowa",
+    "progress": "Postęp",
+    "mainFilterPlaceholder": "Szukaj tytuły...",
+    "myCourses": "Moje kursy"
+  },
+  "CoursePage": {
+    "learnMore": "Dowiedz się więcej",
+    "learnMoreSuccess": "Dobrze zrobione!",
+    "iKnowIt": "Umiem!",
+    "gotThis": "Umiesz?",
+    "position": "Lp.",
+    "word": "Słowo",
+    "partOfSpeech": "Część mowy",
+    "phonetic": "Fonetyka",
+    "notAvailable": "Niedostępne",
+    "mainFilterPlaceholder": "Znajdź słowa..."
+  },
+  "WordPage": {
+    "backToCourse": "Powrót do kursu",
+    "position": "Lp.",
+    "definition": "Definicja",
+    "example": "Przykład użycia",
+    "notAvailable": "Niedostępne :("
+  },
+  "Table": {
+    "noResults": "Brak wyników.",
+    "DataTableToolbar": {
+      "backToCourses": "Powrót do kursów",
+      "reset": "Resetuj"
+    },
+    "DataTableViewOptions": {
+      "view": "Widok",
+      "toggleColumns": "Przełącz kolumny"
+    },
+    "DataTableRowActions": {
+      "openMenu": "Otwórz menu",
+      "edit": "Edytuj",
+      "copy": "Utwórz kopię",
+      "favorite": "Ulubione",
+      "delete": "Usuń"
+    },
+    "DataTablePagination": {
+      "rowsPerPage": "Wierszy na stronę",
+      "pageOf": "Strona {currentPage} z {totalPages}",
+      "goToFirstPage": "Przejdź do pierwszej strony",
+      "goToPreviousPage": "Przejdź do poprzedniej strony",
+      "goToNextPage": "Przejdź do następnej strony",
+      "goToLastPage": "Przejdź do ostatniej strony"
+    },
+    "DataTableFacetedFilter": {
+      "totalSelected": "Wybrano {total}",
+      "noResultsFound": "Nie znaleziono wyników.",
+      "clearFilters": "Wyczyść filtry"
+    },
+    "DataTableColumnHeader": {
+      "asc": "Rosnąco",
+      "desc": "Malejąco",
+      "hide": "Ukryj"
+    }
+  },
+  "FriendInvitationButton": {
+    "send": "Wyślij zaproszenie do znajomych",
+    "cancel": "Anuluj zaproszenie do znajomych",
+    "accept": "Akceptuj zaproszenie do znajomych",
+    "reject": "Odrzuć zaproszenie do znajomych",
+    "delete": "Usuń znajomego",
+    "sendDescription": "Czy na pewno chcesz wysłać zaproszenie do znajomych?",
+    "cancelDescription": "Czy na pewno chcesz anulować zaproszenie do znajomych?",
+    "acceptDescription": "Czy na pewno chcesz zaakceptować zaproszenie do znajomych?",
+    "rejectDescription": "Czy na pewno chcesz odrzucić zaproszenie do znajomych?",
+    "deleteDescription": "Czy na pewno chcesz usunąć znajomego?",
+    "sendSuccess": "Zaproszenie do znajomych zostało wysłane",
+    "cancelSuccess": "Zaproszenie do znajomych zostało anulowane",
+    "acceptSuccess": "Zaproszenie do znajomych zostało zaakceptowane",
+    "rejectSuccess": "Zaproszenie do znajomych zostało odrzucone",
+    "deleteSuccess": "Znajomy został usunięty"
+  }
+}

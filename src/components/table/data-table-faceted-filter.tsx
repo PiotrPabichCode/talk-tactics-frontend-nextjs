@@ -20,6 +20,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
+import { GetLocalizedMessage, useTranslations } from '@/i18n';
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -36,6 +37,7 @@ export function DataTableFacetedFilter<TData, TValue>({
   title,
   options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
+  const t = useTranslations('Table.DataTableFacetedFilter');
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
 
@@ -44,7 +46,7 @@ export function DataTableFacetedFilter<TData, TValue>({
       <PopoverTrigger asChild>
         <Button variant='outline' size='sm' className='h-8 border-dashed'>
           <PlusCircledIcon className='mr-2 h-4 w-4' />
-          {title}
+          {title && GetLocalizedMessage(title)}
           {selectedValues?.size > 0 && (
             <>
               <Separator orientation='vertical' className='mx-2 h-4' />
@@ -58,7 +60,9 @@ export function DataTableFacetedFilter<TData, TValue>({
                   <Badge
                     variant='secondary'
                     className='rounded-sm px-1 font-normal'>
-                    {selectedValues.size} selected
+                    {t('totalSelected', {
+                      total: selectedValues.size,
+                    })}
                   </Badge>
                 ) : (
                   options
@@ -68,7 +72,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                         variant='secondary'
                         key={option.value}
                         className='rounded-sm px-1 font-normal'>
-                        {option.label}
+                        {GetLocalizedMessage(option.label)}
                       </Badge>
                     ))
                 )}
@@ -77,11 +81,11 @@ export function DataTableFacetedFilter<TData, TValue>({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-[200px] p-0' align='start'>
+      <PopoverContent className='w-[250px] p-0' align='start'>
         <Command>
-          <CommandInput placeholder={title} />
+          <CommandInput placeholder={title && GetLocalizedMessage(title)} />
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>{t('noResultsFound')}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -111,7 +115,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     {option.icon && (
                       <option.icon className='mr-2 h-4 w-4 text-muted-foreground' />
                     )}
-                    <span>{option.label}</span>
+                    <span>{GetLocalizedMessage(option.label)}</span>
                     {facets?.get(option.value) && (
                       <span className='ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs'>
                         {facets.get(option.value)}
@@ -128,7 +132,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                   <CommandItem
                     onSelect={() => column?.setFilterValue(undefined)}
                     className='justify-center text-center'>
-                    Clear filters
+                    {t('clearFilters')}
                   </CommandItem>
                 </CommandGroup>
               </>

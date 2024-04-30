@@ -11,6 +11,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useTranslations } from '@/i18n';
 import useAuthStore from '@/store/useAuthStore';
 import useCourseStore from '@/store/useCourseStore';
 import useUserStore from '@/store/useUserStore';
@@ -21,11 +22,13 @@ export default function UserNav() {
   const clearUserCourses = useCourseStore().clearUserCourses;
   const clearUser = useUserStore().clearUser;
   const { firstName, lastName, email } = useUserStore();
+  const t = useTranslations('Navigation.User');
+  const tCommon = useTranslations('Common');
 
   if (!credentials) {
     return (
       <Link href={'/auth'}>
-        <Button variant='outline'>Sign in</Button>
+        <Button variant='outline'>{tCommon('signIn')}</Button>
       </Link>
     );
   }
@@ -59,13 +62,13 @@ export default function UserNav() {
         <DropdownMenuGroup>
           <Link href={'/profile'}>
             <DropdownMenuItem>
-              Profile
+              {t('profile')}
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
           </Link>
           <Link href={'/profile/preferences'}>
             <DropdownMenuItem>
-              Settings
+              {t('settings')}
               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
             </DropdownMenuItem>
           </Link>
@@ -77,7 +80,7 @@ export default function UserNav() {
             clearUser();
             logout();
           }}>
-          Log out
+          {t('logout')}
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

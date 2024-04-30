@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { useTranslations } from '@/i18n';
 
 export function FriendInvitationActionDialog({
   status,
@@ -25,28 +26,25 @@ export function FriendInvitationActionDialog({
   onOpenChange: (_: boolean) => void;
   onAction: (e: React.MouseEvent<HTMLElement>) => void;
 }) {
+  const t = useTranslations('FriendInvitationButton');
+  const tCommon = useTranslations('Common');
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            {status === 'SEND_INVITATION' && 'Send friend invitation'}
-            {status === 'ACCEPT_INVITATION' && 'Accept friend invitation'}
-            {status === 'REJECT_INVITATION' && 'Reject friend invitation'}
-            {status === 'CANCEL_INVITATION' && 'Cancel friend invitation'}
-            {status === 'DELETE_FRIEND' && 'Delete friend'}
+            {status === 'SEND_INVITATION' && t('send')}
+            {status === 'ACCEPT_INVITATION' && t('accept')}
+            {status === 'REJECT_INVITATION' && t('reject')}
+            {status === 'CANCEL_INVITATION' && t('cancel')}
+            {status === 'DELETE_FRIEND' && t('delete')}
           </AlertDialogTitle>
           <AlertDialogDescription>
-            {status === 'SEND_INVITATION' &&
-              'Are you sure you want to send a friend invitation?'}
-            {status === 'ACCEPT_INVITATION' &&
-              'Are you sure you want to accept this friend invitation?'}
-            {status === 'REJECT_INVITATION' &&
-              'Are you sure you want to reject this friend invitation?'}
-            {status === 'CANCEL_INVITATION' &&
-              'Are you sure you want to cancel this friend invitation?'}
-            {status === 'DELETE_FRIEND' &&
-              'Are you sure you want to delete this friend?'}
+            {status === 'SEND_INVITATION' && t('sendDescription')}
+            {status === 'ACCEPT_INVITATION' && t('acceptDescription')}
+            {status === 'REJECT_INVITATION' && t('rejectDescription')}
+            {status === 'CANCEL_INVITATION' && t('cancelDescription')}
+            {status === 'DELETE_FRIEND' && t('deleteDescription')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -54,9 +52,11 @@ export function FriendInvitationActionDialog({
             onClick={(e) => {
               e.stopPropagation();
             }}>
-            No
+            {tCommon('no')}
           </AlertDialogCancel>
-          <AlertDialogAction onClick={onAction}>Yes</AlertDialogAction>
+          <AlertDialogAction onClick={onAction}>
+            {tCommon('yes')}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -1,14 +1,19 @@
+import { GetLocalizedMessage } from '@/i18n';
 import { CourseLevel } from './course';
 
-export const getLevel = (level: CourseLevel): string => {
+export const LocalizeCourseLevel = (level: CourseLevel): string => {
+  let value = '';
   switch (level) {
     case CourseLevel.BEGINNER:
-      return 'Beginner';
+      value = 'beginner';
+      break;
     case CourseLevel.INTERMEDIATE:
-      return 'Intermediate';
+      value = 'intermediate';
+      break;
     case CourseLevel.ADVANCED:
-      return 'Advanced';
-    default:
-      return 'Unknown';
+      value = 'advanced';
+      break;
   }
+
+  return GetLocalizedMessage(`Common.levels.${value}`);
 };

@@ -1,0 +1,280 @@
+{
+  "Index": {
+    "title": "Hello world!"
+  },
+  "NotFoundPage": {
+    "title": "Page not found",
+    "message": "The page you are looking for does not exist."
+  },
+  "LocaleLayout": {
+    "title": "TalkTactics - The best way to learn a new language"
+  },
+  "LandingPage": {
+    "welcomeMessage1": "Unlock the Power of English with <Strong>TalkTactics</Strong>",
+    "welcomeMessage2": "The best way to learn a new language",
+    "buttonBegin": "Begin now",
+    "testimonials": {
+      "courses": "Courses",
+      "words": "Unique words",
+      "usages": "Example usages"
+    },
+    "modes": "Light / dark mode",
+    "friends": "Invite friends and compete with them"
+  },
+  "ProfilesPage": {
+    "title": "All user profiles",
+    "error": "Error loading profiles",
+    "total": "Total score: {points}"
+  },
+  "ProfilePage": {
+    "about": "About me",
+    "error": "Error loading profile",
+    "progress": "Progress",
+    "pointsWithScore": "Points scored: {points}",
+    "points": "Points scored",
+    "completed": "Completed courses: {courses}",
+    "course": "Course",
+    "level": "Level"
+  },
+  "AuthPage": {
+    "loginForm": {
+      "title": "Sign in",
+      "description": "Sign in to track your progress in learning English.",
+      "username": "Username",
+      "usernamePlaceholder": "Your username",
+      "password": "Password",
+      "passwordPlaceholder": "********",
+      "signInButton": "Login",
+      "new": "New to TalkTactics?",
+      "createAccount": "Create an account",
+      "signInSuccess": "You have successfully logged in!",
+      "testAccount": "Test account",
+      "testAccountLogin": "Login: {login}",
+      "testAccountPassword": "Password: {password}"
+    },
+    "registerForm": {
+      "title": "Create an account",
+      "description": "Sign up to track your progress in learning English.",
+      "or": "Or continue with",
+      "username": "Username",
+      "usernamePlaceholder": "Your username",
+      "password": "Password",
+      "passwordPlaceholder": "********",
+      "repeatPassword": "Repeat password",
+      "repeatPasswordPlaceholder": "********",
+      "email": "Email",
+      "emailPlaceholder": "ppabich1@gmail.com",
+      "firstName": "First name",
+      "firstNamePlaceholder": "Your first name",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Your last name",
+      "signUpButton": "Create an account",
+      "exists": "Already have an account?",
+      "login": "Login",
+      "signUpSuccess": "You have successfully created an account!"
+    }
+  },
+  "Navigation": {
+    "leaderboard": {
+      "title": "Leaderboard",
+      "profiles": "Profiles",
+      "users": "All users"
+    },
+    "courses": {
+      "title": "English courses",
+      "description": "Discover our English courses. Improve your language skills. Beginner to advanced. Start today!"
+    },
+    "random": {
+      "title": "Generate random word",
+      "top": "Most frequently used english words - Top"
+    },
+    "User": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "Mode": {
+      "title": "Toggle mode",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "Common": {
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "signIn": "Sign in",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "Error": {
+    "baseRequest": {
+      "title": "Oh no! Something went wrong.",
+      "description": "There was a problem with your request"
+    }
+  },
+  "Language": {
+    "title": "Language"
+  },
+  "UserProfile": {
+    "welcome": "👋 Welcome, {name}!",
+    "description": "View your profile, learning progress and account settings.",
+    "profile": "Profile",
+    "friends": "Friends",
+    "preferences": "Preferences",
+    "myCourses": "My courses",
+    "Settings": {
+      "title": "Your Profile",
+      "description": "How others see you on the site.",
+      "username": "Username",
+      "usernameDescription": "Your public handle. It can be your real name or a cool alias. Also, it is your login.",
+      "email": "Email",
+      "emailDescription": "Your go-to contact. Expect notifications, confirmations, and password reset emails here.",
+      "firstName": "First Name",
+      "firstNameDescription": "What others call you.",
+      "lastName": "Last Name",
+      "lastNameDescription": "Your family name, shared with the community.",
+      "bio": "About Me",
+      "bioPlaceholder": "Let us in on who you are. Share your passions, interests, or aspirations in a few words.",
+      "bioDescription": "This part is optional. Tell us a bit about yourself if you feel like it.",
+      "buttonSubmit": "Save Changes",
+      "successMessage": "Changes saved successfully!"
+    },
+    "Friends": {
+      "friends": "Friends",
+      "sentInvitations": "Sent Invitations",
+      "receivedInvitations": "Received Invitations",
+      "friendsLoadingError": "Error loading friends",
+      "invitationsLoadingError": "Error loading invitations",
+      "friendsTitle": "Friends",
+      "friendsDescription": "Here you can see a list of your friends.",
+      "receivedInvitationsTitle": "Received Invitations",
+      "receivedInvitationsDescription": "Here you can see a list of received friend invitations.",
+      "sentInvitationsTitle": "Sent Invitations",
+      "sentInvitationsDescription": "Here you can see a list of sent friend invitations.",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "action": "Action",
+      "delete": "Delete",
+      "accept": "Accept",
+      "reject": "Reject",
+      "cancel": "Cancel"
+    },
+    "Preferences": {
+      "title": "Preferences",
+      "description": "Update your app preferences. Choose theme, set your preffered language and font settings.",
+      "language": "Language",
+      "selectLanguage": "Select language",
+      "searchLanguage": "Search language...",
+      "noLanguageFound": "No language found",
+      "languageDescription": "This is the language that will be used across application.",
+      "font": "Font",
+      "selectFont": "Select font",
+      "searchFont": "Search font...",
+      "noFontFound": "No font found",
+      "fontDescription": "Set the font you want to use in the dashboard.",
+      "theme": "Theme",
+      "themeDescription": "Select the theme for the dashboard.",
+      "buttonSubmit": "Update preferences"
+    }
+  },
+  "Theme": {
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "CoursesPage": {
+    "alertDeleteTitle": "Are you absolutely sure?",
+    "alertDeleteDescription": "This action cannot be undone. This will permanently delete your course and remove your course data from our servers.",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "openCourse": "Open course",
+    "addCourse": "Add course ",
+    "deleteCourse": "Delete course ",
+    "deleteCourseSuccess": "You have successfully deleted course.",
+    "addCourseSuccess": "You have successfully added new course!",
+    "position": "No.",
+    "title": "Title",
+    "description": "Description",
+    "difficulty": "Difficulty",
+    "words": "Words",
+    "progress": "Progress",
+    "mainFilterPlaceholder": "Search titles...",
+    "myCourses": "My courses"
+  },
+  "CoursePage": {
+    "learnMore": "Learn more",
+    "learnMoreSuccess": "Good job!",
+    "iKnowIt": "I know it",
+    "gotThis": "Got this?",
+    "position": "No.",
+    "word": "Word",
+    "partOfSpeech": "Part of speech",
+    "phonetic": "Phonetic",
+    "notAvailable": "Not available",
+    "mainFilterPlaceholder": "Find words..."
+  },
+  "WordPage": {
+    "backToCourse": "Back to course",
+    "position": "No.",
+    "definition": "Definition",
+    "example": "Usage example",
+    "notAvailable": "Not available :("
+  },
+  "Table": {
+    "noResults": "No results.",
+    "DataTableToolbar": {
+      "backToCourses": "Back to courses",
+      "reset": "Reset"
+    },
+    "DataTableViewOptions": {
+      "view": "View",
+      "toggleColumns": "Toggle columns"
+    },
+    "DataTableRowActions": {
+      "openMenu": "Open menu",
+      "edit": "Edit",
+      "copy": "Make a copy",
+      "favorite": "Favorite",
+      "delete": "Delete"
+    },
+    "DataTablePagination": {
+      "rowsPerPage": "Rows per page",
+      "pageOf": "Page {currentPage} of {totalPages}",
+      "goToFirstPage": "Go to first page",
+      "goToPreviousPage": "Go to previous page",
+      "goToNextPage": "Go to next page",
+      "goToLastPage": "Go to last page"
+    },
+    "DataTableFacetedFilter": {
+      "totalSelected": "{total} selected",
+      "noResultsFound": "No results found.",
+      "clearFilters": "Clear filters"
+    },
+    "DataTableColumnHeader": {
+      "asc": "Asc",
+      "desc": "Desc",
+      "hide": "Hide"
+    }
+  },
+  "FriendInvitationButton": {
+    "send": "Send friend invitation",
+    "cancel": "Cancel friend invitation",
+    "accept": "Accept friend invitation",
+    "reject": "Reject friend invitation",
+    "delete": "Delete friend",
+    "sendDescription": "Are you sure you want to send a friend invitation?",
+    "cancelDescription": "Are you sure you want to cancel a friend invitation?",
+    "acceptDescription": "Are you sure you want to accept a friend invitation?",
+    "rejectDescription": "Are you sure you want to reject a friend invitation?",
+    "deleteDescription": "Are you sure you want to delete a friend?",
+    "sendSuccess": "Friend invitation sent",
+    "cancelSuccess": "Friend invitation canceled",
+    "acceptSuccess": "Friend invitation accepted",
+    "rejectSuccess": "Friend invitation rejected",
+    "deleteSuccess": "Friend deleted"
+  }
+}
