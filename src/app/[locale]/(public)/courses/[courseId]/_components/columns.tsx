@@ -11,14 +11,16 @@ import { usePathname } from 'next/navigation';
 import { useLearnUserCourseItem } from '@/services/queries/course.query';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
+import { GetLocalizedMessage, useTranslations } from '@/i18n';
 
 const LearnMoreCell = ({ row }: { row: any }) => {
+  const t = useTranslations('CoursePage');
   const pathname = usePathname();
   const courseItemId = row.original.courseItemId ?? row.getValue('id');
   return (
     <Link href={`${pathname}/words/${courseItemId}`}>
       <Button variant={'action'}>
-        Learn more
+        {t('learnMore')}
         <GraduationCap className='h-5 w-5 ml-2' />
       </Button>
     </Link>
@@ -26,6 +28,7 @@ const LearnMoreCell = ({ row }: { row: any }) => {
 };
 
 const SetLearnCell = ({ row }: { row: Row<UserCourseItemPreviewDto> }) => {
+  const t = useTranslations('CoursePage');
   const {
     isPending,
     isSuccess,
@@ -36,7 +39,7 @@ const SetLearnCell = ({ row }: { row: Row<UserCourseItemPreviewDto> }) => {
   const onSubmit = async () => {
     try {
       await learnWord(row.getValue('id'));
-      toast.success('Good job!');
+      toast.success(t('learnMoreSuccess'));
     } catch (e) {
       toast.error('Oh no! Something went wrong.', {
         description: 'There was a problem with your request',
@@ -55,7 +58,7 @@ const SetLearnCell = ({ row }: { row: Row<UserCourseItemPreviewDto> }) => {
         <Spinner variant='button' />
       ) : (
         <>
-          {learned || isSuccess ? 'I know it' : 'Got this?'}
+          {learned || isSuccess ? t('iKnowIt') : t('gotThis')}
           <Telescope className='h-5 w-5 ml-2' />
         </>
       )}
@@ -92,7 +95,7 @@ export const userColumns: ColumnDef<UserCourseItemPreviewDto>[] = [
       <DataTableColumnHeader
         className='w-[10px] text-center'
         column={column}
-        title='No.'
+        title='CoursePage.position'
       />
     ),
     cell: ({ row }) => (
@@ -105,7 +108,7 @@ export const userColumns: ColumnDef<UserCourseItemPreviewDto>[] = [
     accessorKey: 'word',
     enableHiding: false,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Word' />
+      <DataTableColumnHeader column={column} title='CoursePage.word' />
     ),
     cell: ({ row }) => {
       return (
@@ -119,7 +122,7 @@ export const userColumns: ColumnDef<UserCourseItemPreviewDto>[] = [
     accessorKey: 'partOfSpeech',
     enableHiding: false,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Part of speech' />
+      <DataTableColumnHeader column={column} title='CoursePage.partOfSpeech' />
     ),
     cell: ({ row }) => {
       return (
@@ -133,14 +136,14 @@ export const userColumns: ColumnDef<UserCourseItemPreviewDto>[] = [
     accessorKey: 'phonetic',
     enableHiding: false,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Phonetic' />
+      <DataTableColumnHeader column={column} title='CoursePage.phonetic' />
     ),
     cell: ({ row }) => {
       return (
         <p className='w-full max-w-[200px] font-medium truncate xl:whitespace-normal'>
           {row.getValue('phonetic')
             ? row.getValue('phonetic')
-            : 'Not available'}
+            : GetLocalizedMessage('CoursePage.notAvailable')}
         </p>
       );
     },
@@ -195,7 +198,7 @@ export const columns: ColumnDef<CourseItemDto>[] = [
       <DataTableColumnHeader
         className='w-[10px] text-center'
         column={column}
-        title='No.'
+        title='CoursePage.position'
       />
     ),
     cell: ({ row }) => (
@@ -208,7 +211,7 @@ export const columns: ColumnDef<CourseItemDto>[] = [
     accessorKey: 'word',
     enableHiding: false,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Word' />
+      <DataTableColumnHeader column={column} title='CoursePage.word' />
     ),
     cell: ({ row }) => {
       return (
@@ -222,7 +225,7 @@ export const columns: ColumnDef<CourseItemDto>[] = [
     accessorKey: 'partOfSpeech',
     enableHiding: false,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Part of speech' />
+      <DataTableColumnHeader column={column} title='CoursePage.partOfSpeech' />
     ),
     cell: ({ row }) => {
       return (
@@ -236,14 +239,14 @@ export const columns: ColumnDef<CourseItemDto>[] = [
     accessorKey: 'phonetic',
     enableHiding: false,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Phonetic' />
+      <DataTableColumnHeader column={column} title='CoursePage.phonetic' />
     ),
     cell: ({ row }) => {
       return (
         <p className='w-full max-w-[200px] font-medium truncate xl:whitespace-normal'>
           {row.getValue('phonetic')
             ? row.getValue('phonetic')
-            : 'Not available'}
+            : GetLocalizedMessage('CoursePage.notAvailable')}
         </p>
       );
     },

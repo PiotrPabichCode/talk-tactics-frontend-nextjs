@@ -4,25 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import { SidebarNav } from './_components/sidebar-nav';
 import useUserStore from '@/store/useUserStore';
 import withAuthRoles from '@/router/withAuthRoles';
-
-const sidebarNavItems = [
-  {
-    title: 'Profile',
-    href: '/profile',
-  },
-  {
-    title: 'Friends',
-    href: '/profile/friends',
-  },
-  {
-    title: 'Preferences',
-    href: '/profile/preferences',
-  },
-  {
-    title: 'My courses',
-    href: '/courses?custom=my-courses',
-  },
-];
+import { useTranslations } from 'next-intl';
 
 interface ProfileLayoutSettings {
   children: React.ReactNode;
@@ -30,6 +12,27 @@ interface ProfileLayoutSettings {
 
 function ProfileLayout({ children }: ProfileLayoutSettings) {
   const { firstName } = useUserStore();
+  const t = useTranslations('UserProfile');
+
+  const sidebarNavItems = [
+    {
+      title: t('profile'),
+      href: '/profile',
+    },
+    {
+      title: t('friends'),
+      href: '/profile/friends',
+    },
+    {
+      title: t('preferences'),
+      href: '/profile/preferences',
+    },
+    {
+      title: t('myCourses'),
+      href: '/courses?custom=my-courses',
+    },
+  ];
+
   return (
     <>
       <div className='space-y-6 p-5 lg:p-10 pb-16 md:block'>
@@ -39,11 +42,15 @@ function ProfileLayout({ children }: ProfileLayoutSettings) {
             style={{
               animationDelay: '0.1s',
               animationFillMode: 'both',
-            }}>{`👋 Hello ${firstName}`}</h2>
+            }}>
+            {t('welcome', {
+              name: firstName,
+            })}
+          </h2>
           <p
             className='text-muted-foreground animate-fade-up'
             style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-            Manage your account settings in here
+            {t('description')}
           </p>
         </div>
         <Separator

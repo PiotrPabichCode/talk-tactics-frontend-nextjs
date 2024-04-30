@@ -15,6 +15,7 @@ import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { FriendInvitationActionDialog } from './_components/friend-invitation-action-dialog';
 import { useMediaQuery } from '@/hooks/use-media-query';
+import { useTranslations } from '@/i18n';
 
 export function FriendInvitationButton({
   friendId,
@@ -32,6 +33,7 @@ export function FriendInvitationButton({
   className?: string;
   buttonText?: string;
 }) {
+  const t = useTranslations('FriendInvitationButton');
   const isSmallDevice = useMediaQuery('only screen and (max-width : 768px)');
   const { isAccountPage, className, buttonText } = props;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -58,31 +60,31 @@ export function FriendInvitationButton({
               senderId: userId,
               receiverId: friendId,
             });
-            toast.success('Friend invitation sent');
+            toast.success(t('sendSuccess'));
           } else if (status === 'ACCEPT_INVITATION') {
             await acceptFriendInvitation({
               senderId: friendId,
               receiverId: userId,
             });
-            toast.success('Friend added');
+            toast.success(t('acceptSuccess'));
           } else if (status === 'REJECT_INVITATION') {
             await rejectFriendInvitation({
               senderId: friendId,
               receiverId: userId,
             });
-            toast.success('Friend invitation rejected');
+            toast.success(t('rejectSuccess'));
           } else if (status === 'CANCEL_INVITATION') {
             await cancelFriendInvitation({
               senderId: userId,
               receiverId: friendId,
             });
-            toast.success('Friend invitation canceled');
+            toast.success(t('cancelSuccess'));
           } else if (status === 'DELETE_FRIEND') {
             await deleteFriend({
               userId,
               friendId,
             });
-            toast.success('Friend deleted');
+            toast.success(t('deleteSuccess'));
           }
         });
       }

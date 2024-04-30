@@ -82,9 +82,17 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
               </div>
             </div>
             <Card className='text-sm text-muted-foreground border-none'>
-              <p>Test account</p>
-              <p>Login: user1</p>
-              <p>Password: user1</p>
+              <p>{t('testAccount')}</p>
+              <p>
+                {t('testAccountLogin', {
+                  login: 'user1',
+                })}
+              </p>
+              <p>
+                {t('testAccountPassword', {
+                  password: 'user1',
+                })}
+              </p>
             </Card>
             <span className='w-full border-t' />
             <div className={'grid gap-4'}>

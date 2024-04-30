@@ -1,4 +1,7 @@
+import { useTranslations } from '@/i18n';
+
 export function DarkMode() {
+  const t = useTranslations('Theme');
   return (
     <>
       <div className='items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground'>
@@ -17,7 +20,9 @@ export function DarkMode() {
           </div>
         </div>
       </div>
-      <span className='block w-full p-2 text-center font-normal'>Dark</span>
+      <span className='block w-full p-2 text-center font-normal'>
+        {t('dark')}
+      </span>
     </>
   );
 }

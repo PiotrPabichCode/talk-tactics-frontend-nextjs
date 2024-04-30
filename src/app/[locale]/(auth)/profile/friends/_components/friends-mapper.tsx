@@ -9,12 +9,14 @@ import {
   TableRow,
   Table,
 } from '@/components/ui/table';
+import { useTranslations } from '@/i18n';
 import { useGetFriendList } from '@/services/queries/user.query';
 import useAuthStore from '@/store/useAuthStore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export function FriendsMapper() {
+  const t = useTranslations('UserProfile.Friends');
   const router = useRouter();
   const userId = useAuthStore().credentials?.id;
   const { data: friends, isPending, isError } = useGetFriendList(userId);
@@ -24,7 +26,7 @@ export function FriendsMapper() {
   }
 
   if (isError) {
-    return <div>Error loading friends</div>;
+    return <div>{t('friendsLoadingError')}</div>;
   }
 
   return (
@@ -33,12 +35,12 @@ export function FriendsMapper() {
       <h3
         className='text-lg font-medium animate-fade-up'
         style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
-        Friends
+        {t('friendsTitle')}
       </h3>
       <p
         className='text-sm text-muted-foreground animate-fade-up'
         style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-        Here you can see the list of you&apos;re friends.
+        {t('friendsDescription')}
       </p>
       <div
         className='p-1 w-full lg:w-[1000px] max-w-6xl mb-2 animate-fade-up'
@@ -46,9 +48,9 @@ export function FriendsMapper() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>First name</TableHead>
-              <TableHead>Last name</TableHead>
-              <TableHead>Action</TableHead>
+              <TableHead>{t('firstName')}</TableHead>
+              <TableHead>{t('lastName')}</TableHead>
+              <TableHead>{t('action')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -69,7 +71,7 @@ export function FriendsMapper() {
                 <TableCell>
                   <FriendInvitationButton
                     status='DELETE_FRIEND'
-                    buttonText='Delete'
+                    buttonText={t('delete')}
                     isAccountPage
                     friendId={friend.id}
                   />

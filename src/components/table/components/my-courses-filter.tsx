@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { GetLocalizedMessage, useTranslations } from '@/i18n';
 
 export function MyCoursesFilter({
   isEnabled,
@@ -11,6 +12,7 @@ export function MyCoursesFilter({
   isActive: boolean;
   onChange: (value: boolean) => void;
 }) {
+  const title = GetLocalizedMessage('CoursesPage.myCourses');
   return (
     isEnabled && (
       <Button
@@ -24,7 +26,7 @@ export function MyCoursesFilter({
           isActive && 'bg-green-500 hover:bg-green-600 border-none'
         )}>
         {isActive && <Check className='mr-2 h-4 w-4' />}
-        My courses
+        {title}
       </Button>
     )
   );

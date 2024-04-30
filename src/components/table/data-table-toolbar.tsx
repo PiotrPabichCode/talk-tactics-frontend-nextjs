@@ -15,6 +15,7 @@ import { useMyCoursesFilter } from './hooks/use-my-courses-filter';
 import { MyCoursesFilter } from './components/my-courses-filter';
 import { useParams } from 'next/navigation';
 import { useDebounce } from '@/hooks/use-debounce';
+import { GetLocalizedMessage, useTranslations } from '@/i18n';
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   filters?: TFilters;
@@ -26,6 +27,7 @@ export function DataTableToolbar<TData>({
   filters: settings,
   viewOptions,
 }: DataTableToolbarProps<TData>) {
+  const t = useTranslations('Table.DataTableToolbar');
   const { isEnabled, myCoursesFilter, onMyCoursesFilterChange } =
     useMyCoursesFilter({
       table,
@@ -48,7 +50,7 @@ export function DataTableToolbar<TData>({
       {settings && (
         <div className='flex flex-1 items-center space-x-2'>
           <Input
-            placeholder={settings.mainPlaceholder}
+            placeholder={GetLocalizedMessage(settings.mainPlaceholder)}
             value={mainFilter}
             onChange={(event) => {
               setMainFilter(event.target.value);
@@ -66,7 +68,7 @@ export function DataTableToolbar<TData>({
                 <DataTableFacetedFilter
                   key={'filter' + filter.name}
                   column={table.getColumn(filter.name)}
-                  title={filter.title}
+                  title={GetLocalizedMessage(filter.title)}
                   options={filter.options}
                 />
               )
@@ -81,7 +83,7 @@ export function DataTableToolbar<TData>({
                 onMyCoursesFilterChange(false);
               }}
               className='h-8 px-2 lg:px-3'>
-              Reset
+              {t('reset')}
               <Cross2Icon className='ml-2 h-4 w-4' />
             </Button>
           )}
@@ -91,7 +93,7 @@ export function DataTableToolbar<TData>({
       {params.courseId && !params.courseItemId && (
         <Link href={backUrl} className='ml-auto'>
           <Button variant={'action'}>
-            <p className='hidden md:block md:mr-2'>Back to courses</p>
+            <p className='hidden md:block md:mr-2'>{t('backToCourses')}</p>
             <Undo2 className='h-4 w-4' />
           </Button>
         </Link>

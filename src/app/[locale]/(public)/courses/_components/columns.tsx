@@ -2,8 +2,6 @@
 
 import { ColumnDef, Row } from '@tanstack/react-table';
 
-import { Checkbox } from '@/components/ui/checkbox';
-
 import { levels } from './data';
 import { DataTableColumnHeader } from '@/components/table/data-table-column-header';
 import { CourseDto } from '@/typings/course';
@@ -28,6 +26,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useState } from 'react';
 import { Spinner } from '@/components/ui/spinner';
+import { GetLocalizedMessage, useTranslations } from '@/i18n';
 
 function DeleteCourseDialog({
   isOpen,
@@ -38,19 +37,21 @@ function DeleteCourseDialog({
   onOpenChange: (_: boolean) => void;
   onDelete: () => void;
 }) {
+  const t = useTranslations('CoursesPage');
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t('alertDeleteTitle')}</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            course and remove your course data from our servers.
+            {t('alertDeleteDescription')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onDelete}>Continue</AlertDialogAction>
+          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+          <AlertDialogAction onClick={onDelete}>
+            {t('continue')}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -58,10 +59,11 @@ function DeleteCourseDialog({
 }
 
 const OpenCourseCell = ({ row }: { row: Row<CourseDto> }) => {
+  const t = useTranslations('CoursesPage');
   return (
     <Link href={`/courses/${row.getValue('id')}`}>
       <Button variant={'action'}>
-        Open course
+        {t('openCourse')}
         <BookOpenText className='h-4 w-4 ml-2' />
       </Button>
     </Link>
@@ -69,6 +71,7 @@ const OpenCourseCell = ({ row }: { row: Row<CourseDto> }) => {
 };
 
 const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
+  const t = useTranslations('CoursesPage');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const { isPending: isPendingAdd, mutateAsync: addCourse } =
     useAddUserCourse();
@@ -85,7 +88,7 @@ const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
   const onDeleteCourse = async () => {
     try {
       await deleteCourse({ userId, courseId });
-      toast.success('You have successfully deleted course.');
+      toast.success(t('deleteCourseSuccess'));
     } catch (e) {
       toast.error('Oh no! Something went wrong.', {
         description: 'There was a problem with your request',
@@ -97,7 +100,7 @@ const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
   const onAddCourse = async () => {
     try {
       await addCourse({ courseId: courseId, userId: userId });
-      toast.success('You have successfully added new course!');
+      toast.success(t('addCourseSuccess'));
     } catch (e) {
       toast.error('Oh no! Something went wrong.', {
         description: 'There was a problem with your request',
@@ -117,7 +120,7 @@ const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
           <Spinner variant='button' />
         ) : (
           <>
-            Delete course <Trash2 className='h-4 w-4 ml-2' />
+            {t('deleteCourse')} <Trash2 className='h-4 w-4 ml-2' />
           </>
         )}
       </Button>
@@ -135,7 +138,7 @@ const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
           <Spinner variant='button' />
         ) : (
           <>
-            Add course <Plus className='h-4 w-4 ml-2' />
+            {t('addCourse')} <Plus className='h-4 w-4 ml-2' />
           </>
         )}
       </Button>
@@ -181,7 +184,11 @@ export const columns: ColumnDef<CourseDto>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => (
-      <DataTableColumnHeader className='w-[10px]' column={column} title='No.' />
+      <DataTableColumnHeader
+        className='w-[10px]'
+        column={column}
+        title='CoursesPage.position'
+      />
     ),
     cell: ({ row }) => <div className='w-[10px]'>{Number(row.id) + 1}</div>,
     enableSorting: false,
@@ -191,7 +198,7 @@ export const columns: ColumnDef<CourseDto>[] = [
     accessorKey: 'title',
     enableHiding: false,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Title' />
+      <DataTableColumnHeader column={column} title='CoursesPage.title' />
     ),
     cell: ({ row }) => {
       return (
@@ -203,11 +210,14 @@ export const columns: ColumnDef<CourseDto>[] = [
   },
   {
     accessorKey: 'description',
+    meta: {
+      customName: 'CoursesPage.description',
+    },
     header: ({ column }) => (
       <DataTableColumnHeader
         className='hidden md:block'
         column={column}
-        title='Description'
+        title='CoursesPage.description'
       />
     ),
     cell: ({ row }) => {
@@ -221,10 +231,10 @@ export const columns: ColumnDef<CourseDto>[] = [
   {
     accessorKey: 'level',
     meta: {
-      customName: 'Difficulty',
+      customName: 'CoursesPage.difficulty',
     },
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Difficulty' />
+      <DataTableColumnHeader column={column} title='CoursesPage.difficulty' />
     ),
     cell: ({ row }) => {
       const level = levels.find(
@@ -240,7 +250,7 @@ export const columns: ColumnDef<CourseDto>[] = [
           {level.icon && (
             <level.icon className='mr-2 h-4 w-4 text-muted-foreground' />
           )}
-          <span>{level.label}</span>
+          <span>{GetLocalizedMessage(level.label)}</span>
         </div>
       );
     },
@@ -251,13 +261,13 @@ export const columns: ColumnDef<CourseDto>[] = [
   {
     accessorKey: 'quantity',
     meta: {
-      customName: 'Words',
+      customName: 'CoursesPage.words',
     },
     header: ({ column }) => (
       <DataTableColumnHeader
         className='w-[50px]'
         column={column}
-        title='Words'
+        title='CoursesPage.words'
       />
     ),
     cell: ({ row }) => {
@@ -273,7 +283,7 @@ export const columns: ColumnDef<CourseDto>[] = [
   {
     accessorKey: 'progress',
     meta: {
-      customName: 'Progress',
+      customName: 'CoursesPage.progress',
       auth: true,
     },
     filterFn: (row, id, value) => {
@@ -284,7 +294,7 @@ export const columns: ColumnDef<CourseDto>[] = [
       <DataTableColumnHeader
         className='w-[50px]'
         column={column}
-        title='Progress'
+        title='CoursesPage.progress'
       />
     ),
     cell: ({ row }) => {

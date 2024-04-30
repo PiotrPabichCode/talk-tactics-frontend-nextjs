@@ -9,6 +9,7 @@ import {
 } from 'next-intl';
 import { FlagComponent } from 'country-flag-icons/react/3x2';
 import { PL, US } from 'country-flag-icons/react/3x2';
+import { get } from 'lodash';
 
 export default getRequestConfig(async ({ locale }) => {
   // Validate that the incoming `locale` parameter is valid
@@ -32,6 +33,11 @@ export function useTranslations(
 
 export const useMessages = () => {
   return NextIntlMessages();
+};
+
+export const GetLocalizedMessage = (key: string): string => {
+  const messages = useMessages();
+  return (get(messages, key) ?? key) as string;
 };
 
 type LocaleOptions = {

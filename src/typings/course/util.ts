@@ -1,11 +1,5 @@
-import { useMessages } from 'next-intl';
+import { GetLocalizedMessage } from '@/i18n';
 import { CourseLevel } from './course';
-import get from 'lodash/get';
-
-const getMessage = (key: string): string => {
-  const messages = useMessages();
-  return (get(messages, key) ?? 'Unknown') as string;
-};
 
 export const LocalizeCourseLevel = (level: CourseLevel): string => {
   let value = '';
@@ -21,5 +15,5 @@ export const LocalizeCourseLevel = (level: CourseLevel): string => {
       break;
   }
 
-  return getMessage(`Common.levels.${value}`);
+  return GetLocalizedMessage(`Common.levels.${value}`);
 };

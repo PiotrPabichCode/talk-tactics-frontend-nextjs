@@ -29,6 +29,7 @@ import {
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
 import useAuthStore from '@/store/useAuthStore';
+import { useTranslations } from '@/i18n';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -43,6 +44,7 @@ export function Table<TData, TValue>({
   filters,
   viewOptions = true,
 }: DataTableProps<TData, TValue>) {
+  const t = useTranslations('Table');
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -166,7 +168,7 @@ export function Table<TData, TValue>({
                 <TableCell
                   colSpan={columns.length}
                   className='h-24 text-center'>
-                  No results.
+                  {t('noResults')}
                 </TableCell>
               </TableRow>
             )}

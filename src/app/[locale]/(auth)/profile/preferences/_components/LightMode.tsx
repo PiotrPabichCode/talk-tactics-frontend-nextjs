@@ -1,4 +1,7 @@
+import { useTranslations } from '@/i18n';
+
 export function LightMode() {
+  const t = useTranslations('Theme');
   return (
     <>
       <div className='items-center rounded-md border-2 border-muted p-1 hover:border-accent'>
@@ -17,7 +20,9 @@ export function LightMode() {
           </div>
         </div>
       </div>
-      <span className='block w-full p-2 text-center font-normal'>Light</span>
+      <span className='block w-full p-2 text-center font-normal'>
+        {t('light')}
+      </span>
     </>
   );
 }

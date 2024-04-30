@@ -36,6 +36,7 @@ import { CheckIcon } from 'lucide-react';
 import { FontType } from '@/typings/settings';
 import useSettingsStore from '@/store/useSettingsStore';
 import { LightMode, DarkMode } from './_components';
+import { useTranslations } from '@/i18n';
 
 const languages = [
   { label: 'English', value: 'en' },
@@ -71,6 +72,7 @@ const preferencesFormSchema = z.object({
 type PreferencesFormSchema = z.infer<typeof preferencesFormSchema>;
 
 export function PreferencesForm() {
+  const t = useTranslations('UserProfile.Preferences');
   const { setTheme, theme } = useTheme();
   const { font, changeFont } = useSettingsStore();
   const defaultValues: Partial<PreferencesFormSchema> = {
@@ -103,7 +105,7 @@ export function PreferencesForm() {
           name='language'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
-              <FormLabel>Language</FormLabel>
+              <FormLabel>{t('language')}</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -118,15 +120,15 @@ export function PreferencesForm() {
                         ? languages.find(
                             (language) => language.value === field.value
                           )?.label
-                        : 'Select language'}
+                        : t('selectLanguage')}
                       <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className='w-[200px] p-0'>
                   <Command>
-                    <CommandInput placeholder='Search language...' />
-                    <CommandEmpty>No language found.</CommandEmpty>
+                    <CommandInput placeholder={t('searchLanguage')} />
+                    <CommandEmpty>{t('noLanguageFound')}</CommandEmpty>
                     <CommandGroup>
                       <CommandList>
                         {languages.map((language) => (
@@ -152,9 +154,7 @@ export function PreferencesForm() {
                   </Command>
                 </PopoverContent>
               </Popover>
-              <FormDescription>
-                This is the language that will be used across application.
-              </FormDescription>
+              <FormDescription>{t('languageDescription')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -164,7 +164,7 @@ export function PreferencesForm() {
           name='font'
           render={({ field }) => (
             <FormItem className='flex flex-col'>
-              <FormLabel>Font</FormLabel>
+              <FormLabel>{t('font')}</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -178,15 +178,15 @@ export function PreferencesForm() {
                       {field.value
                         ? fonts.find((font) => font.value === field.value)
                             ?.label
-                        : 'Select font'}
+                        : t('selectFont')}
                       <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className='w-[200px] p-0'>
                   <Command>
-                    <CommandInput placeholder='Search font...' />
-                    <CommandEmpty>No font found.</CommandEmpty>
+                    <CommandInput placeholder={t('searchFont')} />
+                    <CommandEmpty>{t('noFontFound')}</CommandEmpty>
                     <CommandGroup>
                       <CommandList>
                         {fonts.map((font) => (
@@ -213,9 +213,7 @@ export function PreferencesForm() {
                   </Command>
                 </PopoverContent>
               </Popover>
-              <FormDescription>
-                Set the font you want to use in the dashboard.
-              </FormDescription>
+              <FormDescription>{t('fontDescription')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -224,10 +222,8 @@ export function PreferencesForm() {
           name='theme'
           render={({ field }) => (
             <FormItem className='space-y-1'>
-              <FormLabel>Theme</FormLabel>
-              <FormDescription>
-                Select the theme for the dashboard.
-              </FormDescription>
+              <FormLabel>{t('theme')}</FormLabel>
+              <FormDescription>{t('themeDescription')}</FormDescription>
               <FormMessage />
               <RadioGroup
                 onValueChange={(val) => {
@@ -256,7 +252,7 @@ export function PreferencesForm() {
           )}
         />
 
-        {/* <Button type='submit'>Update preferences</Button> */}
+        {/* <Button type='submit'>{t('buttonSubmit')}</Button> */}
       </form>
     </Form>
   );

@@ -3,17 +3,17 @@ import { SparkleIcon, SparklesIcon, WandIcon } from 'lucide-react';
 export const levels = [
   {
     value: 'BEGINNER',
-    label: 'Beginner',
+    label: 'Common.levels.beginner',
     icon: SparkleIcon,
   },
   {
     value: 'INTERMEDIATE',
-    label: 'Intermediate',
+    label: 'Common.levels.intermediate',
     icon: SparklesIcon,
   },
   {
     value: 'ADVANCED',
-    label: 'Advanced',
+    label: 'Common.levels.advanced',
     icon: WandIcon,
   },
 ];

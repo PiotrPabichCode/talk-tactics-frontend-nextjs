@@ -28,9 +28,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
+import { useTranslations } from '@/i18n';
 
 export function ProfileForm() {
   const credentials = useAuthStore().credentials;
+  const t = useTranslations('UserProfile.Settings');
   const { isPending, mutateAsync: updateUser } = useUpdateUserDetailsMutation();
   const { email, firstName, lastName, bio, isReady } = useUserStore();
   const [enableSubmit, setEnableSubmit] = useState(false);
@@ -83,7 +85,7 @@ export function ProfileForm() {
         throw new Error('Bad credentials');
       }
       await updateUser({ id: credentials.id, updatedFields: changedValues });
-      toast.success('You have successfully updated your profile!');
+      toast.success(t('successMessage'));
     } catch (e) {
       toast.error('Oh no! Something went wrong.', {
         description: 'There was a problem with your request',
@@ -100,14 +102,11 @@ export function ProfileForm() {
           name='username'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>{t('username')}</FormLabel>
               <FormControl>
                 <Input {...field} disabled />
               </FormControl>
-              <FormDescription>
-                This is your public display name. It can be your real name or
-                nickname. This is also your login.
-              </FormDescription>
+              <FormDescription>{t('usernameDescription')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -117,13 +116,9 @@ export function ProfileForm() {
           name='email'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{t('email')}</FormLabel>
               <Input {...field} />
-              <FormDescription>
-                This email address will be your primary contact. We will use it
-                to send notifications, confirmation emails and password change
-                requests.
-              </FormDescription>
+              <FormDescription>{t('emailDescription')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -133,12 +128,9 @@ export function ProfileForm() {
           name='firstName'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>{t('firstName')}</FormLabel>
               <Input {...field} />
-              <FormDescription>
-                Type in your given name. This is how you&apos;ll be addressed
-                across our platform.
-              </FormDescription>
+              <FormDescription>{t('firstNameDescription')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -148,12 +140,9 @@ export function ProfileForm() {
           name='lastName'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Surname</FormLabel>
+              <FormLabel>{t('lastName')}</FormLabel>
               <Input {...field} />
-              <FormDescription>
-                Enter your surname as you&apos;d like it to appear on your
-                profile.
-              </FormDescription>
+              <FormDescription>{t('lastNameDescription')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -163,18 +152,15 @@ export function ProfileForm() {
           name='bio'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bio</FormLabel>
+              <FormLabel>{t('bio')}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder='Tell us a little bit about yourself'
+                  placeholder={t('bioPlaceholder')}
                   className='resize-none'
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
-              </FormDescription>
+              <FormDescription>{t('bioDescription')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -183,7 +169,7 @@ export function ProfileForm() {
           className={cn(!enableSubmit && 'hidden')}
           type='submit'
           disabled={isPending || !enableSubmit}>
-          Update profile
+          {t('buttonSubmit')}
         </Button>
       </form>
     </Form>

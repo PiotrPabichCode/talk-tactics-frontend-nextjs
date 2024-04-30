@@ -4,6 +4,7 @@ import { ColumnDef } from '@tanstack/react-table';
 
 import { DataTableColumnHeader } from '@/components/table/data-table-column-header';
 import { WordMeaning } from '@/typings/course';
+import { GetLocalizedMessage } from '@/i18n';
 
 export const columns: ColumnDef<WordMeaning>[] = [
   {
@@ -12,7 +13,7 @@ export const columns: ColumnDef<WordMeaning>[] = [
       <DataTableColumnHeader
         className='w-[10px] text-center'
         column={column}
-        title='No.'
+        title='WordPage.position'
       />
     ),
     cell: ({ row }) => (
@@ -28,7 +29,7 @@ export const columns: ColumnDef<WordMeaning>[] = [
       <DataTableColumnHeader
         className='justify-center w-full max-w-[600px]'
         column={column}
-        title='Definition'
+        title='WordPage.definition'
       />
     ),
     cell: ({ row }) => {
@@ -46,7 +47,7 @@ export const columns: ColumnDef<WordMeaning>[] = [
       <DataTableColumnHeader
         className='justify-center w-full'
         column={column}
-        title='Usage Example'
+        title='WordPage.example'
       />
     ),
     cell: ({ row }) => {
@@ -54,7 +55,7 @@ export const columns: ColumnDef<WordMeaning>[] = [
         <p className='w-full font-medium xl:whitespace-normal font-serif'>
           {row.getValue('example')
             ? `"${row.getValue('example')}"`
-            : 'Not available :('}
+            : GetLocalizedMessage('WordPage.notAvailable')}
         </p>
       );
     },
