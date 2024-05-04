@@ -12,6 +12,7 @@ import {
   CourseItemDto,
   ResponseGetUserCourseItemsPreview,
 } from '@/typings/course';
+import { CoursePageSkeleton } from './_components/course-page-skeleton';
 
 const UserCourseItemsMapper = ({
   userCourse,
@@ -89,7 +90,7 @@ export default function SingleCoursePage({
   });
 
   if (isCourseItemsPending && isUserCourseItemsPending) {
-    return <Spinner />;
+    return <CoursePageSkeleton />;
   }
   if (isError && userCourseError) {
     return 'Something went wrong';

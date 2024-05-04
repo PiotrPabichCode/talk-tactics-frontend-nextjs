@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { GetLocalizedMessage, useTranslations } from '@/i18n';
+import { GetLocalizedMessage } from '@/i18n';
 
 export function MyCoursesFilter({
   isEnabled,

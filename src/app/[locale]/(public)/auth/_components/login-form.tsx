@@ -24,6 +24,7 @@ import { ApiRequestSignInSchema, SignInFormValues } from '@/typings/auth';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
 import { useTranslations } from '@/i18n';
+import { handleError } from '@/services/common';
 
 const defaultValues: SignInFormValues = {
   username: '',
@@ -42,10 +43,7 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
       await signIn(data);
       toast.success(t('signInSuccess'));
     } catch (e) {
-      toast.error('Oh no! Something went wrong.', {
-        description: 'There was a problem with your request',
-      });
-      console.error(e);
+      handleError(e);
     }
   };
 

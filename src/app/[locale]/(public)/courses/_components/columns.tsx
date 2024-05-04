@@ -27,6 +27,7 @@ import {
 import { useState } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import { GetLocalizedMessage, useTranslations } from '@/i18n';
+import { handleError } from '@/services/common';
 
 function DeleteCourseDialog({
   isOpen,
@@ -90,10 +91,7 @@ const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
       await deleteCourse({ userId, courseId });
       toast.success(t('deleteCourseSuccess'));
     } catch (e) {
-      toast.error('Oh no! Something went wrong.', {
-        description: 'There was a problem with your request',
-      });
-      console.error(e);
+      handleError(e);
     }
   };
 
@@ -102,10 +100,7 @@ const AddCourseCell = ({ row }: { row: Row<CourseDto> }) => {
       await addCourse({ courseId: courseId, userId: userId });
       toast.success(t('addCourseSuccess'));
     } catch (e) {
-      toast.error('Oh no! Something went wrong.', {
-        description: 'There was a problem with your request',
-      });
-      console.error(e);
+      handleError(e);
     }
   };
 

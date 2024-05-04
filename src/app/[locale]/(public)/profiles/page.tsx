@@ -1,17 +1,17 @@
 'use client';
 
-import { Spinner } from '@/components/ui/spinner';
 import { useGetUserProfilePreviews } from '@/services/queries/user.query';
-import { ProfilesMapper } from './_components/ProfilesMapper';
+import { ProfilesMapper } from './_components/profiles-mapper';
 import { Separator } from '@/components/ui/separator';
 import { useTranslations } from '@/i18n';
+import { ProfilesPageSkeleton } from './_components/profiles-page-skeleton';
 
 export default function ProfilesPage() {
   const t = useTranslations('ProfilesPage');
   const { data: profiles, isPending, isError } = useGetUserProfilePreviews();
 
   if (isPending) {
-    return <Spinner />;
+    return <ProfilesPageSkeleton />;
   }
 
   if (isError) {

@@ -3,7 +3,7 @@ import useSettingsStore, { ISettingsStore } from '@/store/useSettingsStore';
 import useStore from '@/store/useStore';
 import { FontType } from '@/typings/settings';
 import { Inter, Manrope, Montserrat } from 'next/font/google';
-import { PropsWithChildren, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 const manrope = Manrope({ subsets: ['latin'], display: 'swap' });
@@ -12,13 +12,16 @@ const montserrat = Montserrat({
   display: 'swap',
 });
 
-export default function FontLoader({ children }: PropsWithChildren) {
+export default function FontLoader() {
   const font = useStore<ISettingsStore, FontType>(
     useSettingsStore,
     (state) => state.font
   );
+  const [currentFont, setCurrentFont] = useState<FontType | undefined>(
+    undefined
+  );
 
-  const getCurrentFont = (font: FontType | undefined) => {
+  const getFont = (font: FontType | undefined) => {
     switch (font) {
       case 'inter': {
         return inter.className;
@@ -35,17 +38,20 @@ export default function FontLoader({ children }: PropsWithChildren) {
   };
 
   useEffect(() => {
+    const changeBodyFont = (font: FontType) => {
+      if (currentFont) {
+        document.body.classList.remove(getFont(currentFont));
+      }
+      const newFont = getFont(font);
+      document.body.classList.add(newFont);
+      setCurrentFont(font);
+    };
+
     if (!font) {
       return;
     }
-    if (!useSettingsStore.persist.hasHydrated()) {
-      useSettingsStore.persist.rehydrate();
-    }
-  }, [font]);
+    changeBodyFont(font);
+  }, [font, currentFont]);
 
-  return (
-    <body className={`${getCurrentFont(font)} flex flex-col min-h-screen`}>
-      {children}
-    </body>
-  );
+  return null;
 }

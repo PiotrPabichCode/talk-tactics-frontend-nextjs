@@ -1,16 +1,31 @@
 'use client';
+import { Spinner } from '@/components/ui/spinner';
 import { getUserCourses } from '@/services/api/course.service';
 import { getUserDetails } from '@/services/api/user.service';
 import useAuthStore, { IAuthStore } from '@/store/useAuthStore';
+import useSettingsStore, { ISettingsStore } from '@/store/useSettingsStore';
 import useStore from '@/store/useStore';
 import useUserStore from '@/store/useUserStore';
-import { useEffect } from 'react';
+import { PropsWithChildren, useEffect, useReducer, useState } from 'react';
 
-const StoreHydration = () => {
+const StoreHydration = ({ children }: PropsWithChildren) => {
+  /**
+   * Manual rehydrate store when available
+   * @example https://docs.pmnd.rs/zustand/integrations/persisting-store-data#usage-in-next.js
+   */
   const authStore = useStore<IAuthStore, IAuthStore>(
     useAuthStore,
     (state) => state
   );
+  const settingsStore = useStore<ISettingsStore, ISettingsStore>(
+    useSettingsStore,
+    (state) => state
+  );
+  const isHydrated =
+    authStore &&
+    useAuthStore.persist.hasHydrated() &&
+    settingsStore &&
+    useSettingsStore.persist.hasHydrated();
 
   useEffect(() => {
     if (!authStore) {
@@ -29,15 +44,24 @@ const StoreHydration = () => {
           });
         }
       });
-      /**
-       * Manual rehydrate store when available
-       * @example https://docs.pmnd.rs/zustand/integrations/persisting-store-data#usage-in-next.js
-       */
       useAuthStore.persist.rehydrate();
     }
   }, [authStore]);
 
-  return null;
+  useEffect(() => {
+    if (!settingsStore) {
+      return;
+    }
+    if (!useSettingsStore.persist.hasHydrated()) {
+      useSettingsStore.persist.rehydrate();
+    }
+  }, [settingsStore]);
+
+  if (!isHydrated) {
+    return null;
+  }
+
+  return <>{children}</>;
 };
 
 export default StoreHydration;

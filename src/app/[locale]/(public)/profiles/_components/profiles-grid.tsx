@@ -10,7 +10,6 @@ import {
   useGetSentFriendInvitationsQuery,
 } from '@/services/queries/user.query';
 import useAuthStore from '@/store/useAuthStore';
-import { Spinner } from '@/components/ui/spinner';
 import { IFriendInvitationDto } from '@/typings/user';
 import { useTranslations } from '@/i18n';
 
@@ -49,7 +48,7 @@ export const ProfilesGrid = ({
   const isError = isErrorSent || isErrorReceived || isErrorFriends;
 
   if (isPending && userId) {
-    return <Spinner />;
+    return null;
   }
   if (isError && userId) {
     return 'Something went wrong';

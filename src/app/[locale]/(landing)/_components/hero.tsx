@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
-import PreviewLightMode from '../../../../../public/preview-light-mode.webp';
-import PreviewDarkMode from '../../../../../public/preview-dark-mode.webp';
+import PreviewLightMode from '/public/preview-light-mode.webp';
+import PreviewDarkMode from '/public/preview-dark-mode.webp';
 import Image from 'next/image';
 import useAuthStore from '@/store/useAuthStore';
 import { useTranslations } from '@/i18n';
