@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Spinner } from '@/components/ui/spinner';
 import { useGetCourseItemById } from '@/services/queries/course.query';
 import { columns } from './_components/columns';
 import { Button } from '@/components/ui/button';
@@ -17,6 +16,7 @@ import { Undo2 } from 'lucide-react';
 import Link from 'next/link';
 import { AudioPlayer } from './_components/audio-player';
 import { useTranslations } from '@/i18n';
+import { WordsPageSkeleton } from './_components/words-page-skeleton';
 
 export default function SingleCourseItemPage({
   params,
@@ -30,7 +30,7 @@ export default function SingleCourseItemPage({
     isError,
   } = useGetCourseItemById(params.courseItemId);
   if (isFetching) {
-    return <Spinner />;
+    return <WordsPageSkeleton />;
   }
   if (!courseItem || isError) {
     return null;

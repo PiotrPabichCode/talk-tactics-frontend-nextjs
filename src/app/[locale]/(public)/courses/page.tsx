@@ -2,7 +2,6 @@
 
 import { columns } from './_components/columns';
 import { Table } from '@/components/table/table';
-import { Spinner } from '@/components/ui/spinner';
 import { filters } from './_components/filters';
 import {
   useGetCourses,
@@ -10,6 +9,7 @@ import {
 } from '@/services/queries/course.query';
 import useAuthStore from '@/store/useAuthStore';
 import useCourseStore from '@/store/useCourseStore';
+import { CoursesPageSkeleton } from './_components/courses-page-skeleton';
 
 export default function CoursesPage() {
   const userId = useAuthStore().credentials?.id;
@@ -18,7 +18,7 @@ export default function CoursesPage() {
   const courses = useCourseStore().getCombinedCourses();
 
   if (isFetchingCourses || isFetching) {
-    return <Spinner />;
+    return <CoursesPageSkeleton />;
   }
 
   return (
