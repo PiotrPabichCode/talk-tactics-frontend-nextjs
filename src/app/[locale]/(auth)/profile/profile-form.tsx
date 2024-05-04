@@ -29,6 +29,8 @@ import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
 import { useTranslations } from '@/i18n';
+import { handleError } from '@/services/common';
+import { useFormValuesChanged } from '@/hooks/use-form-values-changed';
 
 export function ProfileForm() {
   const credentials = useAuthStore().credentials;
@@ -62,14 +64,10 @@ export function ProfileForm() {
     }
   }, [isReady]);
 
-  useEffect(() => {
+  useFormValuesChanged(form, () => {
     const isNew = !isEqual(defaultValues, form.getValues());
-    if (isNew) {
-      setEnableSubmit(true);
-    } else {
-      setEnableSubmit(false);
-    }
-  }, [defaultValues, isReady]);
+    setEnableSubmit(isNew);
+  });
 
   if (!isReady) {
     return <Spinner />;
@@ -87,10 +85,7 @@ export function ProfileForm() {
       await updateUser({ id: credentials.id, updatedFields: changedValues });
       toast.success(t('successMessage'));
     } catch (e) {
-      toast.error('Oh no! Something went wrong.', {
-        description: 'There was a problem with your request',
-      });
-      console.error(e);
+      handleError(e);
     }
   }
 

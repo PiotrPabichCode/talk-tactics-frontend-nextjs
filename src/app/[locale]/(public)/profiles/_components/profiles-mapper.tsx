@@ -1,6 +1,6 @@
 import React from 'react';
 import { IUserProfilePreview } from '@/typings/user';
-import { ProfilesGrid } from './ProfilesGrid';
+import { ProfilesGrid } from './profiles-grid';
 
 export function ProfilesMapper({
   profiles,
