@@ -22,7 +22,9 @@ const StoreHydration = ({ children }: PropsWithChildren) => {
     (state) => state
   );
   const isHydrated =
+    authStore &&
     useAuthStore.persist.hasHydrated() &&
+    settingsStore &&
     useSettingsStore.persist.hasHydrated();
 
   useEffect(() => {

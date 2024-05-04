@@ -21,15 +21,6 @@ export default function FontLoader() {
     undefined
   );
 
-  const changeBodyFont = (font: FontType) => {
-    if (currentFont) {
-      document.body.classList.remove(getFont(currentFont));
-    }
-    const newFont = getFont(font);
-    document.body.classList.add(newFont);
-    setCurrentFont(font);
-  };
-
   const getFont = (font: FontType | undefined) => {
     switch (font) {
       case 'inter': {
@@ -47,11 +38,20 @@ export default function FontLoader() {
   };
 
   useEffect(() => {
+    const changeBodyFont = (font: FontType) => {
+      if (currentFont) {
+        document.body.classList.remove(getFont(currentFont));
+      }
+      const newFont = getFont(font);
+      document.body.classList.add(newFont);
+      setCurrentFont(font);
+    };
+
     if (!font) {
       return;
     }
     changeBodyFont(font);
-  }, [font]);
+  }, [font, currentFont]);
 
   return null;
 }

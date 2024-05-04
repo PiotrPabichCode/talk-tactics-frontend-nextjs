@@ -124,6 +124,7 @@ export const getUserCourseItemsPreview = async (
     url: `${USER_COURSE_ITEM_ENDPOINT}/all/preview`,
     data: toGetUserCourseItemsPreviewRequestMapper(req),
   });
+  console.log(data, 'here');
 
   return toGetUserCourseItemsPreviewResponseMapper(data);
 };

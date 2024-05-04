@@ -9,7 +9,7 @@ export function ProfilesPageSkeleton() {
       <Separator className='max-w-4xl' />
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full max-w-4xl'>
         {Array.from({ length: 6 }).map((_, i) => (
-          <Card className='p-3'>
+          <Card key={'profile-skeleton' + i} className='p-3'>
             <CardTitle className='flex'>
               <Skeleton className='size-12 rounded-full mr-4' />
               <div className='mb-4 space-y-3'>

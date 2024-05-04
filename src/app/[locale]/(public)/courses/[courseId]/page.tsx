@@ -2,6 +2,7 @@
 
 import { columns, userColumns } from './_components/columns';
 import { Table } from '@/components/table/table';
+import { Spinner } from '@/components/ui/spinner';
 import {
   useGetCourseItemsPreviewByCourseId,
   useGetUserCourseItemsPreviewByCourseId,
@@ -13,45 +14,61 @@ import {
 } from '@/typings/course';
 import { CoursePageSkeleton } from './_components/course-page-skeleton';
 
-export function CourseMapper({
-  courseItems,
-  userCourseMeta: userCourseItems,
+const UserCourseItemsMapper = ({
+  userCourse,
 }: {
-  courseItems: CourseItemDto[];
-  userCourseMeta?: ResponseGetUserCourseItemsPreview;
-}) {
-  const title = userCourseItems
-    ? userCourseItems.courseName
-    : courseItems[0].courseName;
+  userCourse: ResponseGetUserCourseItemsPreview;
+}) => {
   return (
-    <>
-      <p
-        className='text-xl font-bold text-center mb-4 animate-fade-up'
-        style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
-        {title}
-      </p>
-      <div
-        className='animate-fade-up'
-        style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-        {userCourseItems ? (
+    userCourse && (
+      <>
+        <p
+          className='text-xl font-bold text-center mb-4 animate-fade-up'
+          style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
+          {userCourse.courseName}
+        </p>
+        <div
+          className='animate-fade-up'
+          style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
           <Table
-            data={userCourseItems.items}
+            data={userCourse.items}
             filters={filters}
             columns={userColumns}
             viewOptions={false}
           />
-        ) : (
+        </div>
+      </>
+    )
+  );
+};
+
+const CourseItemsMapper = ({
+  courseItems,
+}: {
+  courseItems: CourseItemDto[];
+}) => {
+  return (
+    courseItems && (
+      <>
+        <p
+          className='text-xl font-bold text-center mb-4 animate-fade-up'
+          style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
+          {courseItems[0].courseName}
+        </p>
+        <div
+          className='animate-fade-up'
+          style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
           <Table
             data={courseItems}
             filters={filters}
             columns={columns}
             viewOptions={false}
           />
-        )}
-      </div>
-    </>
+        </div>
+      </>
+    )
   );
-}
+};
 
 export default function SingleCoursePage({
   params,
@@ -82,10 +99,11 @@ export default function SingleCoursePage({
   return (
     <div className='block lg:flex justify-center h-full'>
       <div className='w-full lg:w-[80%] xl:w-[60%] 2xl:w-[50%] overflow-scroll md:overflow-auto p-2 md:p-4'>
-        <CourseMapper
-          userCourseMeta={userCourseMeta}
-          courseItems={courseItems}
-        />
+        {userCourseMeta ? (
+          <UserCourseItemsMapper userCourse={userCourseMeta} />
+        ) : (
+          <CourseItemsMapper courseItems={courseItems} />
+        )}
       </div>
     </div>
   );
