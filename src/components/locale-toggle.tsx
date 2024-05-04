@@ -20,15 +20,10 @@ export default function LocaleToggle() {
   const params = useParams();
 
   function onChange(nextLocale: string) {
-    startTransition(() => {
-      router.replace(
-        // @ts-expect-error -- TypeScript will validate that only known `params`
-        // are used in combination with a given `pathname`. Since the two will
-        // always match for the current route, we can skip runtime checks.
-        { pathname, params },
-        { locale: nextLocale }
-      );
-    });
+    console.log(nextLocale, pathname, params);
+    // startTransition(() => {
+    router.replace(pathname, { locale: nextLocale, scroll: false });
+    // });
   }
 
   const CurrentLocale = ({ locale }: { locale: string }) => {

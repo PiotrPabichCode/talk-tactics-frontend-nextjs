@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import { FriendInvitationActionDialog } from './_components/friend-invitation-action-dialog';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { useTranslations } from '@/i18n';
+import { handleError } from '@/services/common';
 
 export function FriendInvitationButton({
   friendId,
@@ -89,10 +90,7 @@ export function FriendInvitationButton({
         });
       }
     } catch (e) {
-      toast.error('Oh no! Something went wrong.', {
-        description: 'There was a problem with your request',
-      });
-      console.error(e);
+      handleError(e);
     }
   };
 

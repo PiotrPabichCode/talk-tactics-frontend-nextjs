@@ -23,6 +23,7 @@ import {
 import { ApiRequestSignUpSchema, SignUpFormValues } from '@/typings/auth';
 import { toast } from 'sonner';
 import { useTranslations } from '@/i18n';
+import { handleError } from '@/services/common';
 
 const defaultValues: SignUpFormValues = {
   username: '',
@@ -46,10 +47,7 @@ export function RegisterForm({ toggleVariant }: { toggleVariant: () => void }) {
       await signUp(data);
       toast.success(t('signUpSuccess'));
     } catch (e) {
-      toast.error('Oh no! Something went wrong.', {
-        description: 'There was a problem with your request',
-      });
-      console.error(e);
+      handleError(e);
     }
   };
 

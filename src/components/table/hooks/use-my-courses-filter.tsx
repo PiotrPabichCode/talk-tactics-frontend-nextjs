@@ -1,6 +1,7 @@
 import { useUserIsReady } from '@/store/useUserStore';
 import { Table } from '@tanstack/react-table';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { usePathname } from '@/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
 export function useMyCoursesFilter({ table }: { table: Table<any> }) {
