@@ -21,18 +21,18 @@ export function Header() {
     <div
       className='fixed top-0 left-0 right-0 supports-backdrop-blur:bg-background/60 border-b bg-background/95 backdrop-blur z-50 animate-fade-in'
       style={{ animationFillMode: 'both', animationDelay: '0.3s' }}>
-      <nav className='h-20 flex items-center justify-between md:justify-center px-4 gap-4'>
-        <div className='hidden md:block'>
+      <nav className='h-20 flex items-center justify-between lg:justify-center px-4 gap-4'>
+        <div className='hidden lg:block'>
           <Link href={'/'} className='flex flex-row items-center'>
             <h1 className='text-2xl text-current font-bold'>TalkTactics</h1>
             <Image src={'/logo.svg'} alt='Logo icon' width={48} height={48} />
           </Link>
         </div>
-        <div className={cn('block md:!hidden')}>
+        <div className={cn('block lg:!hidden')}>
           <MobileSidebar courses={courses} />
         </div>
 
-        <div className={cn('hidden md:block')}>
+        <div className={cn('hidden lg:block')}>
           <LinksNav courses={courses} header />
         </div>
 

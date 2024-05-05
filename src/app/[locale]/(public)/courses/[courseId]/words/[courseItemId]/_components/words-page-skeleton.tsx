@@ -14,7 +14,7 @@ export function WordsPageSkeleton() {
     <div className='p-4 text-center'>
       <Card className='relative'>
         <div>
-          <Skeleton className='absolute top-5 right-5 h-8 w-40' />
+          <Skeleton className='absolute top-5 right-5 h-[35px] w-[45px] md:w-40' />
         </div>
         <CardHeader className='items-center'>
           <CardTitle>

@@ -34,7 +34,7 @@ export const columns: ColumnDef<WordMeaning>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <p className='w-full max-w-[600px] text-zinc-800 dark:text-blue-400 font-serif font-semibold'>
+        <p className='w-full min-w-[250px] max-w-[600px] text-zinc-800 dark:text-blue-400 font-serif font-semibold'>
           {row.getValue('definition')}
         </p>
       );
@@ -52,7 +52,7 @@ export const columns: ColumnDef<WordMeaning>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <p className='w-full font-medium xl:whitespace-normal font-serif'>
+        <p className='w-full min-w-[200px] font-medium xl:whitespace-normal font-serif'>
           {row.getValue('example')
             ? `"${row.getValue('example')}"`
             : GetLocalizedMessage('WordPage.notAvailable')}
