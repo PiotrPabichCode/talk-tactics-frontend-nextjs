@@ -35,20 +35,14 @@ import {
 import { CheckIcon } from 'lucide-react';
 import { FontType } from '@/typings/settings';
 import useSettingsStore from '@/store/useSettingsStore';
-import { LightMode, DarkMode } from './_components';
+import { LightMode, DarkMode } from '.';
 import { useTranslations } from '@/i18n';
+import { usePathname, useRouter } from '@/navigation';
+import { useLocale } from 'next-intl';
 
 const languages = [
   { label: 'English', value: 'en' },
-  { label: 'Polish', value: 'pl' },
-  { label: 'French', value: 'fr' },
-  { label: 'German', value: 'de' },
-  { label: 'Spanish', value: 'es' },
-  { label: 'Portuguese', value: 'pt' },
-  { label: 'Russian', value: 'ru' },
-  { label: 'Japanese', value: 'ja' },
-  { label: 'Korean', value: 'ko' },
-  { label: 'Chinese', value: 'zh' },
+  { label: 'Polski', value: 'pl' },
 ] as const;
 
 const fonts = [
@@ -73,11 +67,14 @@ type PreferencesFormSchema = z.infer<typeof preferencesFormSchema>;
 
 export function PreferencesForm() {
   const t = useTranslations('UserProfile.Preferences');
+  const router = useRouter();
+  const pathname = usePathname();
+  const locale = useLocale();
   const { setTheme, theme } = useTheme();
   const { font, changeFont } = useSettingsStore();
   const defaultValues: Partial<PreferencesFormSchema> = {
     theme: theme as 'light' | 'dark',
-    language: 'en',
+    language: locale,
     font: font as FontType,
   };
 
@@ -137,6 +134,10 @@ export function PreferencesForm() {
                             key={language.value}
                             onSelect={() => {
                               form.setValue('language', language.value);
+                              router.replace(pathname, {
+                                locale: language.value,
+                                scroll: false,
+                              });
                             }}>
                             <CheckIcon
                               className={cn(

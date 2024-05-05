@@ -1,7 +1,7 @@
 'use client';
 
 import { Separator } from '@/components/ui/separator';
-import { PreferencesForm } from './preferences-form';
+import { PreferencesForm } from './_components/preferences-form';
 import { useTranslations } from '@/i18n';
 
 export default function PreferencesPage() {
