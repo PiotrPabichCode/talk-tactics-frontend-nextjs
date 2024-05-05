@@ -1,6 +1,6 @@
 'use client';
 import { Separator } from '@/components/ui/separator';
-import { ProfileForm } from './profile-form';
+import { ProfileForm } from './_components/profile-form';
 import withAuthRoles from '@/router/withAuthRoles';
 import { useTranslations } from '@/i18n';
 

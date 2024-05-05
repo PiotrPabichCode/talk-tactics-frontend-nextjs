@@ -5,6 +5,9 @@ import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import PreviewLightMode from '/public/preview-light-mode.webp';
 import PreviewDarkMode from '/public/preview-dark-mode.webp';
+import TestimonialCourses from '/public/hero-graduation-cap.svg';
+import TestimonialWords from '/public/hero-words.svg';
+import TestimonialUsages from '/public/hero-examples.svg';
 import Image from 'next/image';
 import useAuthStore from '@/store/useAuthStore';
 import { useTranslations } from '@/i18n';
@@ -20,17 +23,17 @@ export function Hero() {
     {
       name: t('testimonials.courses'),
       number: '50',
-      icon: '/hero-graduation-cap.svg',
+      icon: TestimonialCourses,
     },
     {
       name: t('testimonials.words'),
       number: '2000',
-      icon: '/hero-words.svg',
+      icon: TestimonialWords,
     },
     {
       name: t('testimonials.usages'),
       number: '10',
-      icon: '/hero-examples.svg',
+      icon: TestimonialUsages,
     },
   ];
 
@@ -102,10 +105,10 @@ export function Hero() {
             <div className='py-4 sm:py-0' key={index}>
               <div className='flex md:justify-center sm:w-auto w-full'>
                 <div className='flex items-center justify-center bg-orange-100 w-[48px] h-[48px] mr-6 rounded-full'>
-                  <img
+                  <Image
                     alt={`hero-icon${index}`}
                     src={testimonial.icon}
-                    className='h-[24px] w-[24px]'
+                    className='size-6'
                   />
                 </div>
                 <div className='flex flex-col'>

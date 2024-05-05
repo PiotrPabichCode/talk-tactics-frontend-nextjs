@@ -1,22 +1,12 @@
 'use client';
 
-import { Table } from '@/components/table/table';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { Card } from '@/components/ui/card';
 import { useGetCourseItemById } from '@/services/queries/course.query';
-import { columns } from './_components/columns';
-import { Button } from '@/components/ui/button';
-import { Undo2 } from 'lucide-react';
-import { AudioPlayer } from './_components/audio-player';
 import { useTranslations } from '@/i18n';
 import { WordsPageSkeleton } from './_components/words-page-skeleton';
-import { Link } from '@/navigation';
+import { BackButton } from './_components/back-button';
+import { WordCardHeader } from './_components/word-card-header';
+import { WordDefinitionsTable } from './_components/word-definitions-table';
 
 export default function SingleCourseItemPage({
   params,
@@ -25,61 +15,23 @@ export default function SingleCourseItemPage({
 }) {
   const t = useTranslations('WordPage');
   const {
-    data: courseItem,
+    data: word,
     isFetching,
     isError,
   } = useGetCourseItemById(params.courseItemId);
   if (isFetching) {
     return <WordsPageSkeleton />;
   }
-  if (!courseItem || isError) {
+  if (!word || isError) {
     return null;
   }
 
   return (
     <div className='p-4 text-center'>
       <Card className='relative'>
-        <Link
-          href={`/courses/${params.courseId}`}
-          className='animate-fade-up'
-          style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
-          <Button variant='action' className='absolute top-5 right-5'>
-            <p className='hidden md:block md:mr-2'>{t('backToCourse')}</p>
-            <Undo2 className=' h-4 w-4' />
-          </Button>
-        </Link>
-        <CardHeader className='items-center'>
-          <CardTitle
-            className='animate-fade-up'
-            style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-            {courseItem.word}
-          </CardTitle>
-          <CardDescription
-            className='flex flex-row items-center gap-1 animate-fade-up'
-            style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-            {courseItem.phonetic}
-            {courseItem.audio && <AudioPlayer url={courseItem.audio} />}
-          </CardDescription>
-          <CardDescription
-            className='animate-fade-up'
-            style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-            {courseItem.partOfSpeech}
-          </CardDescription>
-          <CardDescription
-            className='font-bold pt-2 animate-fade-up'
-            style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-            {courseItem.course.title}
-          </CardDescription>
-        </CardHeader>
-        <Separator
-          className='mb-2 animate-fade-up'
-          style={{ animationDelay: '0.4s', animationFillMode: 'both' }}
-        />
-        <CardContent
-          className='animate-fade-up'
-          style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
-          <Table columns={columns} data={courseItem.meanings} />
-        </CardContent>
+        <BackButton courseId={params.courseId} />
+        <WordCardHeader word={word} />
+        <WordDefinitionsTable examples={word.meanings} />
       </Card>
     </div>
   );

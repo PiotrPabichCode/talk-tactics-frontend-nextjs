@@ -2,16 +2,15 @@
 
 import { Separator } from '@/components/ui/separator';
 import { SidebarNav } from './_components/sidebar-nav';
-import useUserStore from '@/store/useUserStore';
 import withAuthRoles from '@/router/withAuthRoles';
 import { useTranslations } from 'next-intl';
+import { WelcomeMessage } from './_components/welcome-message';
 
 interface ProfileLayoutSettings {
   children: React.ReactNode;
 }
 
 function ProfileLayout({ children }: ProfileLayoutSettings) {
-  const { firstName } = useUserStore();
   const t = useTranslations('UserProfile');
 
   const sidebarNavItems = [
@@ -36,23 +35,7 @@ function ProfileLayout({ children }: ProfileLayoutSettings) {
   return (
     <>
       <div className='space-y-6 p-5 lg:p-10 pb-16 md:block'>
-        <div className='space-y-0.5'>
-          <h2
-            className='text-2xl font-bold tracking-tight animate-fade-up'
-            style={{
-              animationDelay: '0.1s',
-              animationFillMode: 'both',
-            }}>
-            {t('welcome', {
-              name: firstName,
-            })}
-          </h2>
-          <p
-            className='text-muted-foreground animate-fade-up'
-            style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-            {t('description')}
-          </p>
-        </div>
+        <WelcomeMessage />
         <Separator
           className='my-6 animate-fade-up'
           style={{ animationDelay: '0.2s', animationFillMode: 'both' }}

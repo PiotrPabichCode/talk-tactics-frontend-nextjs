@@ -1,3 +1,4 @@
+import { GetLocalizedMessage } from '@/i18n';
 import { cn } from '@/lib/utils';
 import React from 'react';
 
@@ -27,7 +28,9 @@ function SpinnerIcon({ variant }: { variant: Variant }) {
           fill='currentFill'
         />
       </svg>
-      <span className='sr-only'>Loading...</span>
+      <span className='sr-only'>
+        {GetLocalizedMessage('Common.buttonLoading')}
+      </span>
     </>
   );
 }
@@ -40,7 +43,7 @@ export const Spinner = React.memo(
       return (
         <div className='inline-flex items-center gap-2' role='status'>
           <MemoizedSpinnerIcon variant={variant} />
-          Loading...
+          {GetLocalizedMessage('Common.buttonLoading')}
         </div>
       );
     }

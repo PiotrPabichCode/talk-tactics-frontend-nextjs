@@ -30,6 +30,7 @@ import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
 import useAuthStore from '@/store/useAuthStore';
 import { useTranslations } from '@/i18n';
+import { useFilterUrl } from './hooks/use-filter-url';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -45,6 +46,7 @@ export function Table<TData, TValue>({
   viewOptions = true,
 }: DataTableProps<TData, TValue>) {
   const t = useTranslations('Table');
+  const userId = useAuthStore().credentials?.id;
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -52,7 +54,7 @@ export function Table<TData, TValue>({
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const userId = useAuthStore().credentials?.id;
+  useFilterUrl({ columnFilters });
 
   const table = useReactTable({
     data,
@@ -75,36 +77,6 @@ export function Table<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
-
-  React.useEffect(() => {
-    function updateFilteringUrl(filters: ColumnFiltersState) {
-      const currentParams = new URLSearchParams(window.location.search);
-      const params = new URLSearchParams();
-      filters.forEach((filter) => {
-        if (!filter.value) {
-          return;
-        }
-        if (filter.id === 'progress') {
-          params.set('custom', 'my-courses');
-        } else if (Array.isArray(filter.value)) {
-          const values = filter.value.join(',');
-          params.set(filter.id, values);
-        } else if (typeof filter.value === 'string') {
-          params.set(filter.id, filter.value);
-        }
-      });
-      if (currentParams.toString() === params.toString()) {
-        return;
-      }
-      window.history.replaceState(
-        {},
-        '',
-        `${window.location.pathname}?${params}`
-      );
-    }
-
-    updateFilteringUrl(columnFilters);
-  }, [columnFilters, window.location.search, window.location.pathname]);
 
   return (
     <div className='space-y-4'>

@@ -30,7 +30,6 @@ import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
 import { useTranslations } from '@/i18n';
 import { handleError } from '@/services/common';
-import { useFormValuesChanged } from '@/hooks/use-form-values-changed';
 
 export function ProfileForm() {
   const credentials = useAuthStore().credentials;
@@ -38,36 +37,31 @@ export function ProfileForm() {
   const { isPending, mutateAsync: updateUser } = useUpdateUserDetailsMutation();
   const { email, firstName, lastName, bio, isReady } = useUserStore();
   const [enableSubmit, setEnableSubmit] = useState(false);
-  let defaultValues = {
-    username: credentials?.username,
-    email: email,
-    firstName: firstName,
-    lastName: lastName,
-    bio: bio ?? '',
-  };
+  const defaultValues = useMemo(
+    () => ({
+      username: credentials?.username,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      bio: bio ?? '',
+    }),
+    [credentials?.username, email, firstName, lastName, bio]
+  );
   let form = useForm<UpdateUserFormValues>({
     resolver: zodResolver(ApiRequestUpdateUserSchema),
     defaultValues,
     mode: 'onChange',
   });
+  const watchAllFields = form.watch();
 
   useMemo(() => {
-    if (isReady) {
-      defaultValues = {
-        username: credentials?.username,
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-        bio: bio ?? '',
-      };
-      form.reset(defaultValues);
-    }
-  }, [isReady]);
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
 
-  useFormValuesChanged(form, () => {
-    const isNew = !isEqual(defaultValues, form.getValues());
-    setEnableSubmit(isNew);
-  });
+  useEffect(() => {
+    const isNew = isEqual(defaultValues, watchAllFields);
+    setEnableSubmit(!isNew);
+  }, [watchAllFields, defaultValues]);
 
   if (!isReady) {
     return <Spinner />;
