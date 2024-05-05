@@ -13,10 +13,10 @@ import { useGetCourseItemById } from '@/services/queries/course.query';
 import { columns } from './_components/columns';
 import { Button } from '@/components/ui/button';
 import { Undo2 } from 'lucide-react';
-import Link from 'next/link';
 import { AudioPlayer } from './_components/audio-player';
 import { useTranslations } from '@/i18n';
 import { WordsPageSkeleton } from './_components/words-page-skeleton';
+import { Link } from '@/navigation';
 
 export default function SingleCourseItemPage({
   params,

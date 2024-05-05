@@ -1,5 +1,4 @@
 'use client';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -12,10 +11,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useTranslations } from '@/i18n';
+import { Link } from '@/navigation';
 import useAuthStore from '@/store/useAuthStore';
 import useCourseStore from '@/store/useCourseStore';
 import useUserStore from '@/store/useUserStore';
-import Link from 'next/link';
+import { UserAvatar } from './user-avatar';
 
 export default function UserNav() {
   const { credentials, logout } = useAuthStore();
@@ -35,18 +35,8 @@ export default function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant='link'
-          className='relative h-10 w-10 rounded-full border-solid border-2 bg-slate-100'>
-          <Avatar className='h-8 w-8'>
-            <AvatarImage
-              src={'/account-man.svg'}
-              alt={'User account placeholder'}
-            />
-            <AvatarFallback>
-              {`${firstName[0]}${lastName[0]}`.toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+        <Button variant={'outline'} size={'icon'} className='rounded-full'>
+          <UserAvatar firstName={firstName} lastName={lastName} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56' align='end' forceMount>

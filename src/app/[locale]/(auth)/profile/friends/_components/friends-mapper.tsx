@@ -10,10 +10,9 @@ import {
   Table,
 } from '@/components/ui/table';
 import { useTranslations } from '@/i18n';
+import { Link, useRouter } from '@/navigation';
 import { useGetFriendList } from '@/services/queries/user.query';
 import useAuthStore from '@/store/useAuthStore';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 export function FriendsMapper() {
   const t = useTranslations('UserProfile.Friends');

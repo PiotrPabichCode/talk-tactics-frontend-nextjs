@@ -3,13 +3,13 @@
 import { cn } from '@/lib/utils';
 import { MobileSidebar } from './mobile-sidebar';
 import UserNav from './user-nav';
-import Link from 'next/link';
 import { ModeToggle } from './mode-toggle';
 import { LinksNav } from './links-nav';
 import { useUserIsHydrated } from '@/store/useUserStore';
 import { useGetNavbarCourses } from '@/services/queries/course.query';
 import Image from 'next/image';
 import LocaleToggle from './locale-toggle';
+import { Link } from '@/navigation';
 
 export function Header() {
   const { data: courses, isLoading: coursesLoading } = useGetNavbarCourses();

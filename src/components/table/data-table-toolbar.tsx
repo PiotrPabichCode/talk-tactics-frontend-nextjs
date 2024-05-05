@@ -9,13 +9,13 @@ import { DataTableViewOptions } from './data-table-view-options';
 
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
 import { Undo2 } from 'lucide-react';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useMyCoursesFilter } from './hooks/use-my-courses-filter';
 import { MyCoursesFilter } from './components/my-courses-filter';
 import { useParams } from 'next/navigation';
 import { useDebounce } from '@/hooks/use-debounce';
 import { GetLocalizedMessage, useTranslations } from '@/i18n';
+import { Link } from '@/navigation';
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   filters?: TFilters;

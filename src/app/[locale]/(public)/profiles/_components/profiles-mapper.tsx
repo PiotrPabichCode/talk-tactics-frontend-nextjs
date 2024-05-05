@@ -13,7 +13,6 @@ export function ProfilesMapper({
       title: profile.firstName + ' ' + profile.lastName,
       description: profile.bio,
       link: '/profiles/' + profile.id,
-      avatar: '/account-man.svg',
       points: profile.totalPoints,
     };
   });

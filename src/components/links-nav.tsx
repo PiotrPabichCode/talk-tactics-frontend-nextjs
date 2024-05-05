@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -14,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { CourseNavbarDto, LocalizeCourseLevel } from '@/typings/course';
 import Image from 'next/image';
 import { useTranslations } from '@/i18n';
+import { Link } from '@/navigation';
 
 const RecommendedCourses = ({ courses }: { courses: CourseNavbarDto[] }) => {
   const t = useTranslations('Navigation.courses');
@@ -109,12 +109,13 @@ const ListItem = React.forwardRef<
   return (
     <li>
       <NavigationMenuLink asChild>
-        <a
+        <Link
           ref={ref}
           className={cn(
             'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
             className
           )}
+          href={props.href as string}
           {...props}>
           <div className='text-sm font-medium leading-none line-clamp-1'>
             {title}
@@ -122,7 +123,7 @@ const ListItem = React.forwardRef<
           <p className='line-clamp-2 text-sm leading-snug text-muted-foreground'>
             {children}
           </p>
-        </a>
+        </Link>
       </NavigationMenuLink>
     </li>
   );

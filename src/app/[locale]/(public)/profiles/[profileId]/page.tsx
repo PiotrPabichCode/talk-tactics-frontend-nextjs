@@ -13,11 +13,11 @@ import {
 } from '@/components/ui/table';
 import { Badge as UiBadge } from '@/components/ui/badge';
 import { useGetUserProfile } from '@/services/queries/user.query';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { LocalizeCourseLevel, UserCourse } from '@/typings/course';
 import { useMemo } from 'react';
 import { useTranslations } from '@/i18n';
+import { Link, useRouter } from '@/navigation';
+import { UserAvatar } from '@/components/user-avatar';
 
 const countCompletedCourses = (courses: UserCourse[]) => {
   return courses.reduce((acc, course) => {
@@ -94,15 +94,10 @@ export default function ProfilePage({
           style={{ animationDelay: '0.8s', animationFillMode: 'both' }}
         />
         <div className='flex flex-col lg:flex-row gap-5 items-center relative z-10'>
-          <Avatar
-            className='w-32 h-32 2xl:w-64 2xl:h-64 lg:mr-10 animate-fade-up'
-            style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-            <AvatarImage
-              src={'/account-man.svg'}
-              alt={'User account placeholder'}
-              className='bg-white'
-            />
-          </Avatar>
+          <UserAvatar
+            className='w-32 h-32 2xl:w-64 2xl:h-64 lg:mr-10 animate-fade-up bg-white'
+            style={{ animationDelay: '0.2s', animationFillMode: 'both' }}
+          />
           <div
             className='flex flex-col gap-2 animate-fade-up'
             style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>

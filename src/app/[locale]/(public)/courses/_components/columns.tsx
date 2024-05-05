@@ -6,7 +6,6 @@ import { levels } from './data';
 import { DataTableColumnHeader } from '@/components/table/data-table-column-header';
 import { CourseDto } from '@/typings/course';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { BookOpenText, Plus, Trash2 } from 'lucide-react';
 import {
   useAddUserCourse,
@@ -28,6 +27,7 @@ import { useState } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import { GetLocalizedMessage, useTranslations } from '@/i18n';
 import { handleError } from '@/services/common';
+import { Link } from '@/navigation';
 
 function DeleteCourseDialog({
   isOpen,

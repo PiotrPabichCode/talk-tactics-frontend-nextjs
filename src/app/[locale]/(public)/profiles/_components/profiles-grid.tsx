@@ -1,8 +1,6 @@
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import Link from 'next/link';
 import { useState } from 'react';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { FriendInvitationButton } from '@/components/friend-invitation-button';
 import {
   useGetFriendList,
@@ -12,6 +10,8 @@ import {
 import useAuthStore from '@/store/useAuthStore';
 import { IFriendInvitationDto } from '@/typings/user';
 import { useTranslations } from '@/i18n';
+import { Link } from '@/navigation';
+import { UserAvatar } from '@/components/user-avatar';
 
 export const ProfilesGrid = ({
   items,
@@ -23,7 +23,6 @@ export const ProfilesGrid = ({
     points: number;
     description: string;
     link: string;
-    avatar: string;
   }[];
   className?: string;
 }) => {
@@ -120,11 +119,7 @@ export const ProfilesGrid = ({
               />
             )}
 
-            <CardTitle
-              title={item.title}
-              points={item.points}
-              avatar={item.avatar}
-            />
+            <CardTitle title={item.title} points={item.points} />
             <CardDescription>{item.description}</CardDescription>
           </Card>
         </Link>
@@ -143,7 +138,7 @@ export const Card = ({
   return (
     <div
       className={cn(
-        'rounded-2xl h-full w-full p-2 overflow-hidden bg-blue-50 dark:bg-black border border-black/[0.2] dark:border-white/[0.2] group-hover:border-slate-700 relative z-10',
+        'rounded-2xl h-full w-full p-2 overflow-hidden bg-white dark:bg-black border border-black/[0.2] dark:border-white/[0.2] group-hover:border-slate-700 relative z-10',
         className
       )}>
       <div className='relative'>
@@ -154,21 +149,17 @@ export const Card = ({
 };
 export const CardTitle = ({
   className,
-  avatar,
   title,
   points,
 }: {
   className?: string;
-  avatar: string;
   title: string;
   points: number;
 }) => {
   const t = useTranslations('ProfilesPage');
   return (
     <h4 className={cn('flex items-center text-sm', className)}>
-      <Avatar className='bg-slate-100 mr-4'>
-        <AvatarImage src={avatar} alt={'User account placeholder'} />
-      </Avatar>
+      <UserAvatar className='mr-4' />
       <div className='max-w-[55%]'>
         <p className='text-current font-bold tracking-wide truncate'>{title}</p>
         <p>{t('total', { points: points })}</p>
