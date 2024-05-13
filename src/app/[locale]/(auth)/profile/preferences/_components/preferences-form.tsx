@@ -39,6 +39,7 @@ import { LightMode, DarkMode } from '.';
 import { useTranslations } from '@/i18n';
 import { usePathname, useRouter } from '@/navigation';
 import { useLocale } from 'next-intl';
+import { FormPopover } from '@/components/form/form-popover';
 
 const languages = [
   { label: 'English', value: 'en' },
@@ -97,6 +98,21 @@ export function PreferencesForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+        {/* <FormPopover
+          control={form.control}
+          name='language'
+          label={t('language')}
+          searchPlaceholder={t('selectLanguage')}
+          emptyMessage={t('noLanguageFound')}
+          values={languages}
+          onSelect={(val) => {
+            form.setValue('language', val);
+            router.replace(pathname, {
+              locale: val,
+              scroll: false,
+            });
+          }}
+        /> */}
         <FormField
           control={form.control}
           name='language'

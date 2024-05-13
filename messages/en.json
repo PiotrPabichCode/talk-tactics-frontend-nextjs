@@ -106,6 +106,8 @@
       "intermediate": "Intermediate",
       "advanced": "Advanced"
     },
+    "buttonLoading": "Loading...",
+    "buttonSubmit": "Submit",
     "signIn": "Sign in",
     "yes": "Yes",
     "no": "No"

@@ -20,11 +20,10 @@ export default getRequestConfig(async ({ locale }) => {
   };
 });
 
-export function useTranslations(
-  key?: NamespaceKeys<IntlMessages, NestedKeyOf<IntlMessages>>
-) {
-  return NextIntlTranslations(key);
-}
+export const useTranslations: typeof NextIntlTranslations =
+  NextIntlTranslations;
+
+export type Messages = NestedKeyOf<IntlMessages>;
 
 export const useMessages = () => {
   return NextIntlMessages();

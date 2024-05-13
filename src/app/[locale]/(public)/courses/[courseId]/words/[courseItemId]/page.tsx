@@ -2,7 +2,6 @@
 
 import { Card } from '@/components/ui/card';
 import { useGetCourseItemById } from '@/services/queries/course.query';
-import { useTranslations } from '@/i18n';
 import { WordsPageSkeleton } from './_components/words-page-skeleton';
 import { BackButton } from './_components/back-button';
 import { WordCardHeader } from './_components/word-card-header';
@@ -13,7 +12,6 @@ export default function SingleCourseItemPage({
 }: {
   params: { courseId: number; courseItemId: number };
 }) {
-  const t = useTranslations('WordPage');
   const {
     data: word,
     isFetching,

@@ -1,12 +1,10 @@
 'use client';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  SentInvitationsMapper,
-  FriendsMapper,
-  ReceivedInvitationsMapper,
-} from './_components';
 import { useTranslations } from '@/i18n';
+import { MessageKeys } from 'next-intl';
+import { friendsTabs } from './_components/tabs';
+import { Separator } from '@/components/ui/separator';
 
 export default function FriendsPage() {
   const t = useTranslations('UserProfile.Friends');
@@ -15,23 +13,18 @@ export default function FriendsPage() {
       defaultValue='friends'
       className='overflow-scroll md:overflow-visible'>
       <TabsList>
-        <TabsTrigger value='friends'>{t('friends')}</TabsTrigger>
-        <TabsTrigger value='sent-invitations'>
-          {t('sentInvitations')}
-        </TabsTrigger>
-        <TabsTrigger value='received-invitations'>
-          {t('receivedInvitations')}
-        </TabsTrigger>
+        {friendsTabs.map(({ value, label, mapper }) => (
+          <TabsTrigger key={value} value={value}>
+            {t(label)}
+          </TabsTrigger>
+        ))}
       </TabsList>
-      <TabsContent value='friends'>
-        <FriendsMapper />
-      </TabsContent>
-      <TabsContent value='sent-invitations'>
-        <SentInvitationsMapper />
-      </TabsContent>
-      <TabsContent value='received-invitations'>
-        <ReceivedInvitationsMapper />
-      </TabsContent>
+      <Separator className='mt-4 mb-3' />
+      {friendsTabs.map(({ value, mapper }) => (
+        <TabsContent key={value} value={value}>
+          {mapper}
+        </TabsContent>
+      ))}
     </Tabs>
   );
 }

@@ -3,33 +3,24 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { Form } from '@/components/ui/form';
 import useAuthStore from '@/store/useAuthStore';
 import useUserStore from '@/store/useUserStore';
-import { isEqual, omitBy } from 'lodash';
+import { isEqual } from 'lodash';
 import { useUpdateUserDetailsMutation } from '@/services/queries/user.query';
 import {
-  ApiRequestUpdateUser,
   ApiRequestUpdateUserSchema,
   UpdateUserFormValues,
 } from '@/typings/user';
-import { useEffect, useMemo, useState } from 'react';
-import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
 import { useTranslations } from '@/i18n';
 import { handleError } from '@/services/common';
+import { SubmitButton } from '@/components/submit-button';
+import { getChangedValues } from '@/lib/utils';
+import { FormInput } from '@/components/form/form-input';
+import { FormTextarea } from '@/components/form/form-textarea';
 
 export function ProfileForm() {
   const credentials = useAuthStore().credentials;
@@ -37,47 +28,41 @@ export function ProfileForm() {
   const { isPending, mutateAsync: updateUser } = useUpdateUserDetailsMutation();
   const { email, firstName, lastName, bio, isReady } = useUserStore();
   const [enableSubmit, setEnableSubmit] = useState(false);
-  const defaultValues = useMemo(
-    () => ({
-      username: credentials?.username,
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-      bio: bio ?? '',
-    }),
-    [credentials?.username, email, firstName, lastName, bio]
-  );
+  const [formValues, setFormValues] = useState<UpdateUserFormValues>({
+    username: credentials?.username ?? '',
+    email: email,
+    firstName: firstName,
+    lastName: lastName,
+    bio: bio ?? '',
+  });
   let form = useForm<UpdateUserFormValues>({
     resolver: zodResolver(ApiRequestUpdateUserSchema),
-    defaultValues,
+    defaultValues: formValues,
     mode: 'onChange',
   });
   const watchAllFields = form.watch();
 
-  useMemo(() => {
-    form.reset(defaultValues);
-  }, [defaultValues, form]);
-
   useEffect(() => {
-    const isNew = isEqual(defaultValues, watchAllFields);
+    const isNew = isEqual(formValues, watchAllFields);
     setEnableSubmit(!isNew);
-  }, [watchAllFields, defaultValues]);
+  }, [watchAllFields, formValues]);
 
   if (!isReady) {
     return <Spinner />;
   }
 
   async function onSubmit(data: UpdateUserFormValues) {
-    const changedValues = omitBy(
-      data,
-      (value, key) => defaultValues[key as keyof UpdateUserFormValues] === value
-    ) as ApiRequestUpdateUser['updatedFields'];
     try {
+      const changedValues = getChangedValues<UpdateUserFormValues>(
+        formValues,
+        data
+      );
       if (!credentials) {
         throw new Error('Bad credentials');
       }
       await updateUser({ id: credentials.id, updatedFields: changedValues });
       toast.success(t('successMessage'));
+      setFormValues(data);
     } catch (e) {
       handleError(e);
     }
@@ -86,80 +71,37 @@ export function ProfileForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-        <FormField
-          control={form.control}
+        <FormInput
           name='username'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('username')}</FormLabel>
-              <FormControl>
-                <Input {...field} disabled />
-              </FormControl>
-              <FormDescription>{t('usernameDescription')}</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
+          label={t('username')}
+          description={t('usernameDescription')}
           control={form.control}
-          name='email'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('email')}</FormLabel>
-              <Input {...field} />
-              <FormDescription>{t('emailDescription')}</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
+          disabled
         />
-        <FormField
-          control={form.control}
+        <FormInput
           name='firstName'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('firstName')}</FormLabel>
-              <Input {...field} />
-              <FormDescription>{t('firstNameDescription')}</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
+          label={t('firstName')}
+          description={t('firstNameDescription')}
           control={form.control}
+        />
+        <FormInput
           name='lastName'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('lastName')}</FormLabel>
-              <Input {...field} />
-              <FormDescription>{t('lastNameDescription')}</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
+          label={t('lastName')}
+          description={t('lastNameDescription')}
           control={form.control}
-          name='bio'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('bio')}</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder={t('bioPlaceholder')}
-                  className='resize-none'
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>{t('bioDescription')}</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
         />
-        <Button
-          className={cn(!enableSubmit && 'hidden')}
-          type='submit'
-          disabled={isPending || !enableSubmit}>
-          {t('buttonSubmit')}
-        </Button>
+        <FormTextarea
+          name='bio'
+          label={t('bio')}
+          description={t('bioDescription')}
+          placeholder={t('bioPlaceholder')}
+          control={form.control}
+        />
+        <SubmitButton
+          enabled={enableSubmit}
+          disabled={isPending || !enableSubmit}
+          title={t('buttonSubmit')}
+        />
       </form>
     </Form>
   );
