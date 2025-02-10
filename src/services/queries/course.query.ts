@@ -3,10 +3,9 @@ import {
   addUserCourse,
   deleteUserCourse,
   getCourseItemById,
-  getCourseItemsPreviewByCourseId,
+  getCourseItems,
   getCourses,
   getNavbarCourses,
-  getUserCourseItemsPreview,
   getUserCourses,
   learnUserCourseItem,
 } from '../api/course.service';
@@ -17,15 +16,12 @@ import {
   CourseItem,
   CourseItemDto,
   CourseNavbarDto,
-  ResponseGetUserCourseItemsPreview,
 } from '@/typings/course';
-import { useCourseAdded, useCoursesEmpty } from '@/store/useCourseStore';
-import { userId } from '@/store/useAuthStore';
-import { useUserIsHydrated } from '@/store/useUserStore';
+import { useCoursesEmpty } from '@/store/useCourseStore';
+import { Page } from '@/typings/page.types';
 
 const QUERY_KEY = 'courses';
 const COURSES_NAVBAR_QUERY_KEY = 'courses_navbar';
-const COURSE_ITEMS_PREVIEW_QUERY_KEY = 'course_items_preview';
 const USER_COURSE_ITEMS_PREVIEW_QUERY_KEY = 'user_course_items_preview';
 const USER_COURSES_PREVIEW_QUERY_KEY = 'user_courses_preview';
 const COURSE_ITEM_QUERY_KEY = 'course_item';
@@ -43,12 +39,12 @@ export function getQueryKey(page?: number) {
 export function useGetCourses(page?: number) {
   const queryClient = useQueryClient();
   const enabled = useCoursesEmpty();
-  const query = useQuery<CourseDto[], Error>({
+  const query = useQuery<Page<CourseDto>, Error>({
     queryKey: getQueryKey(page),
     queryFn: () => getCourses(),
     enabled: enabled,
     initialData: () => {
-      return queryClient.getQueryData(getQueryKey()) as CourseDto[];
+      return queryClient.getQueryData(getQueryKey()) as Page<CourseDto>;
     },
   });
   return query;
@@ -63,6 +59,20 @@ export function useGetNavbarCourses() {
       return queryClient.getQueryData([
         COURSES_NAVBAR_QUERY_KEY,
       ]) as CourseNavbarDto[];
+    },
+  });
+  return query;
+}
+
+export function useGetCourseItems(courseId: number) {
+  const queryClient = useQueryClient();
+  const query = useQuery<Page<CourseItemDto>, Error>({
+    queryKey: ['course-items' + courseId],
+    queryFn: () => getCourseItems({ courseId }),
+    initialData: () => {
+      return queryClient.getQueryData([
+        'course-items' + courseId,
+      ]) as Page<CourseItemDto>;
     },
   });
   return query;
@@ -147,49 +157,4 @@ export function useLearnUserCourseItem() {
     },
     mutationKey: [LEARN_USER_COURSE_ITEM_QUERY_KEY],
   });
-}
-
-export function useGetCourseItemsPreviewByCourseId(courseId: number) {
-  const queryClient = useQueryClient();
-  const isUserHydrated = useUserIsHydrated();
-  const isAdded = useCourseAdded(courseId);
-  const enabled = isUserHydrated && !isAdded;
-  const query = useQuery<CourseItemDto[], Error>({
-    queryKey: [COURSE_ITEMS_PREVIEW_QUERY_KEY, courseId],
-    queryFn: () => getCourseItemsPreviewByCourseId({ courseId }),
-    enabled: enabled,
-    initialData: () => {
-      return queryClient.getQueryData([
-        COURSE_ITEMS_PREVIEW_QUERY_KEY,
-        courseId,
-      ]) as CourseItemDto[];
-    },
-  });
-  return query;
-}
-
-export function useGetUserCourseItemsPreviewByCourseId({
-  courseId,
-}: {
-  courseId: number;
-}) {
-  const queryClient = useQueryClient();
-  const enabled = useCourseAdded(courseId);
-  const query = useQuery<ResponseGetUserCourseItemsPreview, Error>({
-    queryKey: [USER_COURSE_ITEMS_PREVIEW_QUERY_KEY, courseId],
-    queryFn: () =>
-      getUserCourseItemsPreview({
-        courseId: courseId,
-        userId: userId(),
-      }),
-    staleTime: 0,
-    enabled: enabled,
-    initialData: () => {
-      return queryClient.getQueryData([
-        USER_COURSE_ITEMS_PREVIEW_QUERY_KEY,
-        courseId,
-      ]) as ResponseGetUserCourseItemsPreview;
-    },
-  });
-  return query;
 }

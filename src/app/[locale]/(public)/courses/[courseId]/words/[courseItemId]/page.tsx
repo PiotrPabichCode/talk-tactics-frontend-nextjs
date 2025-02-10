@@ -12,16 +12,9 @@ export default function SingleCourseItemPage({
 }: {
   params: { courseId: number; courseItemId: number };
 }) {
-  const {
-    data: word,
-    isFetching,
-    isError,
-  } = useGetCourseItemById(params.courseItemId);
+  const { data: word, isFetching } = useGetCourseItemById(params.courseItemId);
   if (isFetching) {
     return <WordsPageSkeleton />;
-  }
-  if (!word || isError) {
-    return null;
   }
 
   return (

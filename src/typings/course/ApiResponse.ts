@@ -1,42 +1,41 @@
+import { mapPageContent, Page } from '../page.types';
 import {
   ApiCourseDto,
   ApiCourseItem,
   ApiCourseItemDto,
-  ApiUserCourseItemPreviewDto,
   CourseDto,
   CourseItem,
+  CourseItemDto,
   ICourse,
   UserCourseItemPreviewDto,
   WordMeaning,
 } from './course';
 
-export type ApiResponseGetCourses = ApiCourseDto[];
+export type ApiResponseGetCourses = Page<ApiCourseDto>;
 
 export const toGetCourseResponseMapper = (
   res: ApiResponseGetCourses
-): CourseDto[] => {
-  return res.map((course) => ({
+): Page<CourseDto> =>
+  mapPageContent(res, (course) => ({
     id: course.id,
     title: course.title,
     description: course.description,
     level: course.level,
     quantity: course.quantity,
   }));
-};
 
-export type ApiResponseGetCourseItemsPreviewByCourseId = ApiCourseItemDto[];
+export type ApiResponseGetCourseItems = Page<ApiCourseItemDto>;
 
-export const toGetCourseItemsPreviewByCourseIdResponseMapper = (
-  res: ApiResponseGetCourseItemsPreviewByCourseId
-) => {
-  return res.map((course) => ({
-    id: course.id,
-    word: course.word,
-    partOfSpeech: course.part_of_speech,
-    phonetic: course.phonetic,
-    courseName: course.course_name,
+export const toGetCourseItemsResponseMapper = (
+  res: ApiResponseGetCourseItems
+): Page<CourseItemDto> =>
+  mapPageContent(res, (item) => ({
+    id: item.id,
+    courseName: item.course_name,
+    partOfSpeech: item.part_of_speech,
+    phonetic: item.phonetic,
+    word: item.word,
   }));
-};
 
 export interface ApiResponseCourseItem {
   id: number;
@@ -48,9 +47,9 @@ export interface ApiResponseCourseItem {
   course: ICourse;
 }
 
-export type ApiResponseGetCourseItemById = ApiCourseItem;
+export type ApiResponseGetCourseItem = ApiCourseItem;
 
-export const toGetCourseItemByIdResponseMapper = ({
+export const toGetCourseItemResponseMapper = ({
   id,
   word,
   meanings,
@@ -70,32 +69,10 @@ export const toGetCourseItemByIdResponseMapper = ({
   };
 };
 
-export interface ApiResponseGetUserCourseItemsPreview {
-  course_name: string;
-  items: ApiUserCourseItemPreviewDto[];
-}
-
 export interface ResponseGetUserCourseItemsPreview {
   courseName: string;
   items: UserCourseItemPreviewDto[];
 }
-
-export const toGetUserCourseItemsPreviewResponseMapper = ({
-  course_name,
-  items,
-}: ApiResponseGetUserCourseItemsPreview): ResponseGetUserCourseItemsPreview => {
-  return {
-    courseName: course_name,
-    items: items.map((item) => ({
-      id: item.id,
-      courseItemId: item.course_item_id,
-      word: item.word,
-      phonetic: item.phonetic,
-      learned: item.learned,
-      partOfSpeech: item.part_of_speech,
-    })),
-  };
-};
 
 export interface ApiResponseLearnUserCourseItem {
   course_id: number;

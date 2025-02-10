@@ -4,40 +4,35 @@ import {
   CourseDto,
   ApiResponseGetCourses,
   toGetCourseResponseMapper,
-  ApiResponseGetCourseItemById,
-  toGetCourseItemByIdResponseMapper,
+  ApiResponseGetCourseItem,
+  toGetCourseItemResponseMapper,
   CourseItem,
   CourseItemDto,
-  ApiResponseGetCourseItemsPreviewByCourseId,
-  toGetCourseItemsPreviewByCourseIdResponseMapper,
   ApiRequestAddUserCourse,
   toAddUserCourseRequestMapper,
   ApiRequestDeleteUserCourse,
   toDeleteUserCourseRequestMapper,
   toGetUserCourseRequestMapper,
   ApiRequestGetUserCourse,
-  ApiRequestGetUserCourseItemsPreview,
-  toGetUserCourseItemsPreviewRequestMapper,
-  ApiResponseGetUserCourseItemsPreview,
-  toGetUserCourseItemsPreviewResponseMapper,
   CourseNavbarDto,
   toLearnUserCourseItemResponseMapper,
   ApiResponseLearnUserCourseItem,
+  ApiResponseGetCourseItems,
+  toGetCourseItemsResponseMapper,
 } from '@/typings/course';
+import { Page } from '@/typings/page.types';
 
 const ENDPOINT = 'courses';
 const COURSE_ITEM_ENDPOINT = 'course-items';
 const USER_COURSE_ENDPOINT = 'user-courses';
 const USER_COURSE_ITEM_ENDPOINT = 'user-course-items';
 
-export const getCourses = async (): Promise<CourseDto[]> => {
+export const getCourses = async (): Promise<Page<CourseDto>> => {
   const { data } = await axios<ApiResponseGetCourses>({
     method: 'GET',
-    url: ENDPOINT + '/all/preview',
+    url: ENDPOINT,
   });
-  const res = toGetCourseResponseMapper(data);
-  useCourseStore.getState().setCourses(res);
-  return res;
+  return toGetCourseResponseMapper(data);
 };
 
 export const getNavbarCourses = async (): Promise<CourseNavbarDto[]> => {
@@ -49,26 +44,21 @@ export const getNavbarCourses = async (): Promise<CourseNavbarDto[]> => {
   return data;
 };
 
+export const getCourseItems = async ({ courseId }: { courseId: number }) => {
+  const { data } = await axios<ApiResponseGetCourseItems>({
+    method: 'GET',
+    url: COURSE_ITEM_ENDPOINT + '?courseId=' + courseId,
+  });
+  return toGetCourseItemsResponseMapper(data);
+};
+
 export const getUserCourses = async ({ id }: { id: number }) => {
   const { data } = await axios<CourseDto[]>({
     method: 'GET',
-    url: `${USER_COURSE_ENDPOINT}/user-id/${id}`,
+    url: `${USER_COURSE_ENDPOINT}/id/${id}`,
   });
   useCourseStore.getState().setUserCourses(data);
   return data;
-};
-
-export const getCourseItemsPreviewByCourseId = async ({
-  courseId,
-}: {
-  courseId: number;
-}): Promise<CourseItemDto[]> => {
-  const { data } = await axios<ApiResponseGetCourseItemsPreviewByCourseId>({
-    method: 'GET',
-    url: `${COURSE_ITEM_ENDPOINT}/preview/courses/id/${courseId}`,
-  });
-  const res = toGetCourseItemsPreviewByCourseIdResponseMapper(data);
-  return res;
 };
 
 export const getCourseItemById = async ({
@@ -76,12 +66,11 @@ export const getCourseItemById = async ({
 }: {
   id: number;
 }): Promise<CourseItem> => {
-  const { data } = await axios<ApiResponseGetCourseItemById>({
+  const { data } = await axios<ApiResponseGetCourseItem>({
     method: 'GET',
-    url: `${COURSE_ITEM_ENDPOINT}/id/${id}`,
+    url: `${COURSE_ITEM_ENDPOINT}/${id}`,
   });
-  const res = toGetCourseItemByIdResponseMapper(data);
-  return res;
+  return toGetCourseItemResponseMapper(data);
 };
 
 export const addUserCourse = async (req: ApiRequestAddUserCourse) => {
@@ -114,17 +103,4 @@ export const getUserCourse = async (req: ApiRequestGetUserCourse) => {
     url: USER_COURSE_ENDPOINT,
     data: toGetUserCourseRequestMapper(req),
   });
-};
-
-export const getUserCourseItemsPreview = async (
-  req: ApiRequestGetUserCourseItemsPreview
-) => {
-  const { data } = await axios<ApiResponseGetUserCourseItemsPreview>({
-    method: 'POST',
-    url: `${USER_COURSE_ITEM_ENDPOINT}/all/preview`,
-    data: toGetUserCourseItemsPreviewRequestMapper(req),
-  });
-  console.log(data, 'here');
-
-  return toGetUserCourseItemsPreviewResponseMapper(data);
 };

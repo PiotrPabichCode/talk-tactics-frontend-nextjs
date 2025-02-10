@@ -6,7 +6,7 @@ import {
   keepPreviousData,
 } from '@tanstack/react-query';
 import { getCourses } from '@/api/courses';
-import type { Page } from '@/typings/page.types';
+import type { Page1 } from '@/typings/page.types';
 import type { Course } from '@/api/courses.types';
 
 const QUERY_KEY = 'courses';
@@ -19,7 +19,7 @@ export function getQueryKey(page?: number) {
 }
 
 export function useGetCourses(page: number) {
-  const query = useQuery<Page<Course>, Error>({
+  const query = useQuery<Page1<Course>, Error>({
     queryKey: getQueryKey(page),
     queryFn: ({ signal }) => getCourses(page, { signal }),
     placeholderData: keepPreviousData,

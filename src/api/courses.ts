@@ -1,5 +1,5 @@
 import type { Course } from './courses.types';
-import type { Page } from '@/typings/page.types';
+import type { Page1 } from '@/typings/page.types';
 import { axios } from '@/lib/axios';
 
 type CourseFilters = {};
@@ -16,7 +16,7 @@ export async function getCourses(
   //   url: ENDPOINT,
 
   // })
-  const { data } = await axios.get<Page<Course>>(ENDPOINT, {
+  const { data } = await axios.get<Page1<Course>>(ENDPOINT, {
     params: { page, ...filters },
     signal: options?.signal,
   });

@@ -6,12 +6,6 @@ export enum CourseLevel {
   ADVANCED = 'ADVANCED',
 }
 
-const CourseLevelSchema = z.union([
-  z.literal('BEGINNER'),
-  z.literal('INTERMEDIATE'),
-  z.literal('ADVANCED'),
-]);
-
 export interface WordMeaning {
   id: number;
   definition: string;

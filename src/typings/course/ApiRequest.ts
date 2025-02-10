@@ -42,18 +42,3 @@ export const toGetUserCourseRequestMapper = ({
     user_id: userId,
   };
 };
-
-export interface ApiRequestGetUserCourseItemsPreview {
-  courseId: number;
-  userId: number;
-}
-
-export const toGetUserCourseItemsPreviewRequestMapper = ({
-  courseId,
-  userId,
-}: ApiRequestGetUserCourseItemsPreview) => {
-  return {
-    course_id: courseId,
-    user_id: userId,
-  };
-};
