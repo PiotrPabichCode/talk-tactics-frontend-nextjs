@@ -31,8 +31,8 @@ export const toGetCourseItemsResponseMapper = (
 ): Page<CourseItemDto> =>
   mapPageContent(res, (item) => ({
     id: item.id,
-    courseName: item.course_name,
-    partOfSpeech: item.part_of_speech,
+    courseName: item.courseName,
+    partOfSpeech: item.partOfSpeech,
     phonetic: item.phonetic,
     word: item.word,
   }));
@@ -42,7 +42,7 @@ export interface ApiResponseCourseItem {
   word: string;
   phonetic: string;
   audio: string;
-  part_of_speech: string;
+  partOfSpeech: string;
   meanings: WordMeaning[];
   course: ICourse;
 }
@@ -53,7 +53,7 @@ export const toGetCourseItemResponseMapper = ({
   id,
   word,
   meanings,
-  part_of_speech,
+  partOfSpeech,
   audio,
   course,
   phonetic,
@@ -62,7 +62,7 @@ export const toGetCourseItemResponseMapper = ({
     id: id,
     word: word,
     meanings: meanings,
-    partOfSpeech: part_of_speech,
+    partOfSpeech: partOfSpeech,
     audio: audio,
     course: course,
     phonetic: phonetic,
@@ -75,7 +75,7 @@ export interface ResponseGetUserCourseItemsPreview {
 }
 
 export interface ApiResponseLearnUserCourseItem {
-  course_id: number;
+  courseId: number;
 }
 
 export interface ResponseLearnUserCourseItem {
@@ -83,9 +83,9 @@ export interface ResponseLearnUserCourseItem {
 }
 
 export const toLearnUserCourseItemResponseMapper = ({
-  course_id,
+  courseId,
 }: ApiResponseLearnUserCourseItem) => {
   return {
-    courseId: course_id,
+    courseId: courseId,
   };
 };

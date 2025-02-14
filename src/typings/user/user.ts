@@ -8,8 +8,8 @@ export interface IAuthUser {
 }
 
 export interface IApiAuthUser {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   bio: string;
 }
@@ -24,9 +24,9 @@ export interface IUserProfilePreview {
 
 export interface IApiUserProfilePreview {
   id: number;
-  first_name: string;
-  last_name: string;
-  total_points: number;
+  firstName: string;
+  lastName: string;
+  totalPoints: number;
   bio: string;
 }
 export interface IUserProfile extends IUserProfilePreview {
@@ -43,8 +43,8 @@ export interface IFriendInvitationDto {
 }
 
 export interface IApiFriendInvitationDto {
-  sender_id: number;
-  receiver_id: number;
+  senderId: number;
+  receiverId: number;
 }
 
 export interface IFriendInvitationDetailsDto {
@@ -63,6 +63,6 @@ export interface IDeleteFriendDto {
 }
 
 export interface IApiDeleteFriendDto {
-  user_id: number;
-  friend_id: number;
+  userId: number;
+  friendId: number;
 }

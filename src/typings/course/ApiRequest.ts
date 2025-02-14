@@ -8,8 +8,8 @@ export const toAddUserCourseRequestMapper = ({
   userId,
 }: ApiRequestAddUserCourse) => {
   return {
-    course_id: courseId,
-    user_id: userId,
+    courseId: courseId,
+    userId: userId,
   };
 };
 
@@ -23,8 +23,8 @@ export const toDeleteUserCourseRequestMapper = ({
   userId,
 }: ApiRequestDeleteUserCourse) => {
   return {
-    course_id: courseId,
-    user_id: userId,
+    courseId: courseId,
+    userId: userId,
   };
 };
 
@@ -38,7 +38,7 @@ export const toGetUserCourseRequestMapper = ({
   userId,
 }: ApiRequestGetUserCourse) => {
   return {
-    course_id: courseId,
-    user_id: userId,
+    courseId: courseId,
+    userId: userId,
   };
 };

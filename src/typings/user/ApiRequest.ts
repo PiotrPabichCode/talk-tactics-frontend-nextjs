@@ -48,8 +48,8 @@ export const toUpdateUserRequestMapper = ({
   bio,
 }: ApiRequestUpdateUser['updatedFields']) => {
   return {
-    first_name: firstName,
-    last_name: lastName,
+    firstName: firstName,
+    lastName: lastName,
     email: email,
     bio: bio,
   };
@@ -65,8 +65,8 @@ export const toFriendInvitationRequestMapper = ({
   senderId,
 }: ApiRequestFriendInvitation) => {
   return {
-    receiver_id: receiverId,
-    sender_id: senderId,
+    receiverId: receiverId,
+    senderId: senderId,
   };
 };
 
@@ -92,7 +92,7 @@ export const toDeleteFriendRequestMapper = ({
   friendId,
 }: ApiRequestDeleteFriend): IApiDeleteFriendDto => {
   return {
-    user_id: userId,
-    friend_id: friendId,
+    userId: userId,
+    friendId: friendId,
   };
 };

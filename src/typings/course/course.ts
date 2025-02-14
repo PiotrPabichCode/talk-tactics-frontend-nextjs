@@ -35,7 +35,7 @@ export interface ApiCourseItem {
   word: string;
   phonetic: string;
   audio: string;
-  part_of_speech: string;
+  partOfSpeech: string;
   meanings: WordMeaning[];
   course: ICourse;
 }
@@ -51,9 +51,9 @@ export interface CourseItemDto {
 export interface ApiCourseItemDto {
   id: number;
   word: string;
-  part_of_speech: string;
+  partOfSpeech: string;
   phonetic: string;
-  course_name: string;
+  courseName: string;
 }
 
 export interface CourseNavbarDto {
@@ -91,8 +91,8 @@ export interface UserCoursePreviewDto {
 
 export interface ApiUserCoursePreviewDto {
   id: number;
-  user_id: number;
-  course_id: number;
+  userId: number;
+  courseId: number;
   progress: number;
   completed: boolean;
 }
@@ -114,9 +114,9 @@ export interface UserCourseItemPreviewDto {
 
 export interface ApiUserCourseItemPreviewDto {
   id: number;
-  course_item_id: number;
+  courseItemId: number;
   word: string;
-  part_of_speech: string;
+  partOfSpeech: string;
   phonetic: string;
   learned: boolean;
 }

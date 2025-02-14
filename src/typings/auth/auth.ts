@@ -13,5 +13,5 @@ export interface IApiAuthCredentials {
   username: string;
   role: IAuthRole;
   token: string;
-  refresh_token: string;
+  refreshToken: string;
 }

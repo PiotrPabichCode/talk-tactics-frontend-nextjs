@@ -44,9 +44,9 @@ export const toSignUpRequestMapper = ({
   return {
     username: username,
     password: password,
-    repeat_password: repeatPassword,
-    first_name: firstName,
-    last_name: lastName,
+    repeatPassword: repeatPassword,
+    firstName: firstName,
+    lastName: lastName,
     email: email,
   };
 };

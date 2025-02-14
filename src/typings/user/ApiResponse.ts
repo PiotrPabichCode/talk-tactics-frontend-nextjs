@@ -13,14 +13,14 @@ import {
 export type ApiResponseUpdateUser = IApiAuthUser;
 
 export const toUpdateUserResponseMapper = ({
-  first_name,
-  last_name,
+  firstName,
+  lastName,
   email,
   bio,
 }: ApiResponseUpdateUser) => {
   return {
-    firstName: first_name,
-    lastName: last_name,
+    firstName: firstName,
+    lastName: lastName,
     email: email,
     bio: bio,
   };
@@ -29,14 +29,14 @@ export const toUpdateUserResponseMapper = ({
 export type ApiResponseGetUserDetails = IApiAuthUser;
 
 export const toGetUserDetailsResponseMapper = ({
-  first_name,
-  last_name,
+  firstName,
+  lastName,
   bio,
   email,
 }: ApiResponseGetUserDetails) => {
   return {
-    firstName: first_name,
-    lastName: last_name,
+    firstName: firstName,
+    lastName: lastName,
     bio: bio,
     email: email,
   };
@@ -50,9 +50,9 @@ export function mapToUserProfilePreview(
 ): IUserProfilePreview {
   return {
     id: profile.id,
-    firstName: profile.first_name,
-    lastName: profile.last_name,
-    totalPoints: profile.total_points,
+    firstName: profile.firstName,
+    lastName: profile.lastName,
+    totalPoints: profile.totalPoints,
     bio: profile.bio,
   };
 }
@@ -70,9 +70,9 @@ export const toGetUserProfileResponseMapper = (
 ): IUserProfile => {
   return {
     id: data.id,
-    firstName: data.first_name,
-    lastName: data.last_name,
-    totalPoints: data.total_points,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    totalPoints: data.totalPoints,
     bio: data.bio,
     courses: data.courses,
   };
@@ -89,8 +89,8 @@ export function mapToFriendInvitationDto(
   data: IApiFriendInvitationDto[]
 ): IFriendInvitationDto[] {
   return data.map((request) => ({
-    senderId: request.sender_id,
-    receiverId: request.receiver_id,
+    senderId: request.senderId,
+    receiverId: request.receiverId,
   }));
 }
 

@@ -7,13 +7,13 @@ export const toAuthResponseMapper = ({
   username,
   role,
   token,
-  refresh_token,
+  refreshToken,
 }: ApiResponseAuthCredentials) => {
   return {
     id: id,
     username: username,
     role: role,
     token: token,
-    refreshToken: refresh_token,
+    refreshToken: refreshToken,
   };
 };
