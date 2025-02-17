@@ -21,17 +21,28 @@ import {
   toGetCourseItemsResponseMapper,
 } from '@/typings/course';
 import { Page } from '@/typings/page.types';
+import { buildPageableUrl } from '../common';
+import { GetCoursesSchema } from '@/app/[locale]/(public)/courses/_lib/validations';
 
 const ENDPOINT = 'courses';
 const COURSE_ITEM_ENDPOINT = 'course-items';
 const USER_COURSE_ENDPOINT = 'user-courses';
 const USER_COURSE_ITEM_ENDPOINT = 'user-course-items';
 
-export const getCourses = async (): Promise<Page<CourseDto>> => {
+export const getCourses = async ({
+  searchParams,
+}: {
+  searchParams: GetCoursesSchema;
+}): Promise<Page<CourseDto>> => {
+  let updatedSearchParams = { ...searchParams };
+  if (searchParams.title) {
+    updatedSearchParams.search = searchParams.title;
+  }
   const { data } = await axios<ApiResponseGetCourses>({
     method: 'GET',
-    url: ENDPOINT,
+    url: buildPageableUrl(ENDPOINT, updatedSearchParams),
   });
+
   return toGetCourseResponseMapper(data);
 };
 

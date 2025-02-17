@@ -17,18 +17,10 @@ export function WordsPageSkeleton() {
           <Skeleton className='absolute top-5 right-5 h-[35px] w-[45px] md:w-40' />
         </div>
         <CardHeader className='items-center'>
-          <CardTitle>
-            <Skeleton className='h-4 w-[150px]' />
-          </CardTitle>
-          <CardDescription>
-            <Skeleton className='h-4 w-[140px]' />
-          </CardDescription>
-          <CardDescription>
-            <Skeleton className='h-4 w-[80px] mb-4' />
-          </CardDescription>
-          <CardDescription>
-            <Skeleton className='h-4 w-[160px]' />
-          </CardDescription>
+          <Skeleton className='h-4 w-[150px]' />
+          <Skeleton className='h-4 w-[140px]' />
+          <Skeleton className='h-4 w-[80px] mb-4' />
+          <Skeleton className='h-4 w-[160px]' />
         </CardHeader>
         <Separator className='mb-2' />
         <CardContent>

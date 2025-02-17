@@ -14,7 +14,7 @@ import {
 import { Badge as UiBadge } from '@/components/ui/badge';
 import { useGetUserProfile } from '@/services/queries/user.query';
 import { LocalizeCourseLevel, UserCourse } from '@/typings/course';
-import { useMemo } from 'react';
+import { use, useMemo } from 'react';
 import { useTranslations } from '@/i18n';
 import { Link, useRouter } from '@/navigation';
 import { UserAvatar } from '@/components/user-avatar';
@@ -65,13 +65,17 @@ const Badge = ({ points }: { points: number }) => {
 export default function ProfilePage({
   params,
 }: {
-  params: { profileId: string };
+  params: Promise<{ profileId: string }>;
 }) {
   const router = useRouter();
   const t = useTranslations('ProfilePage');
+  const { profileId } = use(params);
 
-  const profileId = Number(params.profileId);
-  const { data: profile, isPending, isError } = useGetUserProfile(profileId);
+  const {
+    data: profile,
+    isPending,
+    isError,
+  } = useGetUserProfile(Number(profileId));
   const completedCourses = useMemo(() => {
     if (!profile?.courses) {
       return 0;

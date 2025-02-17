@@ -11,11 +11,12 @@ import { FlagComponent } from 'country-flag-icons/react/3x2';
 import { PL, US } from 'country-flag-icons/react/3x2';
 import { get } from 'lodash';
 
-export default getRequestConfig(async ({ locale }) => {
-  // Validate that the incoming `locale` parameter is valid
+export default getRequestConfig(async ({ requestLocale }) => {
+  let locale = await requestLocale;
   if (!locales.includes(locale as any)) notFound();
 
   return {
+    locale,
     messages: (await import(`../messages/${locale}.json`)).default,
   };
 });

@@ -19,6 +19,10 @@ import {
 } from '@/typings/course';
 import { useCoursesEmpty } from '@/store/useCourseStore';
 import { Page } from '@/typings/page.types';
+import {
+  GetCoursesSchema,
+  GetSearchParamsSchema,
+} from '@/app/[locale]/(public)/courses/_lib/validations';
 
 const QUERY_KEY = 'courses';
 const COURSES_NAVBAR_QUERY_KEY = 'courses_navbar';
@@ -36,12 +40,16 @@ export function getQueryKey(page?: number) {
   return [QUERY_KEY, page];
 }
 
-export function useGetCourses(page?: number) {
+export function useGetCourses({
+  searchParams,
+}: {
+  searchParams: GetCoursesSchema;
+}) {
   const queryClient = useQueryClient();
   const enabled = useCoursesEmpty();
   const query = useQuery<Page<CourseDto>, Error>({
-    queryKey: getQueryKey(page),
-    queryFn: () => getCourses(),
+    queryKey: ['courses' + JSON.stringify(searchParams)],
+    queryFn: () => getCourses({ searchParams }),
     enabled: enabled,
     initialData: () => {
       return queryClient.getQueryData(getQueryKey()) as Page<CourseDto>;

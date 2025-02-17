@@ -6,6 +6,7 @@ import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { unstable_setRequestLocale } from 'next-intl/server';
 import { ReactNode } from 'react';
 import { Toaster } from 'sonner';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 export function Providers({
   children,
@@ -27,7 +28,7 @@ export function Providers({
             defaultTheme='dark'
             enableSystem
             disableTransitionOnChange>
-            {children}
+            <NuqsAdapter>{children}</NuqsAdapter>
           </ThemeProvider>
           <Toaster duration={3000} position='top-center' visibleToasts={3} />
         </ReactQueryClientProvider>

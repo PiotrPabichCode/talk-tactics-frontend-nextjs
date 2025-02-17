@@ -10,21 +10,21 @@ export function ProfilesPageSkeleton() {
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full max-w-4xl'>
         {Array.from({ length: 6 }).map((_, i) => (
           <Card key={'profile-skeleton' + i} className='p-3'>
-            <CardTitle className='flex'>
+            <div className='flex'>
               <Skeleton className='size-12 rounded-full mr-4' />
               <div className='mb-4 space-y-3'>
                 <Skeleton className='h-[16px] w-[160px]' />
                 <Skeleton className='h-[16px] w-[100px]' />
               </div>
-            </CardTitle>
-            <CardDescription className='flex flex-col space-y-2 p-4 items-center'>
+            </div>
+            <div className='flex flex-col space-y-2 p-4 items-center'>
               <Skeleton className='h-[6px] w-full' />
               <Skeleton className='h-[6px] w-[80%]' />
               <Skeleton className='h-[6px] w-[90%]' />
               <Skeleton className='h-[6px] w-[70%]' />
               <Skeleton className='h-[6px] w-[90%]' />
               <Skeleton className='h-[6px] w-[60%]' />
-            </CardDescription>
+            </div>
           </Card>
         ))}
       </div>

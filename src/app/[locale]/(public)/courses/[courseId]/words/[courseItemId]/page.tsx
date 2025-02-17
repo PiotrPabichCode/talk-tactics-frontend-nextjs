@@ -6,13 +6,15 @@ import { WordsPageSkeleton } from './_components/words-page-skeleton';
 import { BackButton } from './_components/back-button';
 import { WordCardHeader } from './_components/word-card-header';
 import { WordDefinitionsTable } from './_components/word-definitions-table';
+import { use } from 'react';
 
 export default function SingleCourseItemPage({
   params,
 }: {
-  params: { courseId: number; courseItemId: number };
+  params: Promise<{ courseId: number; courseItemId: number }>;
 }) {
-  const { data: word, isFetching } = useGetCourseItemById(params.courseItemId);
+  const { courseId, courseItemId } = use(params);
+  const { data: word, isFetching } = useGetCourseItemById(courseItemId);
   if (isFetching) {
     return <WordsPageSkeleton />;
   }
@@ -20,7 +22,7 @@ export default function SingleCourseItemPage({
   return (
     <div className='p-4 text-center'>
       <Card className='relative'>
-        <BackButton courseId={params.courseId} />
+        <BackButton courseId={courseId} />
         <WordCardHeader word={word} />
         <WordDefinitionsTable examples={word.meanings} />
       </Card>

@@ -3,15 +3,15 @@
 import { CoursePageSkeleton } from './_components/course-page-skeleton';
 import { CourseMapper } from './_components/course-mapper';
 import { useGetCourseItems } from '@/services/queries/course.query';
+import { use } from 'react';
 
 export default function SingleCoursePage({
   params,
 }: {
-  params: { courseId: string };
+  params: Promise<{ courseId: string }>;
 }) {
-  const { isFetching, data: courseItems } = useGetCourseItems(
-    Number(params.courseId)
-  );
+  const { courseId } = use(params);
+  const { isFetching, data: courseItems } = useGetCourseItems(Number(courseId));
 
   if (isFetching) {
     return <CoursePageSkeleton />;

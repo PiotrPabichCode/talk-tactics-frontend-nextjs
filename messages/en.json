@@ -249,7 +249,8 @@
       "goToFirstPage": "Go to first page",
       "goToPreviousPage": "Go to previous page",
       "goToNextPage": "Go to next page",
-      "goToLastPage": "Go to last page"
+      "goToLastPage": "Go to last page",
+      "rowsSelected": "{count} of {total} rows(s) selected."
     },
     "DataTableFacetedFilter": {
       "totalSelected": "{total} selected",
