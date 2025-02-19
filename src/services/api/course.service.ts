@@ -22,7 +22,10 @@ import {
 } from '@/typings/course';
 import { Page } from '@/typings/page.types';
 import { buildPageableUrl } from '../common';
-import { GetCoursesSchema } from '@/app/[locale]/(public)/courses/_lib/validations';
+import {
+  GetCourseItemsSchema,
+  GetCoursesSchema,
+} from '@/app/[locale]/(public)/courses/_lib/validations';
 
 const ENDPOINT = 'courses';
 const COURSE_ITEM_ENDPOINT = 'course-items';
@@ -55,10 +58,22 @@ export const getNavbarCourses = async (): Promise<CourseNavbarDto[]> => {
   return data;
 };
 
-export const getCourseItems = async ({ courseId }: { courseId: number }) => {
+export const getCourseItems = async ({
+  courseId,
+  searchParams,
+}: {
+  courseId: Number;
+  searchParams: GetCourseItemsSchema;
+}) => {
+  let updatedSearchParams = { ...searchParams };
+  // if (searchParams.title) {
+  //   updatedSearchParams.search = searchParams.title;
+  // }
   const { data } = await axios<ApiResponseGetCourseItems>({
     method: 'GET',
-    url: COURSE_ITEM_ENDPOINT + '?courseId=' + courseId,
+    url:
+      buildPageableUrl(COURSE_ITEM_ENDPOINT, updatedSearchParams) +
+      `&courseId=${courseId}`,
   });
   return toGetCourseItemsResponseMapper(data);
 };

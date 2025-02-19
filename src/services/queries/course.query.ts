@@ -20,6 +20,7 @@ import {
 import { useCoursesEmpty } from '@/store/useCourseStore';
 import { Page } from '@/typings/page.types';
 import {
+  GetCourseItemsSchema,
   GetCoursesSchema,
   GetSearchParamsSchema,
 } from '@/app/[locale]/(public)/courses/_lib/validations';
@@ -72,14 +73,20 @@ export function useGetNavbarCourses() {
   return query;
 }
 
-export function useGetCourseItems(courseId: number) {
+export function useGetCourseItems({
+  courseId,
+  searchParams,
+}: {
+  courseId: Number;
+  searchParams: GetCourseItemsSchema;
+}) {
   const queryClient = useQueryClient();
   const query = useQuery<Page<CourseItemDto>, Error>({
-    queryKey: ['course-items' + courseId],
-    queryFn: () => getCourseItems({ courseId }),
+    queryKey: ['course-items' + courseId + JSON.stringify(searchParams)],
+    queryFn: () => getCourseItems({ courseId, searchParams }),
     initialData: () => {
       return queryClient.getQueryData([
-        'course-items' + courseId,
+        'course-items' + courseId + JSON.stringify(searchParams),
       ]) as Page<CourseItemDto>;
     },
   });

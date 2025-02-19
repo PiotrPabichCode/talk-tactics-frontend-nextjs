@@ -1,17 +1,26 @@
 'use client';
 
 import { CoursePageSkeleton } from './_components/course-page-skeleton';
-import { CourseMapper } from './_components/course-mapper';
 import { useGetCourseItems } from '@/services/queries/course.query';
 import { use } from 'react';
+import { SearchParams } from '@/types';
+import { CourseItemsTable } from './_components/course-items-table';
+import { courseItemsSearchParamsCache } from '../_lib/validations';
 
-export default function SingleCoursePage({
-  params,
-}: {
+interface IndexPageProps {
+  searchParams: Promise<SearchParams>;
   params: Promise<{ courseId: string }>;
-}) {
-  const { courseId } = use(params);
-  const { isFetching, data: courseItems } = useGetCourseItems(Number(courseId));
+}
+
+export default function SingleCoursePage(props: IndexPageProps) {
+  const searchParams = use(props.searchParams);
+  const search = courseItemsSearchParamsCache.parse(searchParams);
+  const { courseId } = use(props.params);
+  console.log(courseId);
+  const { isFetching, data: courseItems } = useGetCourseItems({
+    courseId: Number(courseId),
+    searchParams: search,
+  });
 
   if (isFetching) {
     return <CoursePageSkeleton />;
@@ -19,8 +28,10 @@ export default function SingleCoursePage({
 
   return (
     <div className='block lg:flex justify-center h-full'>
-      <div className='w-full lg:w-[80%] xl:w-[65%] 2xl:w-[50%] overflow-scroll md:overflow-auto p-2 md:p-4'>
-        <CourseMapper courseItems={courseItems.content} />
+      <div
+        className='w-full lg:w-[80%] xl:w-[65%] 2xl:w-[55%] overflow-scroll md:overflow-auto p-2 md:p-4 animate-fade-up'
+        style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
+        <CourseItemsTable data={courseItems} />
       </div>
     </div>
   );
