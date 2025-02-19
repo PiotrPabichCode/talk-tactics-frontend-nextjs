@@ -9,6 +9,7 @@ import { useDataTable } from '@/hooks/use-data-table';
 import { getColumns } from './courses-table-columns';
 import { CourseDto } from '@/typings/course';
 import { Page } from '@/typings/page.types';
+import { useTranslations } from '@/i18n';
 
 interface CoursesTableProps {
   data: Page<CourseDto>;
@@ -16,6 +17,7 @@ interface CoursesTableProps {
 
 export function CoursesTable({ data }: CoursesTableProps) {
   const { content, totalPages } = data;
+  const t = useTranslations('Table');
 
   const [rowAction, setRowAction] =
     React.useState<DataTableRowAction<CourseDto> | null>(null);
@@ -37,7 +39,7 @@ export function CoursesTable({ data }: CoursesTableProps) {
     {
       id: 'title',
       label: 'Search',
-      placeholder: 'Search text...',
+      placeholder: t('searchText'),
     },
   ];
 

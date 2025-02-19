@@ -19,6 +19,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn, toSentenceCase } from '@/lib/utils';
+import { GetLocalizedMessage, useTranslations } from '@/i18n';
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
@@ -27,6 +28,7 @@ interface DataTableViewOptionsProps<TData> {
 export function DataTableViewOptions<TData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
+  const t = useTranslations('Table.DataTableViewOptions');
   const triggerRef = React.useRef<HTMLButtonElement>(null);
 
   return (
@@ -34,13 +36,13 @@ export function DataTableViewOptions<TData>({
       <PopoverTrigger asChild>
         <Button
           ref={triggerRef}
-          aria-label='Toggle columns'
+          aria-label={t('toggleColumns')}
           variant='outline'
           role='combobox'
           size='sm'
           className='ml-auto hidden h-8 gap-2 focus:outline-none focus:ring-1 focus:ring-ring focus-visible:ring-0 lg:flex'>
           <Settings2 className='size-4' />
-          View
+          {t('view')}
           <ChevronsUpDown className='ml-auto size-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
@@ -49,9 +51,9 @@ export function DataTableViewOptions<TData>({
         className='w-44 p-0'
         onCloseAutoFocus={() => triggerRef.current?.focus()}>
         <Command>
-          <CommandInput placeholder='Search columns...' />
+          <CommandInput placeholder={t('searchColumns')} />
           <CommandList>
-            <CommandEmpty>No columns found.</CommandEmpty>
+            <CommandEmpty>{t('noColumnsFound')}</CommandEmpty>
             <CommandGroup>
               {table
                 .getAllColumns()
@@ -68,7 +70,11 @@ export function DataTableViewOptions<TData>({
                         column.toggleVisibility(!column.getIsVisible())
                       }>
                       <span className='truncate'>
-                        {toSentenceCase(column.id)}
+                        {column.columnDef.meta?.localizedName
+                          ? GetLocalizedMessage(
+                              column.columnDef.meta?.localizedName
+                            )
+                          : toSentenceCase(column.id)}
                       </span>
                       <Check
                         className={cn(

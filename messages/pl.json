@@ -204,7 +204,6 @@
     "difficulty": "Trudność",
     "words": "Słowa",
     "progress": "Postęp",
-    "mainFilterPlaceholder": "Szukaj tytuły...",
     "myCourses": "Moje kursy"
   },
   "CoursePage": {
@@ -227,12 +226,15 @@
     "notAvailable": "Niedostępne :("
   },
   "Table": {
+    "searchText": "Wpisz tekst...",
     "noResults": "Brak wyników.",
     "DataTableToolbar": {
       "backToCourses": "Powrót do kursów",
       "reset": "Resetuj"
     },
     "DataTableViewOptions": {
+      "searchColumns": "Szukaj kolumn...",
+      "noColumnsFound": "Brak kolumn.",
       "view": "Widok",
       "toggleColumns": "Przełącz kolumny"
     },

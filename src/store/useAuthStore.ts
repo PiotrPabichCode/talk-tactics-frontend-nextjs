@@ -33,4 +33,7 @@ export const useAuthStore = create<IAuthStore>()(
 
 export const userId = () => useAuthStore.getState().credentials?.id!;
 
+export const isAdmin = () =>
+  useAuthStore.getState().credentials?.role == 'ADMIN';
+
 export default useAuthStore;

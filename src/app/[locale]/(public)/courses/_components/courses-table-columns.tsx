@@ -38,6 +38,9 @@ export function getColumns({
     {
       accessorKey: 'title',
       enableHiding: false,
+      meta: {
+        localizedName: 'CoursesPage.title',
+      },
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}
@@ -54,6 +57,9 @@ export function getColumns({
     },
     {
       accessorKey: 'description',
+      meta: {
+        localizedName: 'CoursesPage.description',
+      },
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}
@@ -72,6 +78,9 @@ export function getColumns({
     },
     {
       accessorKey: 'level',
+      meta: {
+        localizedName: 'CoursesPage.difficulty',
+      },
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}
@@ -102,6 +111,9 @@ export function getColumns({
     },
     {
       accessorKey: 'quantity',
+      meta: {
+        localizedName: 'CoursesPage.words',
+      },
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}

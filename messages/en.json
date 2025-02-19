@@ -204,7 +204,6 @@
     "difficulty": "Difficulty",
     "words": "Words",
     "progress": "Progress",
-    "mainFilterPlaceholder": "Search titles...",
     "myCourses": "My courses"
   },
   "CoursePage": {
@@ -227,12 +226,15 @@
     "notAvailable": "Not available :("
   },
   "Table": {
+    "searchText": "Search text...",
     "noResults": "No results.",
     "DataTableToolbar": {
       "backToCourses": "Back to courses",
       "reset": "Reset"
     },
     "DataTableViewOptions": {
+      "searchColumns": "Search columns...",
+      "noColumnsFound": "No columns found.",
       "view": "View",
       "toggleColumns": "Toggle columns"
     },
