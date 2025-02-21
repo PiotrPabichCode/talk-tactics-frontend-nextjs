@@ -10,6 +10,7 @@ import { CourseItemDto } from '@/typings/course';
 import { Page } from '@/typings/page.types';
 import { useTranslations } from '@/i18n';
 import { getColumns } from './course-items-table-columns';
+import BackButton from './back-button';
 
 interface CourseItemsTableProps {
   data: Page<CourseItemDto>;
@@ -59,7 +60,9 @@ export function CourseItemsTable({ data }: CourseItemsTableProps) {
   return (
     <>
       <DataTable table={table}>
-        <DataTableToolbar table={table} filterFields={filterFields} />
+        <DataTableToolbar table={table} filterFields={filterFields}>
+          <BackButton />
+        </DataTableToolbar>
       </DataTable>
     </>
   );

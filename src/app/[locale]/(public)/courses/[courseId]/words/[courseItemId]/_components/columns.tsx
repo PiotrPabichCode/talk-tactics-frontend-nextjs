@@ -25,9 +25,10 @@ export const columns: ColumnDef<WordMeaning>[] = [
   {
     accessorKey: 'definition',
     enableHiding: false,
+    enableSorting: false,
     header: ({ column }) => (
       <DataTableColumnHeader
-        className='justify-center w-full max-w-[600px]'
+        className='text-center w-full max-w-[600px]'
         column={column}
         title='WordPage.definition'
       />
@@ -43,9 +44,10 @@ export const columns: ColumnDef<WordMeaning>[] = [
   {
     accessorKey: 'example',
     enableHiding: false,
+    enableSorting: false,
     header: ({ column }) => (
       <DataTableColumnHeader
-        className='justify-center w-full'
+        className='text-center w-full'
         column={column}
         title='WordPage.example'
       />
