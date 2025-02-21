@@ -37,13 +37,9 @@ export const getCourses = async ({
 }: {
   searchParams: GetCoursesSchema;
 }): Promise<Page<CourseDto>> => {
-  let updatedSearchParams = { ...searchParams };
-  if (searchParams.title) {
-    updatedSearchParams.search = searchParams.title;
-  }
   const { data } = await axios<ApiResponseGetCourses>({
     method: 'GET',
-    url: buildPageableUrl(ENDPOINT, updatedSearchParams),
+    url: buildPageableUrl(ENDPOINT, searchParams),
   });
 
   return toGetCourseResponseMapper(data);
@@ -65,14 +61,10 @@ export const getCourseItems = async ({
   courseId: Number;
   searchParams: GetCourseItemsSchema;
 }) => {
-  let updatedSearchParams = { ...searchParams };
-  // if (searchParams.title) {
-  //   updatedSearchParams.search = searchParams.title;
-  // }
   const { data } = await axios<ApiResponseGetCourseItems>({
     method: 'GET',
     url:
-      buildPageableUrl(COURSE_ITEM_ENDPOINT, updatedSearchParams) +
+      buildPageableUrl(COURSE_ITEM_ENDPOINT, searchParams) +
       `&courseId=${courseId}`,
   });
   return toGetCourseItemsResponseMapper(data);

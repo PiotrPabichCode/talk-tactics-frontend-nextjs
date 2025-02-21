@@ -16,7 +16,6 @@ export default function SingleCoursePage(props: IndexPageProps) {
   const searchParams = use(props.searchParams);
   const search = courseItemsSearchParamsCache.parse(searchParams);
   const { courseId } = use(props.params);
-  console.log(courseId);
   const { isFetching, data: courseItems } = useGetCourseItems({
     courseId: Number(courseId),
     searchParams: search,

@@ -36,6 +36,12 @@ export function getColumns({
 }: GetColumnsProps): ColumnDef<CourseDto>[] {
   return [
     {
+      accessorKey: 'search',
+      enableColumnFilter: false,
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
       accessorKey: 'title',
       enableHiding: false,
       meta: {

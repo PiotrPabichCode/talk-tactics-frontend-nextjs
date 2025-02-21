@@ -37,7 +37,7 @@ export function CoursesTable({ data }: CoursesTableProps) {
    */
   const filterFields: DataTableFilterField<CourseDto>[] = [
     {
-      id: 'title',
+      id: 'search',
       label: 'Search',
       placeholder: t('searchText'),
     },

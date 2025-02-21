@@ -65,8 +65,8 @@ export function DataTableToolbar<TData>({
       {...props}>
       <div className='flex flex-1 items-center gap-2'>
         {searchableColumns.length > 0 &&
-          searchableColumns.map(
-            (column) =>
+          searchableColumns.map((column) => {
+            return (
               table.getColumn(column.id ? String(column.id) : '') && (
                 <Input
                   key={String(column.id)}
@@ -84,7 +84,8 @@ export function DataTableToolbar<TData>({
                   className='h-8 w-40 lg:w-64'
                 />
               )
-          )}
+            );
+          })}
         {filterableColumns.length > 0 &&
           filterableColumns.map(
             (column) =>

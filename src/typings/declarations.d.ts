@@ -5,6 +5,7 @@ declare module '@tanstack/table-core' {
     customName?: string;
     auth?: boolean;
     localizedName?: string;
+    hidden?: boolean;
   }
   interface TFilterOption {
     value: string;

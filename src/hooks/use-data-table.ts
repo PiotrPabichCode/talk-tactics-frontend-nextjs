@@ -175,7 +175,10 @@ export function useDataTable<TData>({
     initialState?.rowSelection ?? {}
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>(initialState?.columnVisibility ?? {});
+    React.useState<VisibilityState>({
+      search: false,
+      ...initialState?.columnVisibility,
+    });
 
   const [page, setPage] = useQueryState(
     'page',

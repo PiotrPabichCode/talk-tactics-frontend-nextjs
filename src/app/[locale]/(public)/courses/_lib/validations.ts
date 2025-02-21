@@ -15,7 +15,6 @@ export const createGenericSearchParamsCache = <T>(
     page: parseAsInteger.withDefault(1),
     perPage: parseAsInteger.withDefault(10),
     sort: getSortingStateParser<T>().withDefault(defaultSort),
-    title: parseAsString,
     search: parseAsString,
     filters: getFiltersStateParser().withDefault([]),
   });
