@@ -54,11 +54,9 @@ export const useUpdateUserDetailsMutation = () => {
   });
 };
 
-export const useGetUserProfilePreviews = (): UseQueryResult<
-  IUserProfilePreview[]
-> => {
+export const useGetUserProfilePreviews = () => {
   const queryClient = useQueryClient();
-  const query = useQuery<IUserProfilePreview[]>({
+  const query = useQuery<IUserProfilePreview[], Error>({
     queryKey: [GET_USER_PROFILES_QUERY_KEY],
     queryFn: async () => {
       return await getUserProfiles();
@@ -66,7 +64,7 @@ export const useGetUserProfilePreviews = (): UseQueryResult<
     initialData: () => {
       return queryClient.getQueryData<IUserProfilePreview[]>([
         GET_USER_PROFILES_QUERY_KEY,
-      ]);
+      ]) as IUserProfilePreview[];
     },
   });
   return query;
@@ -74,7 +72,7 @@ export const useGetUserProfilePreviews = (): UseQueryResult<
 
 export const useGetUserProfile = (id: number) => {
   const queryClient = useQueryClient();
-  const query = useQuery<IUserProfile>({
+  const query = useQuery<IUserProfile, Error>({
     queryKey: [GET_USER_PROFILES_QUERY_KEY, id],
     queryFn: async () => {
       return await getUserProfileByUserId({ id });
@@ -83,7 +81,7 @@ export const useGetUserProfile = (id: number) => {
       return queryClient.getQueryData<IUserProfile>([
         GET_USER_PROFILES_QUERY_KEY,
         id,
-      ]);
+      ]) as IUserProfile;
     },
   });
   return query;

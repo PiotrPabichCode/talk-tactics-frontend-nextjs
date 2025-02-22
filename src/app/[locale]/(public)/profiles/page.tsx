@@ -8,14 +8,10 @@ import { ProfilesPageSkeleton } from './_components/profiles-page-skeleton';
 
 export default function ProfilesPage() {
   const t = useTranslations('ProfilesPage');
-  const { data: profiles, isPending, isError } = useGetUserProfilePreviews();
+  const { data: profiles, isFetching } = useGetUserProfilePreviews();
 
-  if (isPending) {
+  if (isFetching) {
     return <ProfilesPageSkeleton />;
-  }
-
-  if (isError) {
-    return <div>{t('error')}</div>;
   }
 
   return (

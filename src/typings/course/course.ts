@@ -97,10 +97,12 @@ export interface ApiUserCoursePreviewDto {
   completed: boolean;
 }
 
-export interface UserCourse extends ICourse {
+export interface UserCourse {
+  id: number;
   points: number;
   progress: number;
   completed: number;
+  course: CourseDto;
 }
 
 export interface UserCourseItemPreviewDto {

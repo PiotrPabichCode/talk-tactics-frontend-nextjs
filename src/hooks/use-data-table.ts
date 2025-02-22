@@ -242,7 +242,6 @@ export function useDataTable<TData>({
   function onSortingChange(updaterOrValue: Updater<SortingState>) {
     if (typeof updaterOrValue === 'function') {
       const newSorting = updaterOrValue(sorting) as ExtendedSortingState<TData>;
-      console.log('FILTER');
       void setSorting(newSorting);
     }
   }
