@@ -21,9 +21,14 @@ export default function LocaleToggle() {
 
   function onChange(nextLocale: string) {
     console.log(nextLocale, pathname, params);
-    // startTransition(() => {
-    router.replace(pathname, { locale: nextLocale, scroll: false });
-    // });
+    if (supportedLocales.some((locale) => locale.value === nextLocale)) {
+      router.replace(pathname, {
+        locale: nextLocale as 'en' | 'pl',
+        scroll: false,
+      });
+    } else {
+      console.error(`Invalid locale: ${nextLocale}`);
+    }
   }
 
   const CurrentLocale = ({ locale }: { locale: string }) => {
