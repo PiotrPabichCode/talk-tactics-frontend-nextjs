@@ -117,7 +117,6 @@ type SortableProps<T> = DndContextProps & {
 
 function Sortable<T>(props: SortableProps<T>) {
   const {
-    id = React.useId(),
     value,
     onValueChange,
     modifiers,
@@ -129,6 +128,7 @@ function Sortable<T>(props: SortableProps<T>) {
     accessibility,
     ...sortableProps
   } = props;
+  const id = React.useId();
   const [activeId, setActiveId] = React.useState<UniqueIdentifier | null>(null);
   const sensors = useSensors(
     useSensor(MouseSensor),

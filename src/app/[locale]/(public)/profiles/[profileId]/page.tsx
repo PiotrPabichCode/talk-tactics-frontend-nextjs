@@ -32,8 +32,6 @@ export default function ProfilePage({
     return <Spinner />;
   }
 
-  console.log(profile);
-
   return (
     <div>
       <ProfileHeader

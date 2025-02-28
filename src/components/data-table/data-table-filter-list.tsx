@@ -109,7 +109,7 @@ export function DataTableFilterList<TData>({
     void setFilters([
       ...filters,
       {
-        id: filterField.id,
+        id: filterField.id as any,
         value: '',
         type: filterField.type,
         operator: getDefaultFilterOperator(filterField.type),
