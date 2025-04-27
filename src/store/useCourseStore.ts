@@ -4,25 +4,24 @@ import { CourseDto } from '@/typings/course';
 
 export interface CourseStore {
   courses: CourseDto[];
-  userCourses: CourseDto[];
+  courseParticipants: CourseDto[];
   setCourses: (courses: CourseDto[]) => void;
-  clearUserCourses: () => void;
-  setUserCourses: (userCourses: CourseDto[]) => void;
+  clearCourseParticipants: () => void;
   getCombinedCourses: () => CourseDto[];
-  isCourseAdded: (courseId: number) => boolean;
+  isCourseAdded: (courseUuid: string) => boolean;
 }
 
 const useCourseStore = create<CourseStore>()(
   logger<CourseStore>((set, get) => ({
     courses: [],
-    userCourses: [],
+    courseParticipants: [],
     setCourses(courses) {
       set((state) => {
         const updatedCourses = [...state.courses];
 
         courses.forEach((newCourse) => {
           const existingCourseIndex = updatedCourses.findIndex(
-            (course) => course.id === newCourse.id
+            (course) => course.uuid === newCourse.uuid
           );
 
           if (existingCourseIndex === -1) {
@@ -36,35 +35,34 @@ const useCourseStore = create<CourseStore>()(
         };
       });
     },
-    clearUserCourses() {
-      set((state) => ({ ...state, userCourses: [] }));
-    },
-    setUserCourses(userCourses) {
-      set({ userCourses });
+    clearCourseParticipants() {
+      set((state) => ({ ...state, courseParticipants: [] }));
     },
     getCombinedCourses() {
-      const { courses, userCourses } = get();
+      const { courses, courseParticipants } = get();
 
-      const courseMap = new Map(courses.map((course) => [course.id, course]));
-      userCourses.forEach((course) => {
-        if (courseMap.has(course.id)) {
-          courseMap.set(course.id, course);
+      const courseMap = new Map(courses.map((course) => [course.uuid, course]));
+      courseParticipants.forEach((course) => {
+        if (courseMap.has(course.uuid)) {
+          courseMap.set(course.uuid, course);
         }
       });
 
-      return Array.from(courseMap.values()).sort((a, b) => a.id - b.id);
+      return Array.from(courseMap.values());
     },
-    isCourseAdded(courseId) {
-      return get().userCourses.some((userCourse) => userCourse.id === courseId);
+    isCourseAdded(courseUuid) {
+      return get().courseParticipants.some(
+        (userCourse) => userCourse.uuid === courseUuid
+      );
     },
   }))
 );
 
-export const useCourseAdded = (courseId: number) =>
-  useCourseStore().isCourseAdded(courseId);
+export const useCourseAdded = (courseUuid: string) =>
+  useCourseStore().isCourseAdded(courseUuid);
 
 export const useUserCoursesEmpty = () =>
-  useCourseStore().userCourses.length === 0;
+  useCourseStore().courseParticipants.length === 0;
 
 export const useCoursesEmpty = () => useCourseStore().courses.length === 0;
 

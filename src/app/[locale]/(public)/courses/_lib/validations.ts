@@ -5,7 +5,7 @@ import {
 } from 'nuqs/server';
 
 import { getFiltersStateParser, getSortingStateParser } from '@/lib/parsers';
-import { CourseDto, CourseItemDto } from '@/typings/course';
+import { CourseDto, CourseWordDto } from '@/typings/course';
 import { ExtendedSortingState } from '@/types';
 
 export const createGenericSearchParamsCache = <T>(
@@ -29,9 +29,9 @@ export type GetSearchParamsSchema<T> = Omit<
 };
 
 export const courseSearchParamsCache =
-  createGenericSearchParamsCache<CourseDto>([{ id: 'id', desc: false }]);
+  createGenericSearchParamsCache<CourseDto>([]);
 export type GetCoursesSchema = GetSearchParamsSchema<CourseDto>;
 
 export const courseItemsSearchParamsCache =
-  createGenericSearchParamsCache<CourseItemDto>([{ id: 'id', desc: false }]);
-export type GetCourseItemsSchema = GetSearchParamsSchema<CourseItemDto>;
+  createGenericSearchParamsCache<CourseWordDto>([]);
+export type GetCourseItemsSchema = GetSearchParamsSchema<CourseWordDto>;

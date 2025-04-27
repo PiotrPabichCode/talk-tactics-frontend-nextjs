@@ -9,12 +9,12 @@ import {
 } from '@/components/ui/table';
 import { useTranslations } from '@/i18n';
 import { Link, useRouter } from '@/navigation';
-import { IFriendInvitationDetailsDto } from '@/typings/user';
+import { FriendInvitation } from '@/typings/user';
 
 export function ReceivedInvitationsTable({
   invitations,
 }: {
-  invitations: IFriendInvitationDetailsDto[];
+  invitations: FriendInvitation[];
 }) {
   const t = useTranslations('UserProfile.Friends');
   const router = useRouter();
@@ -33,17 +33,19 @@ export function ReceivedInvitationsTable({
         <TableBody>
           {invitations.map((invitation) => (
             <TableRow
-              key={invitation.sender.id}
+              key={invitation.sender.uuid}
               className='cursor-pointer hover:text-blue-500'
-              onClick={() => router.push(`/profiles/${invitation.sender.id}`)}>
+              onClick={() =>
+                router.push(`/profiles/${invitation.sender.uuid}`)
+              }>
               <TableCell>
-                <Link href={`/profiles/${invitation.sender.id}`}>
+                <Link href={`/profiles/${invitation.sender.uuid}`}>
                   {invitation.sender.firstName}
                 </Link>
               </TableCell>
 
               <TableCell>
-                <Link href={`/profiles/${invitation.sender.id}`}>
+                <Link href={`/profiles/${invitation.sender.uuid}`}>
                   {invitation.sender.lastName}
                 </Link>
               </TableCell>
@@ -53,13 +55,13 @@ export function ReceivedInvitationsTable({
                     status='ACCEPT_INVITATION'
                     buttonText={t('accept')}
                     isAccountPage
-                    friendId={invitation.sender.id}
+                    friendUuid={invitation.sender.uuid}
                   />
                   <FriendInvitationButton
                     status='REJECT_INVITATION'
                     buttonText={t('reject')}
                     isAccountPage
-                    friendId={invitation.sender.id}
+                    friendUuid={invitation.sender.uuid}
                   />
                 </div>
               </TableCell>

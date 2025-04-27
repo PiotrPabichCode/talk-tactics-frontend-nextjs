@@ -7,16 +7,16 @@ import * as React from 'react';
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header';
 import { Button } from '@/components/ui/button';
 
-import { CourseItemDto } from '@/typings/course';
+import { CourseWordDto } from '@/typings/course';
 import { GetLocalizedMessage, useTranslations } from '@/i18n';
 import { Link, usePathname } from '@/navigation';
 import { DataTableRowAction } from '@/types';
 
-const LearnMoreCell = ({ row }: { row: Row<CourseItemDto> }) => {
+const LearnMoreCell = ({ row }: { row: Row<CourseWordDto> }) => {
   const t = useTranslations('CoursePage');
   const pathname = usePathname();
   return (
-    <Link href={`${pathname}/words/${row.original.id}`}>
+    <Link href={`${pathname}/words/${row.original.uuid}`}>
       <Button variant='action'>
         {t('learnMore')}
         <GraduationCap className='h-5 w-5 ml-2' />
@@ -25,15 +25,7 @@ const LearnMoreCell = ({ row }: { row: Row<CourseItemDto> }) => {
   );
 };
 
-interface GetColumnsProps {
-  setRowAction: React.Dispatch<
-    React.SetStateAction<DataTableRowAction<CourseItemDto> | null>
-  >;
-}
-
-export function getColumns({
-  setRowAction,
-}: GetColumnsProps): ColumnDef<CourseItemDto>[] {
+export function getColumns(): ColumnDef<CourseWordDto>[] {
   return [
     {
       accessorKey: 'search',

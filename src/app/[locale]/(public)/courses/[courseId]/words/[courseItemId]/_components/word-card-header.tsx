@@ -1,6 +1,6 @@
 import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AudioPlayer } from './audio-player';
-import { CourseItem } from '@/typings/course';
+import { CourseWord } from '@/typings/course';
 
 export function WordCardHeader({
   word: {
@@ -8,10 +8,10 @@ export function WordCardHeader({
     phonetic,
     audio,
     partOfSpeech,
-    course: { title: courseTitle },
+    course: { title },
   },
 }: {
-  word: CourseItem;
+  word: CourseWord;
 }) {
   return (
     <CardHeader className='items-center'>
@@ -34,7 +34,7 @@ export function WordCardHeader({
       <CardDescription
         className='font-bold pt-2 animate-fade-up'
         style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-        {courseTitle}
+        {title}
       </CardDescription>
     </CardHeader>
   );

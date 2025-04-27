@@ -9,9 +9,9 @@ import {
 } from '@/components/ui/table';
 import { useTranslations } from '@/i18n';
 import { Link, useRouter } from '@/navigation';
-import { type IUserProfilePreview } from '@/typings/user';
+import { type UserProfilePreview } from '@/typings/user';
 
-export function FriendsTable({ friends }: { friends: IUserProfilePreview[] }) {
+export function FriendsTable({ friends }: { friends: UserProfilePreview[] }) {
   const t = useTranslations('UserProfile.Friends');
   const router = useRouter();
   return (
@@ -29,22 +29,24 @@ export function FriendsTable({ friends }: { friends: IUserProfilePreview[] }) {
         <TableBody>
           {friends.map((friend) => (
             <TableRow
-              key={friend.id}
+              key={friend.uuid}
               className='cursor-pointer hover:text-blue-500'
-              onClick={() => router.push(`/profiles/${friend.id}`)}>
+              onClick={() => router.push(`/profiles/${friend.uuid}`)}>
               <TableCell>
-                <Link href={`/profiles/${friend.id}`}>{friend.firstName}</Link>
+                <Link href={`/profiles/${friend.uuid}`}>
+                  {friend.firstName}
+                </Link>
               </TableCell>
 
               <TableCell>
-                <Link href={`/profiles/${friend.id}`}>{friend.lastName}</Link>
+                <Link href={`/profiles/${friend.uuid}`}>{friend.lastName}</Link>
               </TableCell>
               <TableCell>
                 <FriendInvitationButton
                   status='DELETE_FRIEND'
                   buttonText={t('delete')}
                   isAccountPage
-                  friendId={friend.id}
+                  friendUuid={friend.uuid}
                 />
               </TableCell>
             </TableRow>

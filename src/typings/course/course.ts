@@ -1,55 +1,35 @@
-import { z } from 'zod';
-
 export enum CourseLevel {
   BEGINNER = 'BEGINNER',
   INTERMEDIATE = 'INTERMEDIATE',
   ADVANCED = 'ADVANCED',
 }
 
-export interface WordMeaning {
-  id: number;
+export interface CourseWordDefinition {
   definition: string;
   example: string;
 }
 
-export interface ICourse {
-  id: number;
+export interface Course {
+  uuid: string;
   title: string;
   description: string;
   level: CourseLevel;
   quantity: number;
+  points: number;
 }
 
-export interface CourseItem {
-  id: number;
+export interface CourseWord {
+  uuid: string;
   word: string;
+  partOfSpeech: string;
   phonetic: string;
   audio: string;
-  partOfSpeech: string;
-  meanings: WordMeaning[];
-  course: ICourse;
+  definitions: CourseWordDefinition[];
+  course: Course;
 }
 
-export interface ApiCourseItem {
-  id: number;
-  word: string;
-  phonetic: string;
-  audio: string;
-  partOfSpeech: string;
-  meanings: WordMeaning[];
-  course: ICourse;
-}
-
-export interface CourseItemDto {
-  id: number;
-  word: string;
-  partOfSpeech: string;
-  phonetic: string;
-  courseName: string;
-}
-
-export interface ApiCourseItemDto {
-  id: number;
+export interface CourseWordDto {
+  uuid: string;
   word: string;
   partOfSpeech: string;
   phonetic: string;
@@ -57,14 +37,14 @@ export interface ApiCourseItemDto {
 }
 
 export interface CourseNavbarDto {
-  id: number;
+  uuid: string;
   title: string;
   level: CourseLevel;
   quantity: number;
 }
 
 export interface CourseDto {
-  id: number;
+  uuid: string;
   title: string;
   description: string;
   level: CourseLevel;
@@ -73,50 +53,25 @@ export interface CourseDto {
   completed?: boolean;
 }
 
-export interface ApiCourseDto {
-  id: number;
-  title: string;
-  description: string;
-  level: CourseLevel;
-  quantity: number;
-}
-
-export interface UserCoursePreviewDto {
-  id: number;
-  userId: number;
-  courseId: number;
+export interface CourseParticipantPreviewDto {
+  uuid: string;
+  userUuid: string;
+  courseUuid: string;
   progress: number;
   completed: boolean;
 }
 
-export interface ApiUserCoursePreviewDto {
-  id: number;
-  userId: number;
-  courseId: number;
-  progress: number;
-  completed: boolean;
-}
-
-export interface UserCourse {
-  id: number;
+export interface CourseParticipant {
+  uuid: string;
   points: number;
   progress: number;
   completed: number;
   course: CourseDto;
 }
 
-export interface UserCourseItemPreviewDto {
-  id: number;
-  courseItemId: number;
-  word: string;
-  partOfSpeech: string;
-  phonetic: string;
-  learned: boolean;
-}
-
-export interface ApiUserCourseItemPreviewDto {
-  id: number;
-  courseItemId: number;
+export interface CourseParticipantWordPreviewDto {
+  uuid: string;
+  courseWordUuid: string;
   word: string;
   partOfSpeech: string;
   phonetic: string;

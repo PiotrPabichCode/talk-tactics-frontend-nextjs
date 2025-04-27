@@ -5,18 +5,17 @@ import { MobileSidebar } from './mobile-sidebar';
 import UserNav from './user-nav';
 import { ModeToggle } from './mode-toggle';
 import { LinksNav } from './links-nav';
-import { useUserIsHydrated } from '@/store/useUserStore';
-import { useGetNavbarCourses } from '@/services/queries/course.query';
 import Image from 'next/image';
 import LocaleToggle from './locale-toggle';
 import { Link } from '@/navigation';
+import { useGetNavbarCourses } from '@/services/queries/course/course.query';
 
 export function Header() {
-  const { data: courses, isLoading: coursesLoading } = useGetNavbarCourses();
-  const isUserHydrated = useUserIsHydrated();
-  if (coursesLoading || !isUserHydrated) {
+  const { data: courses, isFetching } = useGetNavbarCourses();
+  if (isFetching) {
     return null;
   }
+
   return (
     <div
       className='fixed top-0 left-0 right-0 supports-backdrop-blur:bg-background/60 border-b bg-background/95 backdrop-blur z-50 animate-fade-in'

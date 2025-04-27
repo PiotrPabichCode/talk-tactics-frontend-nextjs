@@ -3,10 +3,10 @@
 import { ColumnDef } from '@tanstack/react-table';
 
 import { DataTableColumnHeader } from '@/components/table/data-table-column-header';
-import { WordMeaning } from '@/typings/course';
+import { CourseWordDefinition } from '@/typings/course';
 import { GetLocalizedMessage } from '@/i18n';
 
-export const columns: ColumnDef<WordMeaning>[] = [
+export const columns: ColumnDef<CourseWordDefinition>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => (
@@ -62,8 +62,4 @@ export const columns: ColumnDef<WordMeaning>[] = [
       );
     },
   },
-  // {
-  //   id: 'actions',
-  //   cell: ({ row }) => <DataTableRowActions row={row} />,
-  // },
 ];

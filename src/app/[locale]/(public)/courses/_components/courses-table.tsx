@@ -23,18 +23,6 @@ export function CoursesTable({ data }: CoursesTableProps) {
     React.useState<DataTableRowAction<CourseDto> | null>(null);
 
   const columns = React.useMemo(() => getColumns({ setRowAction }), []);
-
-  /**
-   * This component can render either a faceted filter or a search filter based on the `options` prop.
-   *
-   * @prop options - An array of objects, each representing a filter option. If provided, a faceted filter is rendered. If not, a search filter is rendered.
-   *
-   * Each `option` object has the following properties:
-   * @prop {string} label - The label for the filter option.
-   * @prop {string} value - The value for the filter option.
-   * @prop {React.ReactNode} [icon] - An optional icon to display next to the label.
-   * @prop {boolean} [withCount] - An optional boolean to display the count of the filter option.
-   */
   const filterFields: DataTableFilterField<CourseDto>[] = [
     {
       id: 'search',
@@ -49,9 +37,9 @@ export function CoursesTable({ data }: CoursesTableProps) {
     pageCount: totalPages,
     filterFields,
     initialState: {
-      sorting: [{ id: 'id', desc: false }],
+      sorting: [],
     },
-    getRowId: (originalRow) => String(originalRow.id),
+    getRowId: (originalRow) => String(originalRow.uuid),
     shallow: false,
     clearOnDefault: true,
   });

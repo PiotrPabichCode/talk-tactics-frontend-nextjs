@@ -9,12 +9,12 @@ import {
 } from '@/components/ui/table';
 import { useTranslations } from '@/i18n';
 import { Link, useRouter } from '@/navigation';
-import { IFriendInvitationDetailsDto } from '@/typings/user';
+import { FriendInvitation } from '@/typings/user';
 
 export function SentInvitationsTable({
   invitations,
 }: {
-  invitations: IFriendInvitationDetailsDto[];
+  invitations: FriendInvitation[];
 }) {
   const t = useTranslations('UserProfile.Friends');
   const router = useRouter();
@@ -34,19 +34,19 @@ export function SentInvitationsTable({
         <TableBody>
           {invitations.map((invitation) => (
             <TableRow
-              key={invitation.receiver.id}
+              key={invitation.receiver.uuid}
               className='cursor-pointer hover:text-blue-500'
               onClick={() =>
-                router.push(`/profiles/${invitation.receiver.id}`)
+                router.push(`/profiles/${invitation.receiver.uuid}`)
               }>
               <TableCell>
-                <Link href={`/profiles/${invitation.receiver.id}`}>
+                <Link href={`/profiles/${invitation.receiver.uuid}`}>
                   {invitation.receiver.firstName}
                 </Link>
               </TableCell>
 
               <TableCell>
-                <Link href={`/profiles/${invitation.receiver.id}`}>
+                <Link href={`/profiles/${invitation.receiver.uuid}`}>
                   {invitation.receiver.lastName}
                 </Link>
               </TableCell>
@@ -55,7 +55,7 @@ export function SentInvitationsTable({
                   status='CANCEL_INVITATION'
                   buttonText={t('cancel')}
                   isAccountPage
-                  friendId={invitation.receiver.id}
+                  friendUuid={invitation.receiver.uuid}
                 />
               </TableCell>
             </TableRow>

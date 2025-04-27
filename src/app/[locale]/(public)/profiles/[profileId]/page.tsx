@@ -2,15 +2,15 @@
 
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
-import { useGetUserProfile } from '@/services/queries/user.query';
-import { UserCourse } from '@/typings/course';
+import { useGetUserProfile } from '@/services/queries/user/user.query';
+import { CourseParticipant } from '@/typings/course';
 import { use } from 'react';
 import ProfileBio from './_components/profile-bio';
 import Score from './_components/score';
 import ProfileHeader from './_components/profile-header';
 import ProfileTable from './_components/profile-table';
 
-const countCompletedCourses = (courses: UserCourse[]) => {
+const countCompletedCourses = (courses: CourseParticipant[]) => {
   return courses.reduce((acc, course) => {
     if (course.completed) {
       return acc + 1;
@@ -26,7 +26,7 @@ export default function ProfilePage({
 }) {
   const { profileId } = use(params);
 
-  const { data: profile, isFetching } = useGetUserProfile(Number(profileId));
+  const { data: profile, isFetching } = useGetUserProfile(profileId);
 
   if (isFetching) {
     return <Spinner />;

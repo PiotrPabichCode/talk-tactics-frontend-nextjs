@@ -4,38 +4,27 @@ import {
   ApiRequestSignIn,
   ApiRequestSignUp,
   ApiResponseAuthCredentials,
-  toAuthResponseMapper,
-  toSignUpRequestMapper,
 } from '@/typings/auth';
 import { getUserDetails } from './user.service';
 
-const AUTH_ENDPOINT = 'auth';
+const AUTH = '/auth';
 
-export const signIn = async (req: ApiRequestSignIn): Promise<void> => {
+export const signIn = async (req: ApiRequestSignIn) => {
   const { data } = await axios<ApiResponseAuthCredentials>({
     method: 'POST',
-    url: AUTH_ENDPOINT + '/authenticate',
+    url: `${AUTH}/authenticate`,
     data: req,
   });
-  const res = toAuthResponseMapper(data);
-
-  // save auth details in local storage
-  useAuthStore.getState().login(res);
-
-  // fetch user details
-  await getUserDetails({ username: res.username });
+  useAuthStore.getState().login(data);
+  await getUserDetails(data.username);
 };
 
-export const signUp = async (req: ApiRequestSignUp): Promise<void> => {
+export const signUp = async (req: ApiRequestSignUp) => {
   const { data } = await axios<ApiResponseAuthCredentials>({
     method: 'POST',
-    url: AUTH_ENDPOINT + '/register',
-    data: toSignUpRequestMapper(req),
+    url: `${AUTH}/register`,
+    data: req,
   });
-  const res = toAuthResponseMapper(data);
-  // save auth details in local storage
-  useAuthStore.getState().login(res);
-
-  // fetch user details
-  await getUserDetails({ username: res.username });
+  useAuthStore.getState().login(data);
+  await getUserDetails(data.username);
 };

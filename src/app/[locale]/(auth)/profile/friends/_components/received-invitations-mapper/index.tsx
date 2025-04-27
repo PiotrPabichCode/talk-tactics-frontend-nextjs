@@ -1,22 +1,18 @@
 import { Spinner } from '@/components/ui/spinner';
 import { useTranslations } from '@/i18n';
-import { useGetReceivedFriendInvitationsQuery } from '@/services/queries/user.query';
+import { useGetReceivedFriendInvitationsQuery } from '@/services/queries/user/user.query';
 import useAuthStore from '@/store/useAuthStore';
-import { IFriendInvitationDetailsDto } from '@/typings/user';
 import { ReceivedInvitationsTable } from './_components/received-invitations-table';
 import { Label } from '../_components/label';
 
 export function ReceivedInvitationsMapper() {
   const t = useTranslations('UserProfile.Friends');
-  const userId = useAuthStore().credentials?.id;
+  const userId = useAuthStore().credentials?.uuid!;
   const {
     data: invitations,
     isPending,
     isError,
-  } = useGetReceivedFriendInvitationsQuery<IFriendInvitationDetailsDto[]>(
-    userId,
-    true
-  );
+  } = useGetReceivedFriendInvitationsQuery(userId);
 
   if (isPending) {
     return <Spinner />;

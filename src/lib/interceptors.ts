@@ -34,7 +34,7 @@ export const successInterceptor = (response: AxiosResponse): AxiosResponse => {
 export const errorInterceptor = async (err: AxiosError): Promise<void> => {
   const originalConfig: CustomInternalAxiosRequestConfig = err.config!;
   const { credentials, logout, login } = useAuthStore.getState();
-  const clearUserCourses = useCourseStore.getState().clearUserCourses;
+  const clearUserCourses = useCourseStore.getState().clearCourseParticipants;
   const clearUser = useUserStore.getState().clearUser;
 
   if (err.response) {

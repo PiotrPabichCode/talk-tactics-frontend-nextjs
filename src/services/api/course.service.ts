@@ -3,122 +3,93 @@ import useCourseStore from '@/store/useCourseStore';
 import {
   CourseDto,
   ApiResponseGetCourses,
-  toGetCourseResponseMapper,
-  ApiResponseGetCourseItem,
-  toGetCourseItemResponseMapper,
-  CourseItem,
-  CourseItemDto,
-  ApiRequestAddUserCourse,
-  toAddUserCourseRequestMapper,
-  ApiRequestDeleteUserCourse,
-  toDeleteUserCourseRequestMapper,
-  toGetUserCourseRequestMapper,
-  ApiRequestGetUserCourse,
-  CourseNavbarDto,
-  toLearnUserCourseItemResponseMapper,
-  ApiResponseLearnUserCourseItem,
-  ApiResponseGetCourseItems,
-  toGetCourseItemsResponseMapper,
+  toGetCoursesResponseMapper,
+  ApiResponseGetCourseWord,
+  ApiRequestAssignCourseToUser,
+  ApiRequestRemoveUserFromCourse,
+  ApiResponseLearnCourseParticipantWord,
+  ApiResponseGetCourseWords,
+  toGetCourseWordsResponseMapper,
+  ApiResponseGetNavbarCourses,
 } from '@/typings/course';
-import { Page } from '@/typings/page.types';
 import { buildPageableUrl } from '../common';
 import {
   GetCourseItemsSchema,
   GetCoursesSchema,
 } from '@/app/[locale]/(public)/courses/_lib/validations';
 
-const ENDPOINT = 'courses';
-const COURSE_ITEM_ENDPOINT = 'course-items';
-const USER_COURSE_ENDPOINT = 'user-courses';
-const USER_COURSE_ITEM_ENDPOINT = 'user-course-items';
+const COURSES = '/courses';
+const COURSE_WORDS = '/course-words';
+const COURSE_PARTICIPANTS = '/course-participants';
+const COURSE_PARTICIPANT_WORDS = '/course-participants-words';
 
 export const getCourses = async ({
   searchParams,
 }: {
   searchParams: GetCoursesSchema;
-}): Promise<Page<CourseDto>> => {
+}) => {
   const { data } = await axios<ApiResponseGetCourses>({
     method: 'GET',
-    url: buildPageableUrl(ENDPOINT, searchParams),
+    url: buildPageableUrl(COURSES, searchParams),
   });
 
-  return toGetCourseResponseMapper(data);
+  return toGetCoursesResponseMapper(data);
 };
 
-export const getNavbarCourses = async (): Promise<CourseNavbarDto[]> => {
-  const { data } = await axios<CourseNavbarDto[]>({
+export const getNavbarCourses = async () => {
+  const { data } = await axios<ApiResponseGetNavbarCourses>({
     method: 'GET',
-    url: ENDPOINT + '/navbar',
+    url: `${COURSES}/navbar`,
   });
-
   return data;
 };
 
-export const getCourseItems = async ({
-  courseId,
+export const getCourseWords = async ({
+  courseUuid,
   searchParams,
 }: {
-  courseId: Number;
+  courseUuid: string;
   searchParams: GetCourseItemsSchema;
 }) => {
-  const { data } = await axios<ApiResponseGetCourseItems>({
+  const { data } = await axios<ApiResponseGetCourseWords>({
     method: 'GET',
     url:
-      buildPageableUrl(COURSE_ITEM_ENDPOINT, searchParams) +
-      `&courseId=${courseId}`,
+      buildPageableUrl(COURSE_WORDS, searchParams) +
+      `&courseUuid=${courseUuid}`,
   });
-  return toGetCourseItemsResponseMapper(data);
+  return toGetCourseWordsResponseMapper(data);
 };
 
-export const getUserCourses = async ({ id }: { id: number }) => {
-  const { data } = await axios<CourseDto[]>({
+export const getCourseWordByUuid = async (uuid: string) => {
+  const { data } = await axios<ApiResponseGetCourseWord>({
     method: 'GET',
-    url: `${USER_COURSE_ENDPOINT}/id/${id}`,
+    url: `${COURSE_WORDS}/${uuid}`,
   });
-  useCourseStore.getState().setUserCourses(data);
   return data;
 };
 
-export const getCourseItemById = async ({
-  id,
-}: {
-  id: number;
-}): Promise<CourseItem> => {
-  const { data } = await axios<ApiResponseGetCourseItem>({
-    method: 'GET',
-    url: `${COURSE_ITEM_ENDPOINT}/${id}`,
-  });
-  return toGetCourseItemResponseMapper(data);
-};
-
-export const addUserCourse = async (req: ApiRequestAddUserCourse) => {
+export const assignCourseToUser = async (req: ApiRequestAssignCourseToUser) => {
   await axios({
     method: 'PUT',
-    url: USER_COURSE_ENDPOINT,
-    data: toAddUserCourseRequestMapper(req),
+    url: COURSE_PARTICIPANTS,
+    data: req,
   });
 };
 
-export const deleteUserCourse = async (req: ApiRequestDeleteUserCourse) => {
+export const removeUserFromCourse = async (
+  req: ApiRequestRemoveUserFromCourse
+) => {
   await axios({
     method: 'DELETE',
-    url: USER_COURSE_ENDPOINT,
-    data: toDeleteUserCourseRequestMapper(req),
+    url: COURSE_PARTICIPANTS,
+    data: req,
   });
 };
 
-export const learnUserCourseItem = async ({ id }: { id: number }) => {
-  const { data } = await axios<ApiResponseLearnUserCourseItem>({
+export const learnCourseParticipantWord = async (uuid: string) => {
+  const { data } = await axios<ApiResponseLearnCourseParticipantWord>({
     method: 'POST',
-    url: `${USER_COURSE_ITEM_ENDPOINT}/learn/id/${id}`,
+    url: `${COURSE_PARTICIPANT_WORDS}/${uuid}/learn`,
   });
-  return toLearnUserCourseItemResponseMapper(data);
-};
-
-export const getUserCourse = async (req: ApiRequestGetUserCourse) => {
-  return await axios<CourseItemDto[]>({
-    method: 'POST',
-    url: USER_COURSE_ENDPOINT,
-    data: toGetUserCourseRequestMapper(req),
-  });
+  return data;
 };

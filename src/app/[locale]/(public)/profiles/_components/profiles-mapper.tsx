@@ -1,18 +1,18 @@
 import React from 'react';
-import { IUserProfilePreview } from '@/typings/user';
+import { UserProfilePreview } from '@/typings/user';
 import { ProfilesGrid } from './profiles-grid';
 
 export function ProfilesMapper({
   profiles,
 }: {
-  profiles: IUserProfilePreview[];
+  profiles: UserProfilePreview[];
 }) {
   const profileItems = profiles.map((profile) => {
     return {
-      id: profile.id,
+      id: profile.uuid,
       title: profile.firstName + ' ' + profile.lastName,
       description: profile.bio,
-      link: '/profiles/' + profile.id,
+      link: '/profiles/' + profile.uuid,
       points: profile.totalPoints,
     };
   });

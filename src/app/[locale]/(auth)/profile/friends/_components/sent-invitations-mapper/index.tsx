@@ -1,30 +1,28 @@
 import { Spinner } from '@/components/ui/spinner';
 import { useTranslations } from '@/i18n';
-import { useGetSentFriendInvitationsQuery } from '@/services/queries/user.query';
+import { useGetSentFriendInvitationsQuery } from '@/services/queries/user/user.query';
 import useAuthStore from '@/store/useAuthStore';
-import { IFriendInvitationDetailsDto } from '@/typings/user';
 import { SentInvitationsTable } from './_components/sent-invitations-table';
 import { Label } from '../_components/label';
 
 export function SentInvitationsMapper() {
   const t = useTranslations('UserProfile.Friends');
-  const userId = useAuthStore().credentials?.id;
+  const userId = useAuthStore().credentials?.uuid!;
   const {
     data: invitations,
-    isPending,
+    isFetching,
     isError,
-  } = useGetSentFriendInvitationsQuery<IFriendInvitationDetailsDto[]>(
-    userId,
-    true
-  );
+  } = useGetSentFriendInvitationsQuery(userId);
 
-  if (isPending) {
+  if (isFetching) {
     return <Spinner />;
   }
 
   if (isError) {
     return <div>{t('invitationsLoadingError')}</div>;
   }
+
+  console.log(invitations);
 
   return (
     <>

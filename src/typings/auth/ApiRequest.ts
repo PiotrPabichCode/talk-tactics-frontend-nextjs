@@ -30,23 +30,4 @@ export const ApiRequestSignUpSchema = z
   });
 
 export type SignUpFormValues = z.infer<typeof ApiRequestSignUpSchema>;
-
 export type ApiRequestSignUp = SignUpFormValues;
-
-export const toSignUpRequestMapper = ({
-  username,
-  password,
-  repeatPassword,
-  firstName,
-  lastName,
-  email,
-}: ApiRequestSignUp) => {
-  return {
-    username: username,
-    password: password,
-    repeatPassword: repeatPassword,
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-  };
-};

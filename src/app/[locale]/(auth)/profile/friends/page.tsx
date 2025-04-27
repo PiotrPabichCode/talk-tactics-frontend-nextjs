@@ -2,7 +2,6 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslations } from '@/i18n';
-import { MessageKeys } from 'next-intl';
 import { friendsTabs } from './_components/tabs';
 import { Separator } from '@/components/ui/separator';
 

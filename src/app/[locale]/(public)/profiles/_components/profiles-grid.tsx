@@ -6,9 +6,8 @@ import {
   useGetFriendList,
   useGetReceivedFriendInvitationsQuery,
   useGetSentFriendInvitationsQuery,
-} from '@/services/queries/user.query';
+} from '@/services/queries/user/user.query';
 import useAuthStore from '@/store/useAuthStore';
-import { IFriendInvitationDto } from '@/typings/user';
 import { useTranslations } from '@/i18n';
 import { Link } from '@/navigation';
 import { UserAvatar } from '@/components/user-avatar';
@@ -18,7 +17,7 @@ export const ProfilesGrid = ({
   className,
 }: {
   items: {
-    id: number;
+    id: string;
     title: string;
     points: number;
     description: string;
@@ -26,17 +25,17 @@ export const ProfilesGrid = ({
   }[];
   className?: string;
 }) => {
-  const userId = useAuthStore().credentials?.id;
+  const userId = useAuthStore().credentials?.uuid!;
   const {
     data: sentFriendRequests,
     isPending: isPendingSent,
     isError: isErrorSent,
-  } = useGetSentFriendInvitationsQuery<IFriendInvitationDto[]>(userId);
+  } = useGetSentFriendInvitationsQuery(userId);
   const {
     data: receivedFriendRequests,
     isPending: isPendingReceived,
     isError: isErrorReceived,
-  } = useGetReceivedFriendInvitationsQuery<IFriendInvitationDto[]>(userId);
+  } = useGetReceivedFriendInvitationsQuery(userId);
   const {
     data: friends,
     isPending: isPendingFriends,
@@ -54,18 +53,18 @@ export const ProfilesGrid = ({
   }
 
   const getFriendInvitationStatus = (
-    friendId: number
+    friendId: string
   ):
     | 'SEND_INVITATION'
     | 'ACCEPT_INVITATION'
     | 'CANCEL_INVITATION'
     | 'DELETE_FRIEND' => {
-    const isFriend = friends?.find((friend) => friend.id === friendId);
+    const isFriend = friends?.find((friend) => friend.uuid === friendId);
     if (isFriend) {
       return 'DELETE_FRIEND';
     }
     const sentRequest = sentFriendRequests?.find(
-      (request) => request.receiverId === friendId
+      (request) => request.receiver.uuid === friendId
     );
 
     if (sentRequest) {
@@ -73,7 +72,7 @@ export const ProfilesGrid = ({
     }
 
     const receivedRequest = receivedFriendRequests?.find(
-      (request) => request.senderId === friendId
+      (request) => request.sender.uuid === friendId
     );
     if (receivedRequest) {
       return 'ACCEPT_INVITATION';
@@ -114,7 +113,7 @@ export const ProfilesGrid = ({
           <Card>
             {userId && userId !== item.id && (
               <FriendInvitationButton
-                friendId={item.id}
+                friendUuid={item.id}
                 status={getFriendInvitationStatus(item.id)}
               />
             )}

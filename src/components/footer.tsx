@@ -5,7 +5,7 @@ export function Footer() {
     <footer className='px-4 py-6 mt-auto shadow-sm border-t flex flex-col md:flex-row items-center justify-center md:gap-6 z-50'>
       <span className='text-sm text-semibold text-current'>
         <Link href='https://www.piotrpabich.com/projects/TalkTactics'>
-          © 2024 Piotr Pabich™
+          © 2025 Piotr Pabich™
         </Link>
       </span>
       <div className='flex mt-4 sm:justify-center items-center md:mt-0 space-x-5 rtl:space-x-reverse'>

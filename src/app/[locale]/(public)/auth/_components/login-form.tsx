@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSignInMutation } from '@/services/queries/auth.query';
+import { useSignInMutation } from '@/services/queries/auth/auth.mutation';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import {

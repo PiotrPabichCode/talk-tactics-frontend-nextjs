@@ -16,7 +16,7 @@ import { DataTableRowAction } from '@/types';
 const OpenCourseCell = ({ row }: { row: Row<CourseDto> }) => {
   const t = useTranslations('CoursesPage');
   return (
-    <Link href={`/courses/${row.original.id}`}>
+    <Link href={`/courses/${row.original.uuid}`}>
       <Button variant={'action'}>
         {t('openCourse')}
         <BookOpenText className='h-4 w-4 ml-2' />

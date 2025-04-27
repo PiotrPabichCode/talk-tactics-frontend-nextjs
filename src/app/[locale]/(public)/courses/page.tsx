@@ -1,11 +1,11 @@
 'use client';
 
 import { use } from 'react';
-import { useGetCourses } from '@/services/queries/course.query';
 import { CoursesPageSkeleton } from './_components/courses-page-skeleton';
 import { SearchParams } from '@/types';
 import { courseSearchParamsCache } from './_lib/validations';
 import { CoursesTable } from './_components/courses-table';
+import { useGetCourses } from '@/services/queries/course/course.query';
 
 interface IndexPageProps {
   searchParams: Promise<SearchParams>;
@@ -15,7 +15,7 @@ export default function CoursesPage(props: IndexPageProps) {
   const searchParams = use(props.searchParams);
   const search = courseSearchParamsCache.parse(searchParams);
 
-  const { isFetching, data: courses } = useGetCourses({ searchParams: search });
+  const { isFetching, data: courses } = useGetCourses(search);
 
   if (isFetching) {
     return <CoursesPageSkeleton />;

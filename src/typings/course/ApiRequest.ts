@@ -1,44 +1,14 @@
-export interface ApiRequestAddUserCourse {
-  courseId: number;
-  userId: number;
+export interface ApiRequestAssignCourseToUser {
+  courseUuid: string;
+  userUuid: string;
 }
 
-export const toAddUserCourseRequestMapper = ({
-  courseId,
-  userId,
-}: ApiRequestAddUserCourse) => {
-  return {
-    courseId: courseId,
-    userId: userId,
-  };
-};
-
-export interface ApiRequestDeleteUserCourse {
-  courseId: number;
-  userId: number;
+export interface ApiRequestRemoveUserFromCourse {
+  courseUuid: string;
+  userUuid: string;
 }
 
-export const toDeleteUserCourseRequestMapper = ({
-  courseId,
-  userId,
-}: ApiRequestDeleteUserCourse) => {
-  return {
-    courseId: courseId,
-    userId: userId,
-  };
-};
-
-export interface ApiRequestGetUserCourse {
-  courseId: number;
-  userId: number;
+export interface ApiRequestGetCourseParticipant {
+  courseUuid: string;
+  userUuid: string;
 }
-
-export const toGetUserCourseRequestMapper = ({
-  courseId,
-  userId,
-}: ApiRequestGetUserCourse) => {
-  return {
-    courseId: courseId,
-    userId: userId,
-  };
-};

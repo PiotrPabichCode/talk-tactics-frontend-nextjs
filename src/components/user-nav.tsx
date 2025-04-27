@@ -19,7 +19,7 @@ import { UserAvatar } from './user-avatar';
 
 export default function UserNav() {
   const { credentials, logout } = useAuthStore();
-  const clearUserCourses = useCourseStore().clearUserCourses;
+  const clearUserCourses = useCourseStore().clearCourseParticipants;
   const clearUser = useUserStore().clearUser;
   const { firstName, lastName, email } = useUserStore();
   const t = useTranslations('Navigation.User');

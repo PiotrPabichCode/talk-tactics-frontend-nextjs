@@ -1,13 +1,13 @@
 import { CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { columns } from './columns';
-import { WordMeaning } from '@/typings/course';
+import { CourseWordDefinition } from '@/typings/course';
 import { Table } from '@/components/table/table';
 
 export function WordDefinitionsTable({
-  examples: definitons,
+  definitions,
 }: {
-  examples: WordMeaning[];
+  definitions: CourseWordDefinition[];
 }) {
   return (
     <>
@@ -18,7 +18,7 @@ export function WordDefinitionsTable({
       <CardContent
         className='animate-fade-up'
         style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
-        <Table columns={columns} data={definitons} />
+        <Table columns={columns} data={definitions} />
       </CardContent>
     </>
   );

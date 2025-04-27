@@ -1,12 +1,10 @@
 'use client';
-import { Spinner } from '@/components/ui/spinner';
-import { getUserCourses } from '@/services/api/course.service';
 import { getUserDetails } from '@/services/api/user.service';
 import useAuthStore, { IAuthStore } from '@/store/useAuthStore';
 import useSettingsStore, { ISettingsStore } from '@/store/useSettingsStore';
 import useStore from '@/store/useStore';
 import useUserStore from '@/store/useUserStore';
-import { PropsWithChildren, useEffect, useReducer, useState } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 
 const StoreHydration = ({ children }: PropsWithChildren) => {
   /**
@@ -36,12 +34,7 @@ const StoreHydration = ({ children }: PropsWithChildren) => {
         if (!state.credentials?.username) {
           useUserStore.getState().finishHydration();
         } else {
-          await getUserCourses({
-            id: state.credentials?.id,
-          });
-          await getUserDetails({
-            username: state.credentials?.username,
-          });
+          await getUserDetails(state.credentials?.username);
         }
       });
       useAuthStore.persist.rehydrate();

@@ -46,7 +46,7 @@ export function Table<TData, TValue>({
   viewOptions = true,
 }: DataTableProps<TData, TValue>) {
   const t = useTranslations('Table');
-  const userId = useAuthStore().credentials?.id;
+  const userId = useAuthStore().credentials?.uuid;
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});

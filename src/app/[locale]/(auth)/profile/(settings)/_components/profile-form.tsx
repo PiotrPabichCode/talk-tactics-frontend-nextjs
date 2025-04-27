@@ -7,7 +7,6 @@ import { Form } from '@/components/ui/form';
 import useAuthStore from '@/store/useAuthStore';
 import useUserStore from '@/store/useUserStore';
 import { isEqual } from 'lodash';
-import { useUpdateUserDetailsMutation } from '@/services/queries/user.query';
 import {
   ApiRequestUpdateUserSchema,
   UpdateUserFormValues,
@@ -21,6 +20,7 @@ import { SubmitButton } from '@/components/submit-button';
 import { getChangedValues } from '@/lib/utils';
 import { FormInput } from '@/components/form/form-input';
 import { FormTextarea } from '@/components/form/form-textarea';
+import { useUpdateUserDetailsMutation } from '@/services/queries/user/user.mutation';
 
 export function ProfileForm() {
   const credentials = useAuthStore().credentials;
@@ -60,7 +60,10 @@ export function ProfileForm() {
       if (!credentials) {
         throw new Error('Bad credentials');
       }
-      await updateUser({ id: credentials.id, updatedFields: changedValues });
+      await updateUser({
+        uuid: credentials.uuid,
+        updatedFields: changedValues,
+      });
       toast.success(t('successMessage'));
       setFormValues(data);
     } catch (e) {

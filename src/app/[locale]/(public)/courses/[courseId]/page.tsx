@@ -1,11 +1,11 @@
 'use client';
 
 import { CoursePageSkeleton } from './_components/course-page-skeleton';
-import { useGetCourseItems } from '@/services/queries/course.query';
 import { use } from 'react';
 import { SearchParams } from '@/types';
 import { CourseItemsTable } from './_components/course-items-table';
 import { courseItemsSearchParamsCache } from '../_lib/validations';
+import { useGetCourseWords } from '@/services/queries/course/course.query';
 
 interface IndexPageProps {
   searchParams: Promise<SearchParams>;
@@ -16,8 +16,8 @@ export default function SingleCoursePage(props: IndexPageProps) {
   const searchParams = use(props.searchParams);
   const search = courseItemsSearchParamsCache.parse(searchParams);
   const { courseId } = use(props.params);
-  const { isFetching, data: courseItems } = useGetCourseItems({
-    courseId: Number(courseId),
+  const { isFetching, data: courseItems } = useGetCourseWords({
+    courseUuid: courseId,
     searchParams: search,
   });
 

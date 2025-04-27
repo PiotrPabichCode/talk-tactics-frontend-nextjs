@@ -2,13 +2,6 @@
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import {
-  useAcceptFriendInvitationMutation,
-  useDeleteFriendMutation,
-  useDeleteSentFriendInvitationMutation,
-  useRejectFriendInvitationMutation,
-  useSendFriendInvitationMutation,
-} from '@/services/queries/user.query';
 import useAuthStore from '@/store/useAuthStore';
 import { Loader, UserPlus, UserX } from 'lucide-react';
 import { useState, useTransition } from 'react';
@@ -17,13 +10,20 @@ import { FriendInvitationActionDialog } from './_components/friend-invitation-ac
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { useTranslations } from '@/i18n';
 import { handleError } from '@/services/common';
+import {
+  useAcceptFriendInvitationMutation,
+  useDeleteFriendMutation,
+  useDeleteSentFriendInvitationMutation,
+  useRejectFriendInvitationMutation,
+  useSendFriendInvitationMutation,
+} from '@/services/queries/user/user.mutation';
 
 export function FriendInvitationButton({
-  friendId,
+  friendUuid,
   status,
   ...props
 }: {
-  friendId: number;
+  friendUuid: string;
   status:
     | 'SEND_INVITATION'
     | 'ACCEPT_INVITATION'
@@ -47,43 +47,47 @@ export function FriendInvitationButton({
   const { mutateAsync: cancelFriendInvitation } =
     useDeleteSentFriendInvitationMutation();
   const { mutateAsync: deleteFriend } = useDeleteFriendMutation();
-  const userId = useAuthStore().credentials?.id;
+  const userUuid = useAuthStore().credentials?.uuid;
 
   const [isAnimating, startTransition] = useTransition();
 
   const onFriendInvitationAction = async (e: React.MouseEvent<HTMLElement>) => {
     try {
       e.stopPropagation();
-      if (userId) {
+      if (userUuid) {
         startTransition(async () => {
           if (status === 'SEND_INVITATION') {
             await sendFriendInvitation({
-              senderId: userId,
-              receiverId: friendId,
+              senderUuid: userUuid,
+              receiverUuid: friendUuid,
+              action: 'SEND',
             });
             toast.success(t('sendSuccess'));
           } else if (status === 'ACCEPT_INVITATION') {
             await acceptFriendInvitation({
-              senderId: friendId,
-              receiverId: userId,
+              senderUuid: friendUuid,
+              receiverUuid: userUuid,
+              action: 'ACCEPT',
             });
             toast.success(t('acceptSuccess'));
           } else if (status === 'REJECT_INVITATION') {
             await rejectFriendInvitation({
-              senderId: friendId,
-              receiverId: userId,
+              senderUuid: friendUuid,
+              receiverUuid: userUuid,
+              action: 'REJECT',
             });
             toast.success(t('rejectSuccess'));
           } else if (status === 'CANCEL_INVITATION') {
             await cancelFriendInvitation({
-              senderId: userId,
-              receiverId: friendId,
+              senderUuid: userUuid,
+              receiverUuid: friendUuid,
+              action: 'DELETE',
             });
             toast.success(t('cancelSuccess'));
           } else if (status === 'DELETE_FRIEND') {
             await deleteFriend({
-              userId,
-              friendId,
+              userUuid,
+              friendUuid,
             });
             toast.success(t('deleteSuccess'));
           }

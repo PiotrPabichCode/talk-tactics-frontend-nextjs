@@ -3,7 +3,7 @@ import { useTranslations } from '@/i18n';
 import { Link } from '@/navigation';
 import { Undo2 } from 'lucide-react';
 
-export function BackButton({ courseId }: { courseId: number }) {
+export function BackButton({ courseId }: { courseId: string }) {
   const t = useTranslations('WordPage');
   return (
     <Link

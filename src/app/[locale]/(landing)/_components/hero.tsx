@@ -15,7 +15,7 @@ import { Link } from '@/navigation';
 
 export function Hero() {
   const [ready, setReady] = useState(false);
-  const user = useAuthStore().credentials?.id;
+  const user = useAuthStore().credentials?.uuid;
   const theme = useTheme().theme;
   const t = useTranslations('LandingPage');
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetUserProfilePreviews } from '@/services/queries/user.query';
+import { useGetUserProfilePreviews } from '@/services/queries/user/user.query';
 import { ProfilesMapper } from './_components/profiles-mapper';
 import { Separator } from '@/components/ui/separator';
 import { useTranslations } from '@/i18n';

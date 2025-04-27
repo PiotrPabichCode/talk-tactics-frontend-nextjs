@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 import { logger } from './logger';
-import { IAuthUser } from '@/typings/user';
+import { AuthUser } from '@/typings/user';
 
-export interface UserStore extends IAuthUser {
+export interface UserStore extends AuthUser {
   isHydrated: boolean;
   isReady: boolean;
-  setUserDetails: (details: Partial<IAuthUser>) => void;
+  setUserDetails: (details: Partial<AuthUser>) => void;
   finishHydration: () => void;
   clearUser: () => void;
   isUserReady: () => boolean;

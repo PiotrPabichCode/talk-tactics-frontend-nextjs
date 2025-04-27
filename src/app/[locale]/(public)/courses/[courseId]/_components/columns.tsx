@@ -8,18 +8,21 @@ import {
 } from '@tanstack/react-table';
 
 import { DataTableColumnHeader } from '@/components/table/data-table-column-header';
-import { CourseItemDto, UserCourseItemPreviewDto } from '@/typings/course';
+import {
+  CourseWordDto,
+  CourseParticipantWordPreviewDto,
+} from '@/typings/course';
 import { Button } from '@/components/ui/button';
 import { GraduationCap, Telescope } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { useLearnUserCourseItem } from '@/services/queries/course.query';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
 import { GetLocalizedMessage, useTranslations } from '@/i18n';
 import { handleError } from '@/services/common';
 import Link from 'next/link';
+import { useLearnCourseParticipantWord } from '@/services/queries/course/course.mutation';
 
-type ItemType = UserCourseItemPreviewDto | CourseItemDto;
+type ItemType = CourseParticipantWordPreviewDto | CourseWordDto;
 
 const LearnMoreCell = ({ row }: { row: Row<ItemType> }) => {
   const t = useTranslations('CoursePage');
@@ -38,13 +41,17 @@ const LearnMoreCell = ({ row }: { row: Row<ItemType> }) => {
   );
 };
 
-const SetLearnCell = ({ row }: { row: Row<UserCourseItemPreviewDto> }) => {
+const SetLearnCell = ({
+  row,
+}: {
+  row: Row<CourseParticipantWordPreviewDto>;
+}) => {
   const t = useTranslations('CoursePage');
   const {
     isPending,
     isSuccess,
     mutateAsync: learnWord,
-  } = useLearnUserCourseItem();
+  } = useLearnCourseParticipantWord();
   const learned = row.original.learned;
 
   const onSubmit = async () => {
@@ -136,19 +143,20 @@ const commonColumns: ColumnDef<ItemType>[] = [
   },
 ];
 
-export const userColumns: ColumnDef<UserCourseItemPreviewDto>[] = [
-  ...(commonColumns as ColumnDef<UserCourseItemPreviewDto>[]),
+export const userColumns: ColumnDef<CourseParticipantWordPreviewDto>[] = [
+  ...(commonColumns as ColumnDef<CourseParticipantWordPreviewDto>[]),
   {
     accessorKey: 'setLearned',
     enableHiding: false,
     meta: { auth: true },
-    header: ({ column }: HeaderContext<UserCourseItemPreviewDto, unknown>) =>
-      null,
-    cell: ({ row }: CellContext<UserCourseItemPreviewDto, unknown>) => (
+    header: ({
+      column,
+    }: HeaderContext<CourseParticipantWordPreviewDto, unknown>) => null,
+    cell: ({ row }: CellContext<CourseParticipantWordPreviewDto, unknown>) => (
       <SetLearnCell row={row} />
     ),
   },
 ];
 
-export const columns: ColumnDef<CourseItemDto>[] =
-  commonColumns as ColumnDef<CourseItemDto>[];
+export const columns: ColumnDef<CourseWordDto>[] =
+  commonColumns as ColumnDef<CourseWordDto>[];

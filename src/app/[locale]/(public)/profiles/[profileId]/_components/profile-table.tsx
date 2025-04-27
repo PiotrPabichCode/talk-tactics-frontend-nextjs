@@ -8,9 +8,9 @@ import {
 } from '@/components/ui/table';
 import { useTranslations } from '@/i18n';
 import { Link, useRouter } from '@/navigation';
-import { LocalizeCourseLevel, UserCourse } from '@/typings/course';
+import { LocalizeCourseLevel, CourseParticipant } from '@/typings/course';
 
-const ProfileTable = ({ courses }: { courses: UserCourse[] }) => {
+const ProfileTable = ({ courses }: { courses: CourseParticipant[] }) => {
   const t = useTranslations('ProfilePage');
   const router = useRouter();
   return (
@@ -27,29 +27,29 @@ const ProfileTable = ({ courses }: { courses: UserCourse[] }) => {
         {courses.map((courseDetails) => {
           return (
             <TableRow
-              key={courseDetails.id}
+              key={courseDetails.uuid}
               className='cursor-pointer hover:text-blue-500'
               onClick={() =>
-                router.push(`/courses/${courseDetails.course.id}`)
+                router.push(`/courses/${courseDetails.course.uuid}`)
               }>
               <TableCell>
-                <Link href={`/courses/${courseDetails.course.id}`}>
+                <Link href={`/courses/${courseDetails.course.uuid}`}>
                   {courseDetails.course.title}
                 </Link>
               </TableCell>
 
               <TableCell>
-                <Link href={`/courses/${courseDetails.course.id}`}>
+                <Link href={`/courses/${courseDetails.course.uuid}`}>
                   {LocalizeCourseLevel(courseDetails.course.level)}
                 </Link>
               </TableCell>
               <TableCell>
-                <Link href={`/courses/${courseDetails.course.id}`}>
+                <Link href={`/courses/${courseDetails.course.uuid}`}>
                   {courseDetails.progress}%
                 </Link>
               </TableCell>
               <TableCell>
-                <Link href={`/courses/${courseDetails.course.id}`}>
+                <Link href={`/courses/${courseDetails.course.uuid}`}>
                   {courseDetails.points}
                 </Link>
               </TableCell>
