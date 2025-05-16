@@ -83,12 +83,12 @@ export function LoginForm({ toggleVariant }: { toggleVariant: () => void }) {
               <p>{t('testAccount')}</p>
               <p>
                 {t('testAccountLogin', {
-                  login: 'user1',
+                  login: 'admin',
                 })}
               </p>
               <p>
                 {t('testAccountPassword', {
-                  password: 'user1',
+                  password: '12345678',
                 })}
               </p>
             </Card>

@@ -70,9 +70,7 @@ const WordOptions = ({ courses }: { courses: CourseNavbarDto[] }) => {
             <ListItem
               key={course.level + '_word'}
               title={LocalizeCourseLevel(course.level)}
-              href={`/courses/${course.uuid}/words/${Math.floor(
-                Math.random() * course.quantity + 1
-              )}`}>{`${BASE_DESCRIPTION} ${
+              href={`/courses/${course.uuid}/words/${course.wordUuid}`}>{`${BASE_DESCRIPTION} ${
               course.level === 'ADVANCED'
                 ? '<85%'
                 : course.level === 'INTERMEDIATE'

@@ -41,6 +41,7 @@ export interface CourseNavbarDto {
   title: string;
   level: CourseLevel;
   quantity: number;
+  wordUuid: string;
 }
 
 export interface CourseDto {
