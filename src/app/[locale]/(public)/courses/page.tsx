@@ -13,8 +13,9 @@ interface IndexPageProps {
 
 export default function CoursesPage(props: IndexPageProps) {
   const searchParams = use(props.searchParams);
+  console.log(searchParams);
   const search = courseSearchParamsCache.parse(searchParams);
-
+  console.log('COURSES', search);
   const { isFetching, data: courses } = useGetCourses(search);
 
   if (isFetching) {

@@ -1,6 +1,6 @@
 'use client';
 
-import type { DataTableFilterField, DataTableRowAction } from '@/types';
+import type { DataTableFilterField } from '@/types';
 import * as React from 'react';
 
 import { DataTable } from '@/components/data-table/data-table';

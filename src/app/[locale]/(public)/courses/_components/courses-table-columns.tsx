@@ -11,7 +11,6 @@ import { CourseDto } from '@/typings/course';
 import { GetLocalizedMessage, useTranslations } from '@/i18n';
 import { levels } from './data';
 import { Link } from '@/navigation';
-import { DataTableRowAction } from '@/types';
 
 const OpenCourseCell = ({ row }: { row: Row<CourseDto> }) => {
   const t = useTranslations('CoursesPage');
@@ -25,16 +24,23 @@ const OpenCourseCell = ({ row }: { row: Row<CourseDto> }) => {
   );
 };
 
-interface GetColumnsProps {
-  setRowAction: React.Dispatch<
-    React.SetStateAction<DataTableRowAction<CourseDto> | null>
-  >;
-}
-
-export function getColumns({
-  setRowAction,
-}: GetColumnsProps): ColumnDef<CourseDto>[] {
+export function getColumns(): ColumnDef<CourseDto>[] {
   return [
+    {
+      accessorKey: 'id',
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          className='w-[10px] text-center'
+          column={column}
+          title={GetLocalizedMessage('CoursesPage.position')}
+        />
+      ),
+      cell: ({ row }) => (
+        <div className='w-[10px] text-center'>{Number(row.index) + 1}.</div>
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       accessorKey: 'search',
       enableColumnFilter: false,
@@ -44,9 +50,6 @@ export function getColumns({
     {
       accessorKey: 'title',
       enableHiding: false,
-      meta: {
-        localizedName: 'CoursesPage.title',
-      },
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}
@@ -63,9 +66,6 @@ export function getColumns({
     },
     {
       accessorKey: 'description',
-      meta: {
-        localizedName: 'CoursesPage.description',
-      },
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}
@@ -84,9 +84,6 @@ export function getColumns({
     },
     {
       accessorKey: 'level',
-      meta: {
-        localizedName: 'CoursesPage.difficulty',
-      },
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}
@@ -111,15 +108,9 @@ export function getColumns({
           </div>
         );
       },
-      filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id));
-      },
     },
     {
       accessorKey: 'quantity',
-      meta: {
-        localizedName: 'CoursesPage.words',
-      },
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}

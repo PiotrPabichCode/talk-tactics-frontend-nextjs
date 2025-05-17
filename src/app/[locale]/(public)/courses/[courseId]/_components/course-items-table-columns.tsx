@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { CourseWordDto } from '@/typings/course';
 import { GetLocalizedMessage, useTranslations } from '@/i18n';
 import { Link, usePathname } from '@/navigation';
-import { DataTableRowAction } from '@/types';
 
 const LearnMoreCell = ({ row }: { row: Row<CourseWordDto> }) => {
   const t = useTranslations('CoursePage');
@@ -28,6 +27,21 @@ const LearnMoreCell = ({ row }: { row: Row<CourseWordDto> }) => {
 export function getColumns(): ColumnDef<CourseWordDto>[] {
   return [
     {
+      accessorKey: 'id',
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          className='w-[10px] text-center'
+          column={column}
+          title={GetLocalizedMessage('CoursePage.position')}
+        />
+      ),
+      cell: ({ row }) => (
+        <div className='w-[10px] text-center'>{Number(row.index) + 1}.</div>
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
       accessorKey: 'search',
       enableColumnFilter: false,
       enableSorting: false,
@@ -36,9 +50,6 @@ export function getColumns(): ColumnDef<CourseWordDto>[] {
     {
       accessorKey: 'word',
       enableHiding: false,
-      meta: {
-        localizedName: 'CoursePage.word',
-      },
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}
@@ -53,9 +64,6 @@ export function getColumns(): ColumnDef<CourseWordDto>[] {
     },
     {
       accessorKey: 'partOfSpeech',
-      meta: {
-        localizedName: 'CoursePage.partOfSpeech',
-      },
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}
@@ -70,9 +78,6 @@ export function getColumns(): ColumnDef<CourseWordDto>[] {
     },
     {
       accessorKey: 'phonetic',
-      meta: {
-        localizedName: 'CoursePage.phonetic',
-      },
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}

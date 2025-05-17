@@ -11,7 +11,6 @@ import {
   ApiResponseGetCourseWords,
   ApiResponseGetCourseWord,
 } from '@/typings/course';
-import { useCoursesEmpty } from '@/store/useCourseStore';
 import {
   GetCourseItemsSchema,
   GetCoursesSchema,
@@ -27,13 +26,13 @@ export const COURSE_WORDS_QUERY_KEY = 'courseWords';
 
 export function useGetCourses(searchParams: GetCoursesSchema) {
   const queryClient = useQueryClient();
-  const enabled = useCoursesEmpty();
   const query = useQuery<ApiResponseGetCourses, Error>({
     queryKey: [COURSES + JSON.stringify(searchParams)],
     queryFn: () => getCourses({ searchParams }),
-    enabled: enabled,
     initialData: () => {
-      return queryClient.getQueryData([COURSES]) as ApiResponseGetCourses;
+      return queryClient.getQueryData([
+        COURSES + JSON.stringify(searchParams),
+      ]) as ApiResponseGetCourses;
     },
   });
   return query;

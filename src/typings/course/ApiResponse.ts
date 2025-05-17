@@ -4,10 +4,8 @@ import {
   CourseWord,
   CourseWordDto,
   Course,
-  CourseParticipantWordPreviewDto,
   CourseWordDefinition,
   CourseNavbarDto,
-  CourseParticipant,
 } from './course';
 
 export type ApiResponseGetCourses = Page<CourseDto>;

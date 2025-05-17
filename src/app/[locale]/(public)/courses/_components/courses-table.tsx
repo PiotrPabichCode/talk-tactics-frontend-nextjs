@@ -1,6 +1,6 @@
 'use client';
 
-import type { DataTableFilterField, DataTableRowAction } from '@/types';
+import type { DataTableFilterField } from '@/types';
 import * as React from 'react';
 
 import { DataTable } from '@/components/data-table/data-table';
@@ -19,10 +19,7 @@ export function CoursesTable({ data }: CoursesTableProps) {
   const { content, totalPages } = data;
   const t = useTranslations('Table');
 
-  const [rowAction, setRowAction] =
-    React.useState<DataTableRowAction<CourseDto> | null>(null);
-
-  const columns = React.useMemo(() => getColumns({ setRowAction }), []);
+  const columns = React.useMemo(() => getColumns(), []);
   const filterFields: DataTableFilterField<CourseDto>[] = [
     {
       id: 'search',

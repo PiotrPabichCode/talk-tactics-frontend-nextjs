@@ -22,8 +22,6 @@ export function SentInvitationsMapper() {
     return <div>{t('invitationsLoadingError')}</div>;
   }
 
-  console.log(invitations);
-
   return (
     <>
       <Label
