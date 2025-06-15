@@ -1,12 +1,12 @@
 import {
-  createSearchParamsCache,
   parseAsInteger,
   parseAsString,
-} from 'nuqs/server';
+} from 'nuqs';
 
 import { getFiltersStateParser, getSortingStateParser } from '@/lib/parsers';
 import { CourseDto, CourseWordDto } from '@/typings/course';
 import { ExtendedSortingState } from '@/types';
+import {createSearchParamsCache} from "nuqs/server";
 
 export const createGenericSearchParamsCache = <T>(
   defaultSort: ExtendedSortingState<T> = []
